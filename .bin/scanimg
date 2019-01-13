@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Scans an image from the scanner and saves it to Documents.
+
+filename=`date "+%y%m%d-%H%M%S"`
+subdir=`date "+%Y/%B"`
+directory="${HOME}/Documents"
+path="${directory}/${subdir}/Unorganized/${filename}.jpg"
+
+if [ ! -d "${directory}/${subdir}/Unorganized" ]; then
+  mkdir -p "${directory}/${subdir}/Unorganized"
+fi
+
+dpi=300
+scanimage --progress --format=jpeg --resolution="${dpi}" > "${path}"
+
+if [ $? -eq 0 ]; then
+  echo "Saved as ${path}"
+
+  xdg-open "${path}"
+else
+  echo "Scanning failed! Exit code: $?"
+  if [ -e "${path}" ]; then
+    echo "Removing file"
+    rm "${path}"
+  fi
+
+fi

@@ -1,0 +1,131 @@
+" Use Vi iMproved
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" Let Vundle manage itself
+Plugin 'gmarik/Vundle.vim'
+
+" Use golden view for good split ratios
+" Plugin 'zhaocai/GoldenView.Vim'
+
+" Use for browsing tags in source files
+Plugin 'majutsushi/tagbar'
+
+" Use a.vim for alternating between header and source files
+Plugin 'vim-scripts/a.vim'
+
+" Use ctrl+p for navigating files
+Plugin 'kien/ctrlp.vim'
+
+" Use syntastic for syntax linting
+" Plugin 'scrooloose/syntastic'
+
+" Use Asynchronous Lint Engine for syntax linting
+Plugin 'w0rp/ale'
+
+" Use tcomment for sensible and easy comments
+Plugin 'tomtom/tcomment_vim'
+
+" Use vim-airline for a smarter status bar
+" Plugin 'bling/vim-airline'
+
+" Use vim-fugitive for git features
+Plugin 'tpope/vim-fugitive'
+
+" Use vim-surround for closing parantheses, braces, etc
+Plugin 'tpope/vim-surround'
+
+" Extend with cmake support
+Plugin 'jalcine/cmake.vim'
+
+" Use vim-rspec for rspec integration
+Plugin 'thoughtbot/vim-rspec'
+
+" Use ultisnips for smart snippets
+""Plugin 'SirVer/ultisnips'
+
+" Use YouCompleteMe for tab-completion
+" Plugin 'Valloric/YouCompleteMe'
+
+" Use nerdtree for file exploration
+"Plugin 'scrooloose/nerdtree'
+
+" Use unite for whatever
+Plugin 'Shougo/unite.vim'
+
+" Use vimfiler for file exploration
+Plugin 'Shougo/vimfiler'
+
+" Use vim-snippets for a collection of snippets
+" "Plugin 'honza/vim-snippets'
+
+" Use vim-coffee-script for coffee-script syntax highlighting
+Plugin 'kchmck/vim-coffee-script'
+
+" Use vim-crystal for Crystal syntax highlighting
+Plugin 'rhysd/vim-crystal'
+
+" Use vim-markdown for markdown syntax highlighting
+Plugin 'plasticboy/vim-markdown'
+
+" Use vim-nasm for NASM syntax highlighting
+" Plugin 'helino/vim-nasm'
+
+" Use vim-protobuf for protobuf syntax highlighting
+Plugin 'eventualbuddha/vim-protobuf'
+
+" Use vim-ruby for improved Ruby syntax highlighting
+Plugin 'vim-ruby/vim-ruby'
+
+" Add Rust support
+Plugin 'rust-lang/rust.vim'
+
+" Use vim-slim for slim syntax highlighting
+Plugin 'slim-template/vim-slim'
+
+" Improved C++ syntax highlighting
+Plugin 'octol/vim-cpp-enhanced-highlight'
+
+" Add i3 configuration syntax highlighting
+Plugin 'PotatoesMaster/i3-vim-syntax'
+
+" Use vim-indentobject for indenting whole blocks of text
+Plugin 'austintaylor/vim-indentobject'
+
+" Use tabular for alignment wizardry
+Plugin 'godlygeek/tabular'
+
+" Use vim-gitgutter to see what has changed
+" Plugin 'airblade/vim-gitgutter'
+
+" Solarized color scheme
+Plugin 'altercation/vim-colors-solarized'
+
+" Use supertab so that ultisnips will play nice with YCM's tab-completion
+" "Plugin 'ervandew/supertab'
+
+" Rust syntax completion
+" Plugin 'racer-rust/vim-racer'
+
+" TOML syntax support
+Plugin 'cespare/vim-toml'
+
+" Automatically insert license templates when creating new files
+" Disabled because it slows down vim when opening new files.
+" Plugin 'aperezdc/vim-template'
+
+" Automatically close pairs like [], {} and ()
+" Plugin 'jiangmiao/auto-pairs'
+
+" Udev rules syntax support
+Plugin 'vim-scripts/syntaxudev.vim'
+
+" Smali syntax support
+Plugin 'kelwin/vim-smali'
+
+call vundle#end()
+
+" vim: syntax=vim
