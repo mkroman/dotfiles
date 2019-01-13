@@ -110,6 +110,9 @@ Plugin 'altercation/vim-colors-solarized'
 " Rust syntax completion
 " Plugin 'racer-rust/vim-racer'
 
+" Jellybeans colorscheme
+Plugin 'nanotech/jellybeans.vim'
+
 " TOML syntax support
 Plugin 'cespare/vim-toml'
 
