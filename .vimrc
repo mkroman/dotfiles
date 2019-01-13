@@ -47,8 +47,15 @@ if &t_Co > 2 || has('gui_running')
 
   syntax on
 
+  if &t_Co == 256
+    " Access colors present in 256 colorspace
+    let base16colorspace=256
+  endif
+
+  set termguicolors
+
   try
-    colorscheme Tomorrow-Night
+    colorscheme base16-material-darker
   catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme desert
   endtry
@@ -327,7 +334,6 @@ highlight ALEWarning ctermbg=black cterm=bold
 " }}}
 "
 "
-
 
 map <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"

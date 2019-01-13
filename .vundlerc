@@ -113,6 +113,9 @@ Plugin 'altercation/vim-colors-solarized'
 " Jellybeans colorscheme
 Plugin 'nanotech/jellybeans.vim'
 
+" Add a bunch of color schemes
+Plugin 'chriskempson/base16-vim'
+
 " TOML syntax support
 Plugin 'cespare/vim-toml'
 
