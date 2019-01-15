@@ -3,4 +3,8 @@
 alias irb='pry'
 alias adt='addtorrent'
 alias b='bat'
-alias vim='vimx'
+
+# Alias `vim` to `vimx` (vim enhanced) if it exists
+if command -v vimx >/dev/null 2>&1; then
+  alias vim='vimx'
+fi
