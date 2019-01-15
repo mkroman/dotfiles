@@ -135,6 +135,9 @@ Plugin 'kelwin/vim-smali'
 " TMUX syntax support
 Plugin 'tmux-plugins/vim-tmux'
 
+" Jenkinsfile syntax support
+Plugin 'martinda/Jenkinsfile-vim-syntax'
+
 call vundle#end()
 
 " vim: syntax=vim
