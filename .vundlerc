@@ -132,6 +132,9 @@ Plugin 'vim-scripts/syntaxudev.vim'
 " Smali syntax support
 Plugin 'kelwin/vim-smali'
 
+" TMUX syntax support
+Plugin 'tmux-plugins/vim-tmux'
+
 call vundle#end()
 
 " vim: syntax=vim
