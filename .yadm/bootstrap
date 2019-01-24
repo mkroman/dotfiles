@@ -7,6 +7,28 @@ yadm submodule update --recursive --init
 if command -v vim >/dev/null 2>&1; then
   echo "Bootstrapping vim"
   vim '+VundleInstall' '+VundleUpdate' '+VundleClean' '+qall'
+fi
 
+# Install rustup
+if ! command -v rustup >/dev/null 2>&1; then
+  echo "Downloading rustup"
+  curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain stable
+  rehash
+fi
+
+# Install ripgrep
+if ! command -v rg >/dev/null 2>&1; then
+  echo "Installing ripgrep"
+  cargo install ripgrep
+fi
+
+if ! command -v fd >/dev/null 2>&1; then
+  echo "Installing fd"
+  cargo install fd-find
+fi
+
+if ! command -v exa >/dev/null 2>&1; then
+  echo "Installing exa"
+  cargo install exa
 fi
 
