@@ -19,6 +19,12 @@
 " TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 " SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+" {{{ Jellybeans overrides
+let g:jellybeans_overrides = {
+\  'background': { 'guibg': 'none' },
+\}
+" }}}
+
 if filereadable($HOME.'/.vundlerc')
   source ~/.vundlerc
 endif
@@ -47,15 +53,8 @@ if &t_Co > 2 || has('gui_running')
 
   syntax on
 
-  if &t_Co == 256
-    " Access colors present in 256 colorspace
-    let base16colorspace=256
-  endif
-
-  set termguicolors
-
   try
-    colorscheme base16-material-darker
+    colorscheme jellybeans
   catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme desert
   endtry
@@ -163,6 +162,8 @@ set formatprg=par\ -w80
 
 " C/C++ code formatting
 set cinoptions=g0{0}0N-s(0
+
+set lazyredraw
 
 let g:loaded_sql_completion = 1
 

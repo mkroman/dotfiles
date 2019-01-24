@@ -97,7 +97,6 @@ if [ -e ~/.pyenv ]; then
   eval "$(pyenv init - )"
 fi
 
-
 ## Aliases
 
 # Unix aliases
