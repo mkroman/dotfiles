@@ -138,6 +138,9 @@ Plugin 'tmux-plugins/vim-tmux'
 " Jenkinsfile syntax support
 Plugin 'martinda/Jenkinsfile-vim-syntax'
 
+" Text-object motion for arguments
+Plugin 'vim-scripts/argtextobj.vim'
+
 call vundle#end()
 
 " vim: syntax=vim
