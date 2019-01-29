@@ -226,14 +226,14 @@ workspace $www output DP-0
 workspace $code output DP-0
 
 # Restore the first workspace.
-exec --no-startup-id i3-msg "workspace $chat; append_layout ~/.i3/workspaces/chat.json"
-exec --no-startup-id i3-msg "workspace $www; append_layout ~/.i3/workspaces/www.json"
-exec --no-startup-id i3-msg "workspace $code; append_layout ~/.i3/workspaces/code.json"
+exec --no-startup-id i3-msg "workspace $chat; append_layout ~/.config/i3/workspaces/chat.json"
+exec --no-startup-id i3-msg "workspace $www; append_layout ~/.config/i3/workspaces/www.json"
+exec --no-startup-id i3-msg "workspace $code; append_layout ~/.config/i3/workspaces/code.json"
 
 # Start applications.
 exec --no-startup-id i3-msg "workspace $code; exec subl; exec urxvtc -title code1; exec urxvtc -title code2"
 exec --no-startup-id i3-msg "workspace $chat; exec urxvtc -title irssi"
-exec --no-startup-id i3-msg "workspace $www; exec ~/.i3/scripts/start-browser.sh"
+exec --no-startup-id i3-msg "workspace $www; exec $BROWSER"
 
 # Make the currently focused window a scratchpad
 bindsym $mod+grave [title="irssi"] scratchpad show
