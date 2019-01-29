@@ -6,14 +6,15 @@ yadm submodule update --recursive --init
 
 if command -v vim >/dev/null 2>&1; then
   echo "Bootstrapping vim"
-  vim '+PluginUpdate' '+VundleClean' '+qall'
+  vim '+PluginUpdate' '+PluginClean' '+qall'
 fi
 
 # Install rustup
 if ! command -v rustup >/dev/null 2>&1; then
   echo "Downloading rustup"
   curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain stable
-  rehash
+  export PATH="${PATH}:${HOME}/.cargo/bin"
+  hash -r
 fi
 
 # Install ripgrep
