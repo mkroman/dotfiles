@@ -106,6 +106,7 @@ alias grep='grep --color=auto'
 alias gdb='gdb -q'
 
 # Git aliases
+alias g='git'
 alias gush='git push'
 alias gushh='git push origin master'
 alias gash='git stash'
@@ -198,5 +199,3 @@ if [ -e "${HOME}/.restic/${HOST}.key" ]; then
 fi
 
 [ -e ~/.zshrc.local ] && source ~/.zshrc.local
-
-export PATH=/home/mk/.local/bin/luna-studio:$PATH
