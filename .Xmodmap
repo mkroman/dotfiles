@@ -1,0 +1,12 @@
+! keycode <num> = <key> <shift+key> <ctrl+key> <meta+ctrl+shift+key> <meta+key> <shift+meta+key>
+
+keycode  16 = 7 ampersand 7 ampersand U00BD U2021
+keycode  24 = q Q q Q U5350 OE
+keycode  28 = t T t T U25C9 dead_caron
+keycode  29 = y Y y Y U0CA0 onequarter
+keycode  40 = d D d D U2680 U2681
+keycode  54 = c C c C U2665 Ccedilla
+keycode  57 = n N n N UFEFF U02DC
+keycode  33 = p P p P Greek_pi Greek_tau
+! U203d: INTERROBANG
+keycode  10 = 1 exclam 1 exclam U203d exclamdown
