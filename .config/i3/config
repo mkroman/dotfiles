@@ -161,7 +161,7 @@ bar {
   colors {
     background #23252D
   }
-  status_command SCRIPT_DIR=$HOME/.config/i3blocks/i3blocks-contrib i3blocks
+  status_command SCRIPT_DIR=$HOME/.config/i3blocks i3blocks
   tray_output primary
   strip_workspace_numbers yes
 }
