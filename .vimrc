@@ -20,9 +20,17 @@
 " SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 " {{{ Jellybeans overrides
-let g:jellybeans_overrides = {
-\  'background': { 'guibg': 'none' },
-\}
+if has('gui_running')
+  " GUI overrides
+  let g:jellybeans_overrides = {
+  \  'background': { 'guibg': '121212' },
+  \}
+else
+  " terminal overrides
+  let g:jellybeans_overrides = {
+  \  'background': { 'guibg': 'none', 'guifg': 'f9f9e8' },
+  \}
+endif
 " }}}
 
 if filereadable($HOME.'/.vundlerc')
@@ -320,11 +328,6 @@ let g:vimfiler_marked_file_icon = '✓'
 nnoremap <leader>e :VimFilerExplorer<CR>
 nnoremap <C-e> :VimFilerExplorer<CR>
 
-" }}}
-" {{{ Racer
-let g:racer_cmd = "/home/mk/.cargo/bin/racer"
-" let $RUST_SRC_PATH="/home/mk/Projects/Rust/rust/src/"
-let g:racer_no_default_keymappings = 1
 " }}}
 
 " {{{ ALE
