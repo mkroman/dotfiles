@@ -1,0 +1,241 @@
+set $mod Mod4
+
+# Workspaces
+set $chat 1:chat
+set $www 2:www
+set $code 3:code
+set $docs 4:docs
+set $media 5:media
+set $games 6:games
+set $vms 7:vms
+
+font pango:Terminus, FontAwesome 9
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec i3-sensible-terminal
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# start dmenu (a program launcher)
+bindsym $mod+d exec "dmenu_run -nb black -p run"
+
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+minus scratchpad show
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+g split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+t floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# switch to workspace
+bindsym $mod+1 workspace $chat
+bindsym $mod+2 workspace $www
+bindsym $mod+3 workspace $code
+bindsym $mod+4 workspace $docs
+bindsym $mod+5 workspace $media
+bindsym $mod+6 workspace $games
+bindsym $mod+7 workspace $vms
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $chat
+bindsym $mod+Shift+2 move container to workspace $www
+bindsym $mod+Shift+3 move container to workspace $code
+bindsym $mod+Shift+4 move container to workspace $docs
+bindsym $mod+Shift+5 move container to workspace $media
+bindsym $mod+Shift+6 move container to workspace $games
+bindsym $mod+Shift+7 move container to workspace $vms
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' '~/.bin/i3-graceful-exit'"
+bindsym $mod+z exec i3-input -P 'Zeal: ' -F 'exec zeal "%s"' -f "pango:Droid Sans Mono"
+
+# mpd - skip to next song
+bindsym XF86AudioNext exec "mpc next; pkill -44 i3blocks"
+# mpd - go to previous song
+bindsym XF86AudioPrev exec "mpc prev; pkill -44 i3blocks"
+# mpd - pause
+bindsym XF86AudioPlay exec "mpc toggle; pkill -44 i3blocks"
+# mpd - stop
+bindsym XF86AudioStop exec "mpc stop; pkill -44 i3blocks"
+
+# Volume control
+bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-mute 0 false; pactl set-sink-volume 0 +5%; pkill -44 i3blocks"
+bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-mute 0 false; pactl -- set-sink-volume 0 -5%; pkill -44 i3blocks"
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
+
+# open the default browser
+bindsym $mod+b exec "$BROWSER"
+
+# open the default editor
+bindsym $mod+x exec "gvim"
+
+# open the file manager
+bindsym $mod+u exec "nautilus --new-window"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+  # These bindings trigger as soon as you enter the resize mode
+
+  # Pressing left will shrink the window’s width.
+  # Pressing right will grow the window’s width.
+  # Pressing up will shrink the window’s height.
+  # Pressing down will grow the window’s height.
+  bindsym h resize shrink width 10 px or 10 ppt
+  bindsym j resize grow height 10 px or 10 ppt
+  bindsym k resize shrink height 10 px or 10 ppt
+  bindsym l resize grow width 10 px or 10 ppt
+
+  # back to normal: Enter or Escape
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Assign colors
+# Class                 Border  Bg      Text   indicator  child_border
+#client.focused         #6092BE #6092BE #FFFFFF
+#client.focused         #c1c1c1 #1c1e22 #ffffff #0000ff #3c4146
+#client.focused_inactive #8AB4DA #8AB4DA #B9D5EF
+#client.unfocused        #B9D5EF #B9D5EF #3E719F
+#client.urgent           #550000 #801515 #D46A6A
+#client.background       #ffffff
+
+# take screenshots
+bindsym Mod1+Shift+2 exec "~/.bin/screencap desktop"
+bindsym Mod1+Shift+3 exec "~/.bin/screencap window"
+bindsym Mod1+Shift+4 exec "~/.bin/screencap selection"
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+  colors {
+    background #23252D
+  }
+  status_command SCRIPT_DIR=$HOME/.config/i3blocks/i3blocks-contrib i3blocks
+  tray_output primary
+  strip_workspace_numbers yes
+}
+
+# Automatic back-and-forth sworkspace switching
+workspace_auto_back_and_forth no
+
+# Assign floating windows
+for_window [class="File-roller"] floating enable
+for_window [class="Thunar"] floating enable
+for_window [class="Mumble"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Steam"] floating enable
+for_window [class="Zeal"] floating enable
+for_window [class="Viewnior"] floating enable
+for_window [class="Nautilus"] floating enable
+for_window [class="Xarchiver"] floating enable
+for_window [class="feh"] floating enable
+for_window [class="Pinentry"] floating enable
+for_window [class="Dia"] floating enable
+for_window [class="Evince|Evince-previewer"] floating enable
+for_window [class="libreoffice-writer"] floating enable
+for_window [class="Bitcoin-qt"] floating enable
+for_window [class="Nvidia-settings"] floating enable
+for_window [class="factorio"] floating enable
+for_window [class="qBittorrent"] floating enable
+for_window [class="Subl3"] floating enable
+for_window [class="Wireshark"] floating enable
+for_window [class="eagle"] floating enable
+for_window [class="Kicad"] floating enable
+for_window [class="Maltego Community"] floating enable
+for_window [class="Veracrypt"] floating enable
+for_window [class="URxvt|Gvim"] border 1pixel
+for_window [class="Thunderbird" title="Feed Subscriptions"] floating enable
+for_window [class="keepassxc"] floating enable
+
+# Floating media players.
+for_window [class="Vlc|mpv"] floating enable
+
+# Floating conversation windows for Pidgin.
+for_window [class="Pidgin" window_role="conversation"] floating enable
+for_window [class="Pidgin" window_role="file transfer"] floating enable
+
+# Floating VirtualBox windows.
+for_window [class="Vmware"] floating enable
+assign [class="Vmware"] $vms
+
+for_window [class="chromium" window_role="app"] floating enable
+
+# Correct handling of floating dialogs
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+
+# Workspace assignment
+assign [class="mumble|ricochet|Pidgin"] $chat
+assign [class="Chromium|Firefox"] $www
+assign [class="Steam"] $games
+
+# Make the first workspace appear on the left-hand monitor.
+workspace $chat output DVI-D-0
+workspace $www output DP-0
+workspace $code output DP-0
+
+# Restore the first workspace.
+exec --no-startup-id i3-msg "workspace $chat; append_layout ~/.i3/workspaces/chat.json"
+exec --no-startup-id i3-msg "workspace $www; append_layout ~/.i3/workspaces/www.json"
+exec --no-startup-id i3-msg "workspace $code; append_layout ~/.i3/workspaces/code.json"
+
+# Start applications.
+exec --no-startup-id i3-msg "workspace $code; exec subl; exec urxvtc -title code1; exec urxvtc -title code2"
+exec --no-startup-id i3-msg "workspace $chat; exec urxvtc -title irssi"
+exec --no-startup-id i3-msg "workspace $www; exec ~/.i3/scripts/start-browser.sh"
+
+# Make the currently focused window a scratchpad
+bindsym $mod+grave [title="irssi"] scratchpad show
+
+# vim: syntax=i3
