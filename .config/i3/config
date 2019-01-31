@@ -231,8 +231,8 @@ exec --no-startup-id i3-msg "workspace $www; append_layout ~/.config/i3/workspac
 exec --no-startup-id i3-msg "workspace $code; append_layout ~/.config/i3/workspaces/code.json"
 
 # Start applications.
-exec --no-startup-id i3-msg "workspace $code; exec subl; exec urxvtc -title code1; exec urxvtc -title code2"
-exec --no-startup-id i3-msg "workspace $chat; exec urxvtc -title irssi"
+exec --no-startup-id i3-msg "workspace $code; exec urxvt256c; exec urxvt256c -title code1; exec urxvt256c -title code2"
+exec --no-startup-id i3-msg "workspace $chat; exec urxvt256c -title irssi"
 exec --no-startup-id i3-msg "workspace $www; exec $BROWSER"
 
 # Make the currently focused window a scratchpad
