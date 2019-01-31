@@ -6,7 +6,7 @@ yadm submodule update --recursive --init
 
 if command -v vim >/dev/null 2>&1; then
   echo "Bootstrapping vim"
-  vim '+PluginUpdate' '+PluginClean' '+qall'
+  vim '+PlugInstall' '+PlugClean' '+qall'
 fi
 
 # Install rustup
