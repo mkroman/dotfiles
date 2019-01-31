@@ -3,6 +3,12 @@
 WM=${WM:-i3}
 BROWSER=${BROWSER:-firefox}
 
+# Stupid Fedora shenanigans!
+if command -v urxvt256c >/dev/null 2>&1; then
+  TERMINAL=${TERMINAL:-urxvt256c}
+  export TERMINAL
+fi
+
 export BROWSER
 
 # WM-specific autolaunch
