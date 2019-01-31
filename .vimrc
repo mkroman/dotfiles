@@ -25,16 +25,11 @@ if has('gui_running')
   let g:jellybeans_overrides = {
   \  'background': { 'guibg': '121212' },
   \}
-else
-  " terminal overrides
-  let g:jellybeans_overrides = {
-  \  'background': { 'guibg': 'none', 'guifg': 'f9f9e8' },
-  \}
 endif
 " }}}
 
-if filereadable($HOME.'/.vundlerc')
-  source ~/.vundlerc
+if filereadable($HOME.'/.vim-plug')
+  source ~/.vim-plug
 endif
 
 let s:is_windows = has('win16') || has('win32') || has('win64')
@@ -119,6 +114,9 @@ set ignorecase smartcase
 
 " Highlight search terms (even dynamically)
 set hlsearch incsearch
+
+" Hide buffers instead of abandoning them
+set hidden
 
 " Shorten the “press ENTER to …” message
 set shortmess=atI
@@ -338,6 +336,11 @@ highlight ALEWarning ctermbg=black cterm=bold
 " }}}
 "
 "
+" Rust Language Server Support
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'ruby': ['solargraph', 'stdio']
+    \ }
 
 map <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
