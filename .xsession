@@ -22,7 +22,7 @@ case $WM in
     xset -dpms
 
     # Set the key-repeat rate to be quicker.
-    xset r rate 250 35
+    xset r rate 250 50
 
     # Set the keyboard layout.
     setxkbmap -model apple -layout us -variant mac
