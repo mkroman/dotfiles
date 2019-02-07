@@ -330,6 +330,7 @@ nnoremap <C-e> :VimFilerExplorer<CR>
 
 " {{{ ALE
 highlight ALEWarning ctermbg=black cterm=bold
+let g:ale_sign_column_always = 1
 " let g:ale_sign_warning = '-'
 " }}}
 
