@@ -41,7 +41,7 @@ case $WM in
     nvidia-settings --load-config-only &
 
     # Automatically hide the mouse cursor when the mouse is not in use.
-    unclutter &
+    unclutter -grab &
 
     # Start the urxvt daemon. (see urxvt(1))
     urxvtd -q -o -f
