@@ -200,8 +200,8 @@ endfunction
 map <silent> <leader>n :call RenameFile()<cr>
 
 " Jump 10 lines at a time
-nmap <S-j> 10j
-nmap <S-k> 10k
+" nmap <S-j> 10j
+" nmap <S-k> 10k
 
 " Disable arrow keys
 map <Left> <Nop>
@@ -316,7 +316,7 @@ let g:vimfiler_as_default_explorer = 1
 " Change the folder characters
 let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_tree_leaf_icon = ' '
-let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_tree_opened_icon = ' ▾'
 let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_file_icon = ' '
 let g:vimfiler_readonly_file_icon = '✗'
@@ -337,11 +337,15 @@ let g:ale_sign_column_always = 1
 " }}}
 "
 "
-" Rust Language Server Support
+" Language Server Support
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
     \ 'ruby': ['solargraph', 'stdio']
     \ }
+
+" Map gd to go to the definition.
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 
 map <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
