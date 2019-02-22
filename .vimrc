@@ -340,7 +340,9 @@ let g:ale_sign_column_always = 1
 " Language Server Support
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'ruby': ['solargraph', 'stdio']
+    \ 'ruby': ['solargraph', 'stdio'],
+    \ 'cpp': ['clangd'],
+    \ 'c': ['clangd']
     \ }
 
 " Map gd to go to the definition.
