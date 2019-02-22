@@ -38,7 +38,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 
 " Extend with cmake support
-Plug 'jalcine/cmake.vim'
+" Plug 'jalcine/cmake.vim'
 
 " Use vim-rspec for rspec integration
 Plug 'thoughtbot/vim-rspec'
