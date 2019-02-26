@@ -76,6 +76,8 @@ Plug 'plasticboy/vim-markdown'
 " Use vim-protobuf for protobuf syntax highlighting
 Plug 'eventualbuddha/vim-protobuf'
 
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
+
 " Use vim-ruby for improved Ruby syntax highlighting
 Plug 'vim-ruby/vim-ruby'
 
