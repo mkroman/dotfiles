@@ -345,6 +345,10 @@ let g:LanguageClient_serverCommands = {
     \ 'c': ['clangd']
     \ }
 
+" Automatically format the code according to the Rust guidelines when a buffer
+" if saved and rust.vim is loaded
+let g:rustfmt_autosave = 1
+
 " Map gd to go to the definition.
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
