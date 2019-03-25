@@ -28,7 +28,6 @@
             "swallows": [
                {
                 "class": "^URxvt$",
-                "instance": "^urxvt$",
                 "title": "^irssi$"
                }
             ],
