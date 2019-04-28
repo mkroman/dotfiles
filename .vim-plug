@@ -26,13 +26,13 @@ Plug 'kien/ctrlp.vim'
 Plug 'w0rp/ale'
 
 " Use tcomment for sensible and easy comments
-Plug 'tomtom/tcomment_vim'
+" Plug 'tomtom/tcomment_vim'
 
 " Use vim-airline for a smarter status bar
 " Plugin 'bling/vim-airline'
 
 " Use vim-fugitive for git features
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
 
 " Use vim-surround for closing parantheses, braces, etc
 Plug 'tpope/vim-surround'
@@ -76,7 +76,7 @@ Plug 'plasticboy/vim-markdown'
 " Use vim-protobuf for protobuf syntax highlighting
 Plug 'eventualbuddha/vim-protobuf'
 
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
+" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
 
 " Use vim-ruby for improved Ruby syntax highlighting
 Plug 'vim-ruby/vim-ruby'
@@ -103,7 +103,7 @@ Plug 'godlygeek/tabular'
 " Plugin 'airblade/vim-gitgutter'
 
 " Solarized color scheme
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
 
 " Use supertab so that ultisnips will play nice with YCM's tab-completion
 " "Plugin 'ervandew/supertab'
@@ -147,6 +147,8 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
+
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
