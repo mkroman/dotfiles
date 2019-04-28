@@ -51,7 +51,7 @@ if &t_Co > 2 || has('gui_running')
   set guioptions-=m guioptions-=T guioptions-=e guioptions-=r guioptions-=L
 
   " Meslo is a customized version of Apple's Menlo font
-  set guifont=Roboto\ Mono\ 9
+  set guifont=Fira\ Code\ 9
   set guiheadroom=0
 
   syntax on
@@ -330,19 +330,24 @@ nnoremap <C-e> :VimFilerExplorer<CR>
 
 " {{{ ALE
 highlight ALEWarning ctermbg=black cterm=bold
-let g:ale_sign_column_always = 1
-" let g:ale_sign_warning = '-'
+set signcolumn=yes
 " }}}
 
 " }}}
 "
 "
 " Language Server Support
+let g:LanguageClient_rootMarkers = {
+        \ 'go': ['.git', 'go.mod'],
+        \ }
+
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
     \ 'ruby': ['solargraph', 'stdio'],
     \ 'cpp': ['clangd'],
-    \ 'c': ['clangd']
+    \ 'c': ['clangd'],
+    \ 'go': ['bingo'],
+    \ 'python': ['~/.local/bin/pyls']
     \ }
 
 " Automatically format the code according to the Rust guidelines when a buffer
