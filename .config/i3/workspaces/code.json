@@ -14,11 +14,11 @@
                "x": 0,
                "y": 0
             },
-            "name": "urxvt256c",
+            "name": "terminal",
             "percent": 0.7,
             "swallows": [
                {
-                 "class": "^URxvt$"
+                 "class": "^Termite$"
                }
             ],
             "type": "con"
@@ -42,11 +42,11 @@
                        "x": 0,
                        "y": 0
                     },
-                    "name": "urxvt256c",
+                    "name": "terminal",
                     "percent": 0.5,
                     "swallows": [
                        {
-                        "class": "^URxvt$",
+                        "class": "^Termite$",
                         "title": "^code1$"
                        }
                     ],
@@ -62,11 +62,11 @@
                        "x": 0,
                        "y": 0
                     },
-                    "name": "urxvt256c",
+                    "name": "terminal",
                     "percent": 0.5,
                     "swallows": [
                        {
-                        "class": "^URxvt$",
+                        "class": "^Termite$",
                         "title": "^code2$"
                        }
                     ],

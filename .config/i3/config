@@ -196,6 +196,12 @@ for_window [class="Veracrypt"] floating enable
 for_window [class="URxvt|Gvim"] border 1pixel
 for_window [class="Thunderbird" title="Feed Subscriptions"] floating enable
 
+# Discord window settings
+for_window [class="discord"] border 1pixel
+
+# termite-specific window settings.
+for_window [class="Termite"] border 1pixel
+
 # KeePassXC-specific window settings.
 for_window [class="keepassxc"] floating enable, move position center
 
@@ -215,6 +221,8 @@ for_window [class="Pidgin" window_role="file transfer"] floating enable
 # Floating VirtualBox windows.
 for_window [class="Vmware"] floating enable
 assign [class="Vmware"] $vms
+
+for_window [class="Termite" title="irssi"] move scratchpad, scratchpad show
 
 for_window [class="chromium" window_role="app"] floating enable
 
@@ -242,8 +250,9 @@ exec --no-startup-id i3-msg "workspace $www; append_layout ~/.config/i3/workspac
 exec --no-startup-id i3-msg "workspace $code; append_layout ~/.config/i3/workspaces/code.json"
 
 # Start applications.
-exec --no-startup-id i3-msg "workspace $code; exec urxvt256c; exec urxvt256c -title code1; exec urxvt256c -title code2"
-exec --no-startup-id i3-msg "workspace $chat; exec urxvt256c -title irssi"
+exec --no-startup-id i3-msg "workspace $code; exec exec termite --title code1"
+exec --no-startup-id i3-msg "workspace $code; exec exec termite --title code2"
+exec --no-startup-id i3-msg "workspace $chat; exec termite --title irssi"
 exec --no-startup-id i3-msg "workspace $www; exec $BROWSER"
 
 # Make the currently focused window a scratchpad
