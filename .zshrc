@@ -57,7 +57,7 @@ export BROWSER=firefox
 export EDITOR=vim
 export SYSTEMD_EDITOR=$EDITOR
 # Set the default terminal
-export TERMINAL=urxvtc
+export TERMINAL=termite
 # Print the wall-time for a process when it runs for a longer period of time
 export REPORTTIME=4
 
@@ -74,7 +74,10 @@ export REPORTTIME=4
 [ -e ~/.node/bin ] && export PATH="${HOME}/.node/bin:${PATH}"
 
 # Set the GOPATH if the ~/.go directory exists
-[ -d ~/.go ] && export GOPATH="${HOME}/.go"
+if [ -d ~/.go ]; then
+  export GOPATH="${HOME}/.go"
+  export PATH="${HOME}/.go/bin:${PATH}"
+fi
 
 # Add cargo to PATH if ~/.cargo/bin exists
 if [ -e ~/.cargo/bin ]; then
@@ -90,12 +93,14 @@ if [ -e ~/.rbenv/bin/rbenv ]; then
 fi
 
 # Initialize rbenv if it's installed locally
-if [ -e ~/.pyenv ]; then
-  export PYENV_ROOT="${HOME}/.pyenv"
-  export PATH="${PYENV_ROOT}/bin:${PATH}"
+function pyenv-init() {
+  if [ -e ~/.pyenv ]; then
+    export PYENV_ROOT="${HOME}/.pyenv"
+    export PATH="${PYENV_ROOT}/bin:${PATH}"
 
-  eval "$(pyenv init - )"
-fi
+    eval "$(pyenv init - )"
+  fi
+}
 
 ## Aliases
 
@@ -120,6 +125,10 @@ alias ga='git commit --amend'
 alias dm='docker-machine'
 # Taskwarrior aliases
 alias t='task'
+alias bat='bat --style=plain'
+alias gpg='gpg2'
+
+alias :e='vim' # :e <file>
 
 typeset -A key
 
@@ -193,9 +202,23 @@ function len {
   expr length "$1"
 }
 
+# use `vzf` to open a file found with fzf in vim.
+function vzf {
+  vim "$(fzf)"
+}
+
 if [ -e "${HOME}/.restic/${HOST}.key" ]; then
   export RESTIC_REPOSITORY="${HOME}/Backups"
   export RESTIC_PASSWORD_FILE="${HOME}/.restic/${HOST}.key"
 fi
 
 [ -e ~/.zshrc.local ] && source ~/.zshrc.local
+[ -e ~/.local/bin ] && export PATH="${HOME}/.local/bin:${PATH}"
+
+if [ -e /usr/share/fzf/shell/key-bindings.zsh ]; then
+  source /usr/share/fzf/shell/key-bindings.zsh
+fi
+
+if [ -e ~/.zsh/fzf-completion.zsh ]; then
+  source ~/.zsh/fzf-completion.zsh
+fi
