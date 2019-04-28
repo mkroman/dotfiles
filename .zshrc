@@ -79,6 +79,11 @@ if [ -d ~/.go ]; then
   export PATH="${HOME}/.go/bin:${PATH}"
 fi
 
+# Add the /usr/local/go bin dir to PATH if it exists
+if [ -d /usr/local/go ]; then
+  export PATH="/usr/local/go/bin:${PATH}"
+fi
+
 # Add cargo to PATH if ~/.cargo/bin exists
 if [ -e ~/.cargo/bin ]; then
   export PATH="${HOME}/.cargo/bin:${PATH}"
