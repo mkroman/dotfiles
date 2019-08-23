@@ -70,9 +70,6 @@ export REPORTTIME=4
 [ -d ~/Projects/ESP32/xtensa-esp32-elf ] && export PATH="${PATH}:${HOME}/Projects/ESP32/xtensa-esp32-elf/bin"
 [ -d ~/Projects/ESP32/esp-idf ] && export IDF_PATH="${HOME}/Projects/ESP32/esp-idf"
 
-# Add npm to PATH if ~/.node/bin exists
-[ -e ~/.node/bin ] && export PATH="${HOME}/.node/bin:${PATH}"
-
 # Set the GOPATH if the ~/.go directory exists
 if [ -d ~/.go ]; then
   export GOPATH="${HOME}/.go"
@@ -90,12 +87,20 @@ if [ -e ~/.cargo/bin ]; then
   export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 fi
 
+
+# {{{ Ruby-specific stuff
+
 # Initialize rbenv if it's installed locally
 if [ -e ~/.rbenv/bin/rbenv ]; then
   export PATH="${HOME}/.rbenv/bin:${PATH}"
 
   eval "$(rbenv init -)"
 fi
+
+# Ruby aliases
+alias be='bundle exec'
+
+# }}}
 
 # Initialize rbenv if it's installed locally
 function pyenv-init() {
@@ -107,6 +112,22 @@ function pyenv-init() {
   fi
 }
 
+# {{{ Node.js specific stuff
+#
+# Initialize nodenv if it's installed locally
+if [ -e ~/.nodenv ]; then
+  export PATH="$HOME/.nodenv/bin:$PATH"
+
+  eval "$(nodenv init -)"
+
+fi
+
+# Add executable dirs to PATH
+[ -e ~/.node/bin ] && export PATH="${HOME}/.node/bin:${PATH}"
+[ -d ~/.npm-packages ] && export PATH="${HOME}/.npm-packages/bin:${PATH}"
+
+# }}}
+
 ## Aliases
 
 # Unix aliases
@@ -114,6 +135,7 @@ alias ls='ls --color=auto -F'
 alias ll='exa -l'
 alias grep='grep --color=auto'
 alias gdb='gdb -q'
+alias vim=nvim
 
 # Git aliases
 alias g='git'
@@ -176,20 +198,6 @@ fi
 bindkey '^R' history-incremental-search-backward
 bindkey '^B' backward-word
 
-# Bind keys according to terminfo - zsh doesn't do this by itself
-#[[ -n "${terminfo[kbs]}" ]] && bindkey -M emacs "${terminfo[kbs]}" backward-delete-char
-#[[ -n "${terminfo[khome]}" ]] && bindkey -M emacs "${terminfo[khome]}" beginning-of-line
-#[[ -n "${terminfo[kend]}" ]] && bindkey -M emacs "${terminfo[kend]}" end-of-line
-#[[ -n "${terminfo[kich1]}" ]] && bindkey -M emacs "${terminfo[kich1]}" overwrite-mode
-#[[ -n "${terminfo[kdch1]}" ]] && bindkey -M emacs "${terminfo[kdch1]}" delete-char
-#[[ -n "${terminfo[kcuu1]}" ]] && bindkey -M emacs "${terminfo[kcuu1]}" up-line-or-history
-#[[ -n "${terminfo[kcud1]}" ]] && bindkey -M emacs "${terminfo[kcud1]}" down-line-or-history
-#[[ -n "${terminfo[kcub1]}" ]] && bindkey -M emacs "${terminfo[kcub1]}" backward-char
-#[[ -n "${terminfo[kcuf1]}" ]] && bindkey -M emacs "${terminfo[kcuf1]}" forward-char
-
-# Run in emacs mode
-# bindkey -e
-
 ## Miscellaneous functions
 
 # Usage: `mkdiff <file1> <file2>`
@@ -227,3 +235,15 @@ fi
 if [ -e ~/.zsh/fzf-completion.zsh ]; then
   source ~/.zsh/fzf-completion.zsh
 fi
+
+# https://github.com/thestinger/termite#user-content-id2
+if [[ $TERM == xterm-termite ]]; then
+  . /etc/profile.d/vte.sh
+  __vte_osc7
+fi
+
+if [ -x ~/.bin/mc ];
+  autoload -U +X bashcompinit && bashcompinit
+  complete -o nospace -C ~/.bin/mc mc
+fi
+

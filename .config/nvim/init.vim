@@ -1,8 +1,11 @@
-" Use Vi iMproved
-set nocompatible
-filetype off
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
+let &packpath = &runtimepath
 
-call plug#begin('~/.vim/plugged')
+source ~/.vimrc
+" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.local/share/nvim/plugged')
 
 " Let Vundle manage itself
 " Plug 'gmarik/Vundle.vim'
@@ -166,10 +169,12 @@ let g:deoplete#enable_at_startup = 1
 
 Plug 'tibabit/vim-templates'
 
-Plug 'zchee/vim-flatbuffers'
-
 " Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 
-call plug#end()
+Plug 'zchee/vim-flatbuffers'
 
-" vim: syntax=vim
+" Use vim-javascript for improved syntax highlighting and indentation
+Plug 'pangloss/vim-javascript'
+
+" Initialize plugin system
+call plug#end()

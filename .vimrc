@@ -52,7 +52,10 @@ if &t_Co > 2 || has('gui_running')
 
   " Meslo is a customized version of Apple's Menlo font
   set guifont=Fira\ Code\ 9
-  set guiheadroom=0
+
+  if has('gui')
+    set guiheadroom=0
+  endif
 
   syntax on
 
@@ -167,7 +170,7 @@ set mouse=a
 set formatprg=par\ -w80
 
 " C/C++ code formatting
-set cinoptions=g0{0}0N-s(0
+set cinoptions=g0{0}0N-s(s
 
 set lazyredraw
 
@@ -267,7 +270,7 @@ noremap <leader>f :pyf /usr/share/clang/clang-format.py<CR>
 " {{{ CtrlP
 
 " Settings
-let g:ctrlp_custom_ignore = 'build$\|tmp$'
+let g:ctrlp_custom_ignore = 'node_modules$\|build$\|tmp$'
 
 " Mappings
 nnoremap <C-u> :CtrlPMixed<CR>
@@ -347,6 +350,7 @@ let g:LanguageClient_serverCommands = {
     \ 'cpp': ['clangd'],
     \ 'c': ['clangd'],
     \ 'go': ['bingo'],
+    \ 'javascript': ['javascript-typescript-stdio'],
     \ 'python': ['~/.local/bin/pyls']
     \ }
 
@@ -357,6 +361,8 @@ let g:rustfmt_autosave = 1
 " Map gd to go to the definition.
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+
+let g:tmpl_search_paths = ['~/.vim/templates']
 
 map <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"

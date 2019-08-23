@@ -35,8 +35,6 @@ case $WM in
     # Start the urxvt daemon. (see urxvt(1))
     urxvtd -q -o -f
 
-    # Start qbittorrent
-    qbittorrent &
     ;;
 esac
 

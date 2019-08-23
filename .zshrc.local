@@ -6,5 +6,5 @@ alias b='bat'
 
 # Alias `vim` to `vimx` (vim enhanced) if it exists
 if command -v vimx >/dev/null 2>&1; then
-  alias vim='vimx'
+  # alias vim='vimx'
 fi
