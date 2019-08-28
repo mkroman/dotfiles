@@ -242,7 +242,7 @@ if [[ $TERM == xterm-termite ]]; then
   __vte_osc7
 fi
 
-if [ -x ~/.bin/mc ];
+if [ -x ~/.bin/mc ]; then
   autoload -U +X bashcompinit && bashcompinit
   complete -o nospace -C ~/.bin/mc mc
 fi
