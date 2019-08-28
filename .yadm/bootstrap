@@ -9,6 +9,12 @@ if command -v vim >/dev/null 2>&1; then
   vim '+PlugInstall' '+PlugClean' '+qall'
 fi
 
+if command -v nvim >/dev/null 2>&1; then
+  echo "Bootstrapping Neovim"
+
+  nvim '+PlugInstall' '+PlugClean' '+qall'
+fi
+
 # Install rustup
 if ! command -v rustup >/dev/null 2>&1; then
   echo "Downloading rustup"

@@ -1,180 +1,365 @@
-set runtimepath^=~/.vim runtimepath+=~/.vim/after
-let &packpath = &runtimepath
+" Copyright (c) 2019, Mikkel Kroman <mk@maero.dk>
+"
+" Permission is hereby granted, free of charge, to any person obtaining
+" a copy of this software and associated documentation files (the
+" "Software"), to deal in the Software without restriction, including
+" without limitation the rights to use, copy, modify, merge, publish,
+" distribute, sublicense, and/or sell copies of the Software, and to
+" permit persons to whom the Software is furnished to do so, subject to
+" the following conditions:
+"
+" The above copyright notice and this permission notice shall be included
+" in all copies or substantial portions of the Software.
+"
+" THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+" EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+" MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+" IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+" CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+" TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+" SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-source ~/.vimrc
-" Specify a directory for plugins
-" - For Neovim: ~/.local/share/nvim/plugged
-" - Avoid using standard Vim directory names like 'plugin'
-call plug#begin('~/.local/share/nvim/plugged')
+" {{{ Jellybeans overrides
+if has('gui_running')
+  " GUI overrides
+  let g:jellybeans_overrides = {
+  \  'background': { 'guibg': '121212' },
+  \}
+endif
+" }}}
 
-" Let Vundle manage itself
-" Plug 'gmarik/Vundle.vim'
-
-" Use golden view for good split ratios
-" Plugin 'zhaocai/GoldenView.Vim'
-
-" Use for browsing tags in source files
-Plug 'majutsushi/tagbar'
-
-" Use a.vim for alternating between header and source files
-Plug 'vim-scripts/a.vim'
-
-" Use ctrl+p for navigating files
-Plug 'ctrlpvim/ctrlp.vim'
-
-" Use syntastic for syntax linting
-" Plugin 'scrooloose/syntastic'
-
-" Use Asynchronous Lint Engine for syntax linting
-
-" Don't use ALE for completion
- " let g:ale_completion_enabled = 0
-
-" Plug 'w0rp/ale'
-
-" Use tcomment for sensible and easy comments
-" Plug 'tomtom/tcomment_vim'
-
-" Use vim-airline for a smarter status bar
-" Plugin 'bling/vim-airline'
-
-" Use vim-fugitive for git features
-" Plug 'tpope/vim-fugitive'
-
-" Use vim-surround for closing parantheses, braces, etc
-Plug 'tpope/vim-surround'
-
-" Extend with cmake support
-" Plug 'jalcine/cmake.vim'
-
-" Use vim-rspec for rspec integration
-Plug 'thoughtbot/vim-rspec'
-
-" Use ultisnips for smart snippets
-""Plugin 'SirVer/ultisnips'
-
-" Use YouCompleteMe for tab-completion
-" Plugin 'Valloric/YouCompleteMe'
-
-" Use nerdtree for file exploration
-"Plugin 'scrooloose/nerdtree'
-
-" Use unite for whatever
-Plug 'Shougo/unite.vim'
-
-" Use vimfiler for file exploration
-Plug 'Shougo/vimfiler'
-
-" Use vim-snippets for a collection of snippets
-" "Plugin 'honza/vim-snippets'
-
-" Use vim-coffee-script for coffee-script syntax highlighting
-Plug 'kchmck/vim-coffee-script'
-
-" Use vim-crystal for Crystal syntax highlighting
-Plug 'rhysd/vim-crystal'
-
-" Use vim-markdown for markdown syntax highlighting
-" Plug 'plasticboy/vim-markdown'
-
-" Use vim-nasm for NASM syntax highlighting
-" Plugin 'helino/vim-nasm'
-
-" Use vim-protobuf for protobuf syntax highlighting
-Plug 'eventualbuddha/vim-protobuf'
-
-" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
-
-" Use vim-ruby for improved Ruby syntax highlighting
-Plug 'vim-ruby/vim-ruby'
-
-" Add Rust support
-Plug 'rust-lang/rust.vim'
-
-" Use vim-slim for slim syntax highlighting
-Plug 'slim-template/vim-slim'
-
-" Improved C++ syntax highlighting
-Plug 'octol/vim-cpp-enhanced-highlight'
-
-" Add i3 configuration syntax highlighting
-Plug 'PotatoesMaster/i3-vim-syntax'
-
-" Use vim-indentobject for indenting whole blocks of text
-Plug 'austintaylor/vim-indentobject'
-
-" Use tabular for alignment wizardry
-Plug 'godlygeek/tabular'
-
-" Use vim-gitgutter to see what has changed
-" Plugin 'airblade/vim-gitgutter'
-
-" Solarized color scheme
-" Plug 'altercation/vim-colors-solarized'
-
-" Use supertab so that ultisnips will play nice with YCM's tab-completion
-" "Plugin 'ervandew/supertab'
-
-" Rust syntax completion
-" Plugin 'racer-rust/vim-racer'
-
-" Jellybeans colorscheme
-Plug 'nanotech/jellybeans.vim'
-
-" Add a bunch of color schemes
-Plug 'chriskempson/base16-vim'
-
-" TOML syntax support
-Plug 'cespare/vim-toml'
-
-" Automatically insert license templates when creating new files
-" Disabled because it slows down vim when opening new files.
-" Plugin 'aperezdc/vim-template'
-
-" Automatically close pairs like [], {} and ()
-" Plugin 'jiangmiao/auto-pairs'
-
-" Udev rules syntax support
-Plug 'vim-scripts/syntaxudev.vim'
-
-" Smali syntax support
-Plug 'kelwin/vim-smali'
-
-" TMUX syntax support
-Plug 'tmux-plugins/vim-tmux'
-
-" Jenkinsfile syntax support
-Plug 'martinda/Jenkinsfile-vim-syntax'
-
-" Text-object motion for arguments
-Plug 'vim-scripts/argtextobj.vim'
-
-" Language Server Protocol support
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+if filereadable(expand('~/.config/nvim/plugins.vim'))
+  source ~/.config/nvim/plugins.vim
 endif
 
-let g:deoplete#enable_at_startup = 1
+" Mappings:
+"
+" <leader>/     Clear currently highlighted search results
+" <leader>n     Rename the file in the current buffer
+" <leader>tn    Create a new tab window
+" <leader>tc    Close the active tab window
+" <leader>s     Create a new GoldenView split
+" <leader>\     Create a new vertical split
+" <leader>-     Create a new horizontal split
+" <S-j>         Jump 10 lines downwards
+" <S-k>         Jump 10 lines upwards
+"
+if &t_Co > 2 || has('gui_running')
+  " Disable the menu, scrollbar, etc.
+  set guioptions-=m guioptions-=T guioptions-=e guioptions-=r guioptions-=L
 
-Plug 'tibabit/vim-templates'
+  " Meslo is a customized version of Apple's Menlo font
+  set guifont=Fira\ Code\ 9
 
-" Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
+  if has('gui')
+    set guiheadroom=0
+  endif
 
-Plug 'zchee/vim-flatbuffers'
+  syntax on
 
-" Use vim-javascript for improved syntax highlighting and indentation
-Plug 'pangloss/vim-javascript'
+  try
+    colorscheme jellybeans
+  catch /^Vim\%((\a\+)\)\=:E185/
+    colorscheme desert
+  endtry
 
-" Initialize plugin system
-call plug#end()
+  if has('gui_running')
+    " Set the default window size. 205 columns is enough to have 2 splits that
+    " spans 99 columns each.
+    set lines=50 columns=209
+  endif
+endif
+
+if has('autocmd')
+  filetype plugin indent on
+
+  " Return to last editing position on launch
+  autocmd BufReadPost *
+       \ if line("'\"") > 0 && line("'\"") <= line("$") |
+       \   exe "normal! g`\"" |
+       \ endif "
+endif 
+
+" {{{ VIM Configuration
+
+" Set the minimum number of lines displayed above and below the current line
+" when scrolling
+set scrolloff=5
+
+" Increase the command-mode history size
+set history=512
+
+" Default to unix file format and line endings
+set fileformat=unix
+
+" Create new splits on the right side right side of the window
+set splitright
+
+" Change indentation levels to two spaces
+set expandtab shiftwidth=2 tabstop=2
+
+" Enable tab-completion of words in insert mode
+set wildmode=list:longest
+
+" Ignore common and binary file types
+set wildignore+=*.so,*.zip,*.pdf,*.a,*.swp,.git,.svn,Build,target,*.3,*.o
+
+" Enable the wildmenu
+set wildmenu
+
+" Change the leader key
+let mapleader = ","
+
+" Turn off case sensivity and turn on smart case searching
+set ignorecase smartcase
+
+" Highlight search terms (even dynamically)
+set hlsearch incsearch
+
+" Hide buffers instead of abandoning them
+set hidden
+
+" Shorten the “press ENTER to …” message
+set shortmess=atI
+
+" Turn off the audible bell and turn on the visual bell
+set novisualbell
+
+" Turn on automatic, smart indentation
+set autoindent smartindent
+
+" Turn off word-wrapping
+set nowrap
+
+" Turn on line numbers
+set number
+
+" Enable cursor-line highlighting
+set cursorline
+
+" Enable TextMate-style invisibles
+set list listchars=tab:▸\ ,eol:¬
+
+" Don't write swap-files or backup files
+set noswapfile nobackup
+
+" Key-map for pasting large amounts of text
+set pastetoggle=<F2>
+
+" Show the status line
+set laststatus=2
+
+" Enable folding using {{{ and }}}
+set foldenable foldmethod=manual foldmarker={{{,}}}
+
+" Print solid (unicode) lines for vertical splits
+set fillchars+=vert:\ 
+
+" Set a 80-character margin
+set colorcolumn=0
+
+" Non-obnoxious wrapping
+set textwidth=80 formatoptions=cq wrapmargin=0
+
+" Enable full mouse support
+set mouse=a
+
+" C/C++ code formatting
+set cinoptions=g0{0}0N-s(s
+
+set lazyredraw
+
+let g:loaded_sql_completion = 1
+
+let g:cpp_class_scope_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+
+" }}}
+
+" {{{ VIM Mappings
+
+" Shortcut for command-mode
+nnoremap ; :
+
+" Clear active highlighted search results
+nmap <silent> <leader>/ :nohlsearch<CR>
+
+" Rename a file by hitting <leader>n
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+
+map <silent> <leader>n :call RenameFile()<cr>
+
+" Jump 10 lines at a time
+" nmap <S-j> 10j
+" nmap <S-k> 10k
+
+" Disable arrow keys
+map <Left> <Nop>
+map <Right> <Nop>
+map <Up> <Nop>
+map <Down> <Nop>
+
+" Moving between windows
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
+nmap <C-L> <C-W>l
+nmap <C-h> <C-W>h
+
+" Managing tabs
+map <leader>tn :tabnew<CR>
+map <leader>tc :tabclose<CR>
+map <leader>to :tabonly<CR>
+map <leader>tm :tabmove
+
+" Split vertically
+nnoremap <leader>\ :vnew<CR>
+
+" Split horizontally
+nnoremap <leader>- :new<CR>
+
+" Quick save
+map <leader>w :w!<CR>
+
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+map <leader>te :tabedit <c-r>=expand("%:p:h")<CR>/
+
+" Edit vim file (“edit vim”)
+nnoremap <silent> <leader>ev :vsplit $MYVIMRC<CR>
+
+" Reload vim file (“source vim”)
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" Format the selected paragraph
+vmap <leader>l :!par -w80<CR>
+
+" }}}
+" {{{ Bundles
+" {{{ Airline
+
+let g:airline_extensions = []
+" Settings
+" Disable whitespace detection.
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline#extensions#whitespace#show_message = 0
+
+" Disable branch info (it slows everything down)
+let g:airline#extensions#branch#enabled = 0
+
+" }}}
+" {{{ ClangFormat
+
+" Mappings
+noremap <leader>f :pyf /usr/share/clang/clang-format.py<CR>
+" inoremap <C-i> <c-o>:pyf /usr/share/clang/clang-format.py<CR>
+
+" }}}
+" {{{ CtrlP
+
+" Settings
+let g:ctrlp_custom_ignore = 'node_modules$\|build$\|tmp$'
+
+" Mappings
+nnoremap <C-u> :CtrlPMixed<CR>
+
+" }}}
+" {{{ GitGutter
+
+" Settings
+let g:gitgutter_enabled = 1
+let g:gitgutter_signs = 1
+
+" }}}
+" {{{ Syntastic
+
+" Settings
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
+let g:syntastic_style_error_symbol = 'x'
+let g:syntastic_style_warning_symbol = '!'
+let g:syntastic_mode_map = { 'mode': 'active',
+      \ 'passive_filetypes': ['haml'] }
+
+" }}}
+" {{{ Tagbar
+
+" Mappings
+nnoremap <C-t> :Tagbar<CR>
+
+" }}}
+" {{{ UltiSnips
+
+" Mappings
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" }}}
+" {{{ VimFiler
+
+" Settings
+
+" Use VimFiler as the default explorer
+let g:vimfiler_as_default_explorer = 1
+
+" Change the folder characters
+let g:vimfiler_safe_mode_by_default = 0
+let g:vimfiler_tree_leaf_icon = ' '
+let g:vimfiler_tree_opened_icon = ' ▾'
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_file_icon = ' '
+let g:vimfiler_readonly_file_icon = '✗'
+let g:vimfiler_marked_file_icon = '✓'
+
+" Mappings
+nnoremap <leader>e :VimFilerExplorer<CR>
+nnoremap <C-e> :VimFilerExplorer<CR>
+
+" }}}
+
+" {{{ ALE
+highlight ALEWarning ctermbg=black cterm=bold
+set signcolumn=yes
+" }}}
+
+" }}}
+"
+"
+" Language Server Support
+let g:LanguageClient_rootMarkers = {
+        \ 'go': ['.git', 'go.mod'],
+        \ }
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'ruby': ['solargraph', 'stdio'],
+    \ 'cpp': ['clangd'],
+    \ 'c': ['clangd'],
+    \ 'go': ['bingo'],
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'python': ['~/.local/bin/pyls']
+    \ }
+
+" Automatically format the code according to the Rust guidelines when a buffer
+" if saved and rust.vim is loaded
+let g:rustfmt_autosave = 1
+
+" Map gd to go to the definition.
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+
+let g:tmpl_search_paths = ['~/.vim/templates']
+
+map <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
