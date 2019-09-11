@@ -250,8 +250,8 @@ exec --no-startup-id i3-msg "workspace $www; append_layout ~/.config/i3/workspac
 exec --no-startup-id i3-msg "workspace $code; append_layout ~/.config/i3/workspaces/code.json"
 
 # Start applications.
-exec --no-startup-id i3-msg "workspace $code; exec exec termite --title code1"
-exec --no-startup-id i3-msg "workspace $code; exec sleep 2 && exec termite --title code2"
+exec --no-startup-id i3-msg "workspace $code; exec sh -c 'sleep 4 && exec termite --title code1'"
+exec --no-startup-id i3-msg "workspace $code; exec sh -c 'sleep 2 && exec termite --title code2'"
 exec --no-startup-id i3-msg "workspace $chat; exec termite --title irssi"
 exec --no-startup-id i3-msg "workspace $www; exec $BROWSER"
 
