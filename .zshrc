@@ -54,7 +54,7 @@ export PROMPT_EOL_MARK="%F{59}¬%f"
 # Set the default browser
 export BROWSER=firefox
 # Set the default editor
-export EDITOR=vim
+export EDITOR=nvim
 export SYSTEMD_EDITOR=$EDITOR
 # Set the default terminal
 export TERMINAL=termite
@@ -238,8 +238,10 @@ fi
 
 # https://github.com/thestinger/termite#user-content-id2
 if [[ $TERM == xterm-termite ]]; then
-  . /etc/profile.d/vte.sh
-  __vte_osc7
+  if [ -e /etc/profile.d/vte.sh ]; then
+    . /etc/profile.d/vte.sh
+    __vte_osc7
+  fi
 fi
 
 if [ -x ~/.bin/mc ]; then
