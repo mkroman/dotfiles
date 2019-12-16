@@ -67,9 +67,6 @@ export REPORTTIME=4
 # Add ~/.bin to the PATH stack if the directory exists
 [ -d ~/.bin ] && export PATH="${HOME}/.bin:${PATH}"
 
-[ -d ~/Projects/ESP32/xtensa-esp32-elf ] && export PATH="${PATH}:${HOME}/Projects/ESP32/xtensa-esp32-elf/bin"
-[ -d ~/Projects/ESP32/esp-idf ] && export IDF_PATH="${HOME}/Projects/ESP32/esp-idf"
-
 # Set the GOPATH if the ~/.go directory exists
 if [ -d ~/.go ]; then
   export GOPATH="${HOME}/.go"
@@ -132,10 +129,9 @@ fi
 
 # Unix aliases
 alias ls='ls --color=auto -F'
-alias ll='exa -l'
+alias ll='ls -l'
 alias grep='grep --color=auto'
 alias gdb='gdb -q'
-alias vim=nvim
 
 # Git aliases
 alias g='git'
@@ -148,12 +144,6 @@ alias gushh='git push origin master'
 alias gul='git pull'
 alias gull='git pull origin master'
 alias ga='git commit --amend'
-# Docker aliases
-alias dm='docker-machine'
-# Taskwarrior aliases
-alias t='task'
-# alias bat='bat --style=plain'
-alias gpg='gpg2'
 
 alias :e='vim' # :e <file>
 
@@ -220,11 +210,6 @@ function vzf {
   vim "$(fzf)"
 }
 
-if [ -e "${HOME}/.restic/${HOST}.key" ]; then
-  export RESTIC_REPOSITORY="${HOME}/Backups"
-  export RESTIC_PASSWORD_FILE="${HOME}/.restic/${HOST}.key"
-fi
-
 [ -e ~/.zshrc.local ] && source ~/.zshrc.local
 [ -e ~/.local/bin ] && export PATH="${HOME}/.local/bin:${PATH}"
 
@@ -242,10 +227,5 @@ if [[ $TERM == xterm-termite ]]; then
     . /etc/profile.d/vte.sh
     __vte_osc7
   fi
-fi
-
-if [ -x ~/.bin/mc ]; then
-  autoload -U +X bashcompinit && bashcompinit
-  complete -o nospace -C ~/.bin/mc mc
 fi
 
