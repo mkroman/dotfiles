@@ -152,7 +152,7 @@ alias ga='git commit --amend'
 alias dm='docker-machine'
 # Taskwarrior aliases
 alias t='task'
-alias bat='bat --style=plain'
+# alias bat='bat --style=plain'
 alias gpg='gpg2'
 
 alias :e='vim' # :e <file>
