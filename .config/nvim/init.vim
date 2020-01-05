@@ -541,7 +541,7 @@ let g:vimfiler_marked_file_icon = '✓'
 
 " Mappings
 nnoremap <leader>e :VimFilerExplorer<CR>
-nnoremap <C-e> :Defx -toggle -split=vertical -winwidth=35 -direction=topleft<CR>
+nnoremap <silent> <C-e> :Defx -toggle -split=vertical -winwidth=35 -direction=topleft<CR>
 
 " }}}
 
