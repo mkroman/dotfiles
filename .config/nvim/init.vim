@@ -19,6 +19,7 @@
 " TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 " SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
 " {{{ Jellybeans overrides
 if has('gui_running')
   " GUI overrides
@@ -80,6 +81,8 @@ if has('autocmd')
        \ endif "
 endif 
 
+set termguicolors
+
 " {{{ VIM Configuration
 
 " Set the minimum number of lines displayed above and below the current line
@@ -107,6 +110,9 @@ set wildignore+=*.so,*.zip,*.pdf,*.a,*.swp,.git,.svn,Build,target,*.3,*.o
 " Enable the wildmenu
 set wildmenu
 
+" Always show the signcolumn
+set signcolumn=yes
+
 " Change the leader key
 let mapleader = ","
 
@@ -120,7 +126,7 @@ set hlsearch incsearch
 set hidden
 
 " Shorten the “press ENTER to …” message
-set shortmess=atI
+set shortmess=atIc
 
 " Turn off the audible bell and turn on the visual bell
 set novisualbell
@@ -141,7 +147,10 @@ set cursorline
 set list listchars=tab:▸\ ,eol:¬
 
 " Don't write swap-files or backup files
-set noswapfile nobackup
+set noswapfile nobackup nowritebackup
+
+" Write the swap much more often, this will make diagnostic messages more useful
+set updatetime=300
 
 " Key-map for pasting large amounts of text
 set pastetoggle=<F2>
@@ -181,9 +190,6 @@ let g:cpp_experimental_template_highlight = 1
 " Shortcut for command-mode
 nnoremap ; :
 
-" Clear active highlighted search results
-nmap <silent> <leader>/ :nohlsearch<CR>
-
 " Rename a file by hitting <leader>n
 function! RenameFile()
     let old_name = expand('%')
@@ -200,6 +206,9 @@ map <silent> <leader>n :call RenameFile()<cr>
 " Jump 10 lines at a time
 " nmap <S-j> 10j
 " nmap <S-k> 10k
+
+" Clear search highlights by pressing double escape
+nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
 
 " Disable arrow keys
 map <Left> <Nop>
@@ -240,6 +249,120 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Format the selected paragraph
 vmap <leader>l :!par -w80<CR>
+
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Create mappings for function text object, requires document symbols feature of languageserver.
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" Use <TAB> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" Open FlyGrep when pressing <leader>/
+nnoremap <leader>/ :FlyGrep<CR>
 
 " }}}
 " {{{ Bundles
@@ -304,6 +427,102 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " }}}
+
+" {{{ Defx
+autocmd FileType defx call s:defx_my_settings()
+
+function! s:defx_my_settings() abort
+  " Define mappings
+  nnoremap <silent><buffer><expr> <CR>
+  \ defx#do_action('drop')
+  nnoremap <silent><buffer><expr> c
+  \ defx#do_action('copy')
+  nnoremap <silent><buffer><expr> m
+  \ defx#do_action('move')
+  nnoremap <silent><buffer><expr> p
+  \ defx#do_action('paste')
+  nnoremap <silent><buffer><expr> l
+  \ defx#do_action('open')
+  nnoremap <silent><buffer><expr> E
+  \ defx#do_action('open', 'vsplit')
+  nnoremap <silent><buffer><expr> P
+  \ defx#do_action('open', 'pedit')
+  nnoremap <silent><buffer><expr> o
+  \ defx#is_directory() ?
+  \ defx#do_action('open_or_close_tree') :
+  \ defx#do_action('drop')
+  nnoremap <silent><buffer><expr> K
+  \ defx#do_action('new_directory')
+  nnoremap <silent><buffer><expr> N
+  \ defx#do_action('new_file')
+  nnoremap <silent><buffer><expr> M
+  \ defx#do_action('new_multiple_files')
+  nnoremap <silent><buffer><expr> C
+  \ defx#do_action('toggle_columns',
+  \                'mark:indent:icon:filename:type:size:time')
+  nnoremap <silent><buffer><expr> S
+  \ defx#do_action('toggle_sort', 'time')
+  nnoremap <silent><buffer><expr> d
+  \ defx#do_action('remove')
+  nnoremap <silent><buffer><expr> r
+  \ defx#do_action('rename')
+  nnoremap <silent><buffer><expr> !
+  \ defx#do_action('execute_command')
+  nnoremap <silent><buffer><expr> x
+  \ defx#do_action('execute_system')
+  nnoremap <silent><buffer><expr> yy
+  \ defx#do_action('yank_path')
+  nnoremap <silent><buffer><expr> .
+  \ defx#do_action('toggle_ignored_files')
+  nnoremap <silent><buffer><expr> ;
+  \ defx#do_action('repeat')
+  nnoremap <silent><buffer><expr> h
+  \ defx#do_action('cd', ['..'])
+  nnoremap <silent><buffer><expr> ~
+  \ defx#do_action('cd')
+  nnoremap <silent><buffer><expr> q
+  \ defx#do_action('quit')
+  nnoremap <silent><buffer><expr> <Space>
+  \ defx#do_action('toggle_select') . 'j'
+  nnoremap <silent><buffer><expr> *
+  \ defx#do_action('toggle_select_all')
+  nnoremap <silent><buffer><expr> j
+  \ line('.') == line('$') ? 'gg' : 'j'
+  nnoremap <silent><buffer><expr> k
+  \ line('.') == 1 ? 'G' : 'k'
+  nnoremap <silent><buffer><expr> <C-l>
+  \ defx#do_action('redraw')
+  nnoremap <silent><buffer><expr> <C-g>
+  \ defx#do_action('print')
+  nnoremap <silent><buffer><expr> cd
+  \ defx#do_action('change_vim_cwd')
+
+  call defx#custom#option('_', {
+        \ 'root_marker': ':',
+        \ })
+  call defx#custom#column('filename', {
+        \ 'root_marker_highlight': 'Ignore',
+        \ })
+  
+  
+  call defx#custom#column('icon', {
+        \ 'directory_icon': '▸',
+        \ 'opened_icon': '▾',
+        \ 'root_icon': ' ',
+        \ })
+  
+  call defx#custom#column('filename', {
+        \ 'min_width': 40,
+        \ 'max_width': 40,
+        \ })
+  
+  call defx#custom#column('mark', {
+        \ 'readonly_icon': '✗',
+        \ 'selected_icon': '✓',
+        \ })
+endfunction
+
+" }}}
 " {{{ VimFiler
 
 " Settings
@@ -322,40 +541,20 @@ let g:vimfiler_marked_file_icon = '✓'
 
 " Mappings
 nnoremap <leader>e :VimFilerExplorer<CR>
-nnoremap <C-e> :VimFilerExplorer<CR>
+nnoremap <C-e> :Defx -toggle -split=vertical -winwidth=35 -direction=topleft<CR>
 
 " }}}
 
 " {{{ ALE
 highlight ALEWarning ctermbg=black cterm=bold
-set signcolumn=yes
 " }}}
 
 " }}}
 "
 "
-" Language Server Support
-let g:LanguageClient_rootMarkers = {
-        \ 'go': ['.git', 'go.mod'],
-        \ }
-
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'ruby': ['solargraph', 'stdio'],
-    \ 'cpp': ['clangd'],
-    \ 'c': ['clangd'],
-    \ 'go': ['bingo'],
-    \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'python': ['~/.local/bin/pyls']
-    \ }
-
 " Automatically format the code according to the Rust guidelines when a buffer
 " if saved and rust.vim is loaded
 let g:rustfmt_autosave = 1
-
-" Map gd to go to the definition.
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 
 let g:tmpl_search_paths = ['~/.vim/templates']
 

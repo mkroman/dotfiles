@@ -19,7 +19,15 @@ Plug 'thoughtbot/vim-rspec'
 Plug 'Shougo/unite.vim'
 
 " Use vimfiler for file exploration
-Plug 'Shougo/vimfiler'
+" Plug 'Shougo/vimfiler'
+
+if has('nvim')
+  Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/defx.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 
 " Use vim-coffee-script for coffee-script syntax highlighting
 Plug 'kchmck/vim-coffee-script'
@@ -73,20 +81,22 @@ Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'vim-scripts/argtextobj.vim'
 
 " Language Server Protocol support
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+" Plug 'autozimu/LanguageClient-neovim', {
+"     \ 'branch': 'next',
+"     \ 'do': 'bash install.sh',
+"     \ }
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+  " if has('nvim')
+"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" else
+"   Plug 'Shougo/deoplete.nvim'
+"   Plug 'roxma/nvim-yarp'
+"   Plug 'roxma/vim-hug-neovim-rpc'
+" endif
 
 let g:deoplete#enable_at_startup = 1
 
@@ -98,6 +108,9 @@ Plug 'zchee/vim-flatbuffers'
 Plug 'pangloss/vim-javascript'
 
 Plug 'HerringtonDarkholme/yats.vim'
+
+" Asynchronus live grepping
+Plug 'wsdjeg/FlyGrep.vim'
 
 " Initialize plugin system
 call plug#end()
