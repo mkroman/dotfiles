@@ -9,7 +9,7 @@ set $media 5:media
 set $games 6:games
 set $vms 7:vms
 
-font pango:Terminus, FontAwesome 9
+font pango:DejaVu Sans Mono 11px
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -219,7 +219,7 @@ for_window [class="Pidgin" window_role="conversation"] floating enable
 for_window [class="Pidgin" window_role="file transfer"] floating enable
 
 # Floating VirtualBox windows.
-for_window [class="Vmware"] floating enable
+for_window [class="Vmware"] floating enable border none
 assign [class="Vmware"] $vms
 
 for_window [class="Termite" title="irssi"] move scratchpad, scratchpad show
