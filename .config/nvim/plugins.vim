@@ -112,5 +112,8 @@ Plug 'HerringtonDarkholme/yats.vim'
 " Asynchronus live grepping
 Plug 'wsdjeg/FlyGrep.vim'
 
+" Tridactylrc syntax highlighting
+Plug 'tridactyl/vim-tridactyl'
+
 " Initialize plugin system
 call plug#end()
