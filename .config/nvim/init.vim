@@ -159,7 +159,7 @@ set pastetoggle=<F2>
 set laststatus=2
 
 " Enable folding using {{{ and }}}
-set foldenable foldmethod=manual foldmarker={{{,}}}
+set foldenable foldmethod=marker foldmarker={{{,}}}
 
 " Print solid (unicode) lines for vertical splits
 set fillchars+=vert:\ 
