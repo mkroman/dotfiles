@@ -22,8 +22,6 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 #
 # For more information, please refer to <http://unlicense.org>
-#
-fpath=(~/.zsh/completion $fpath)
 
 ## Zsh modules
 # Load and initialize the `colors' environment variable with ANSI colors
@@ -42,7 +40,9 @@ setopt autopushd pushdminus pushdsilent pushdtohome
 # Allow commands like `..' to act like `cd ..'
 setopt autocd
 # Enable variable substitution in PROMPT and RPROMPT
-setopt prompt_subst
+setopt promptsubst
+# Incrementally append history so multiple zsh sessions can share a history
+setopt extendedhistory appendhistory incappendhistorytime
 
 ## Environment
 # History options
@@ -88,8 +88,7 @@ if [ -e ~/.cargo/bin ]; then
 fi
 
 
-# {{{ Ruby-specific stuff
-
+# {{{ Ruby tools.
 # Initialize rbenv if it's installed locally
 if [ -e ~/.rbenv/bin/rbenv ]; then
   export PATH="${HOME}/.rbenv/bin:${PATH}"
@@ -102,6 +101,7 @@ alias be='bundle exec'
 
 # }}}
 
+# {{{ Python tools.
 # Initialize rbenv if it's installed locally
 function pyenv-init() {
   if [ -e ~/.pyenv ]; then
@@ -111,8 +111,9 @@ function pyenv-init() {
     eval "$(pyenv init - )"
   fi
 }
+# }}}
 
-# {{{ Node.js specific stuff
+# {{{ Node executables and nodenv.
 #
 # Initialize nodenv if it's installed locally
 if [ -e ~/.nodenv ]; then
@@ -148,10 +149,16 @@ alias gushh='git push origin master'
 alias gul='git pull'
 alias gull='git pull origin master'
 alias ga='git commit --amend'
+
 # Docker aliases
 alias dm='docker-machine'
+
+# Kubernetes aliases
+alias k='kubectl'
+
 # Taskwarrior aliases
 alias t='task'
+
 # alias bat='bat --style=plain'
 alias gpg='gpg2'
 
@@ -242,10 +249,5 @@ if [[ $TERM == xterm-termite ]]; then
     . /etc/profile.d/vte.sh
     __vte_osc7
   fi
-fi
-
-if [ -x ~/.bin/mc ]; then
-  autoload -U +X bashcompinit && bashcompinit
-  complete -o nospace -C ~/.bin/mc mc
 fi
 
