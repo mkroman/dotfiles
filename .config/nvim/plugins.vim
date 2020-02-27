@@ -12,6 +12,9 @@ Plug 'ctrlpvim/ctrlp.vim'
 " Use vim-surround for closing parantheses, braces, etc
 Plug 'tpope/vim-surround'
 
+" Use vim-fugitive for git integration
+Plug 'tpope/vim-fugitive'
+
 " Use vim-rspec for rspec integration
 Plug 'thoughtbot/vim-rspec'
 
