@@ -9,7 +9,7 @@ set $media 5:media
 set $games 6:games
 set $vms 7:vms
 
-font pango:DejaVu Sans Mono 11px
+font pango:Terminus 11px
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
