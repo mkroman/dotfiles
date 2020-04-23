@@ -23,12 +23,12 @@
                "x": 0,
                "y": 0
             },
-            "name": "irssi",
+            "name": "weechat",
             "percent": 1,
             "swallows": [
                {
                 "class": "^Termite$",
-                "title": "^irssi$"
+                "title": "^weechat$"
                }
             ],
             "type": "con"
