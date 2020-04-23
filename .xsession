@@ -47,16 +47,13 @@ case $WM in
     dunst -config "${HOME}/.config/dunst/dunstrc" &
 
     # Start client compositor.
-    # compton --config "${HOME}/.config/compton.conf" &
+    picom -b
 
     # Load nvidia settings.
     nvidia-settings --load-config-only &
 
     # Automatically hide the mouse cursor when the mouse is not in use.
     unclutter -grab &
-
-    # Start the urxvt daemon. (see urxvt(1))
-    urxvtd -q -o -f
 
     # Start qbittorrent
     # qbittorrent &
