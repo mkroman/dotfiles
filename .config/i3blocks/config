@@ -36,7 +36,7 @@ markup=none
 # See the script for details.
 
 [volume]
-label= 
+label=  
 #label=VOL
 interval=once
 signal=10
@@ -85,13 +85,15 @@ signal=10
 [bandwidth]
 #INTERFACE=eth0
 interval=5
+INLABEL=  
+OUTLABEL=    
 
 # CPU usage
 #
 # The script may be called with -w and -c switches to specify thresholds,
 # see the script for details.
 [cpu_usage2]
-LABEL=
+LABEL=
 markup=pango
 interval=persist
 min_width=C100.00%
@@ -112,7 +114,7 @@ min_width=C100.00%
 # Date Time
 #
 [time]
-command=date '+%Y-%m-%d %H:%M:%S'
+command=date '+  %a %H:%M:%S'
 interval=5
 
 # Generic media player support
