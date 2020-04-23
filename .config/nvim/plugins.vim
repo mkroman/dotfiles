@@ -59,8 +59,17 @@ Plug 'austintaylor/vim-indentobject'
 " Use tabular for alignment wizardry
 Plug 'godlygeek/tabular'
 
+" {{{ Colorschemes
+"
 " Jellybeans colorscheme
 Plug 'nanotech/jellybeans.vim'
+
+" Alduin colorscheme
+Plug 'AlessandroYorba/Alduin'
+
+" Challenger deep colorscheme
+Plug 'challenger-deep-theme/vim'
+" }}}
 
 " Add a bunch of color schemes
 Plug 'chriskempson/base16-vim'
@@ -117,6 +126,23 @@ Plug 'wsdjeg/FlyGrep.vim'
 
 " Tridactylrc syntax highlighting
 Plug 'tridactyl/vim-tridactyl'
+
+" org-mode for vim
+Plug 'jceb/vim-orgmode'
+
+" speeddating is used by vim-orgmode
+Plug 'tpope/vim-speeddating'
+
+Plug 'inkarkat/vim-SyntaxRange'
+
+" Markdown syntax and preview
+" Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+
+" Enhanced vim integration
+Plug 'jreybert/vimagit'
+
+" Snippets
+Plug 'honza/vim-snippets'
 
 " Initialize plugin system
 call plug#end()

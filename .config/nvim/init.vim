@@ -59,7 +59,7 @@ if &t_Co > 2 || has('gui_running')
   syntax on
 
   try
-    colorscheme jellybeans
+    colorscheme base16-tomorrow-night
   catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme desert
   endtry
@@ -144,7 +144,7 @@ set number
 set cursorline
 
 " Enable TextMate-style invisibles
-set list listchars=tab:▸\ ,eol:¬
+set list listchars=tab:▸\ 
 
 " Don't write swap-files or backup files
 set noswapfile nobackup nowritebackup
@@ -257,15 +257,36 @@ vmap <leader>l :!par -w80<CR>
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
+
+let g:coc_snippet_next = '<tab>'
+
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+let g:coc_snippet_next = '<tab>'
+
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -344,7 +365,7 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+set statusline^="%{coc#status()}%{get(b:,'coc_current_function','')} "
 
 " Using CocList
 " Show all diagnostics
@@ -368,7 +389,7 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 nnoremap <leader>/ :FlyGrep<CR>
 
 " }}}
-" {{{ Bundles
+" Plugins
 " {{{ Airline
 
 let g:airline_extensions = []
@@ -384,7 +405,7 @@ let g:airline#extensions#branch#enabled = 0
 " {{{ ClangFormat
 
 " Mappings
-noremap <leader>f :pyf /usr/share/clang/clang-format.py<CR>
+" noremap <leader>f :pyf /usr/share/clang/clang-format.py<CR>
 " inoremap <C-i> <c-o>:pyf /usr/share/clang/clang-format.py<CR>
 
 " }}}
@@ -430,7 +451,6 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " }}}
-
 " {{{ Defx
 autocmd FileType defx call s:defx_my_settings()
 
@@ -547,18 +567,16 @@ nnoremap <leader>e :VimFilerExplorer<CR>
 nnoremap <silent> <C-e> :Defx -toggle -split=vertical -winwidth=35 -direction=topleft<CR>
 
 " }}}
-
 " {{{ ALE
 highlight ALEWarning ctermbg=black cterm=bold
 " }}}
 
-" }}}
-"
-"
 " Automatically format the code according to the Rust guidelines when a buffer
 " if saved and rust.vim is loaded
 let g:rustfmt_autosave = 1
 
+let g:tmpl_author_name = 'Mikkel Kroman'
+let g:tmpl_author_email = 'mk@maero.dk'
 let g:tmpl_search_paths = ['~/.vim/templates']
 
 map <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
