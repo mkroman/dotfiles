@@ -23,7 +23,8 @@
 #
 # For more information, please refer to <http://unlicense.org>
 
-## Zsh modules
+# {{{ Load Zsh modules
+
 # Load and initialize the `colors' environment variable with ANSI colors
 autoload -Uz colors && colors
 # Load and initialize tab-completion
@@ -34,7 +35,13 @@ zstyle ':completion:*' menu select
 # URL is inserted as an argument
 autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
 
-## Zsh options
+autoload bashcompinit && bashcompinit # Needed for k=kubectl alias autocompletion
+
+
+# }}}
+
+# {{{ Zsh options
+
 # Automatically push `cd' dirs to the stack`
 setopt autopushd pushdminus pushdsilent pushdtohome
 # Allow commands like `..' to act like `cd ..'
@@ -44,7 +51,10 @@ setopt promptsubst
 # Incrementally append history so multiple zsh sessions can share a history
 setopt extendedhistory appendhistory incappendhistorytime
 
-## Environment
+# }}}
+
+# {{{ Environment
+
 # History options
 export HISTFILE=~/.history HISTSIZE=2000 SAVEHIST=2000
 # Set the left part of the prompt.
@@ -60,6 +70,8 @@ export SYSTEMD_EDITOR=$EDITOR
 export TERMINAL=termite
 # Print the wall-time for a process when it runs for a longer period of time
 export REPORTTIME=4
+
+# }}}
 
 # Load directory colors for `ls'
 [ -e ~/.dircolors ] && eval "$(dircolors ~/.dircolors)"
@@ -133,10 +145,19 @@ fi
 
 # Unix aliases
 alias ls='ls --color=auto -F'
-alias ll='exa -l'
+
+if command -v exa >/dev/null; then
+  alias ll='exa -l'
+else
+  alias ll='ls -l'
+fi
+
 alias grep='grep --color=auto'
 alias gdb='gdb -q'
-alias vim=nvim
+
+if command -v nvim >/dev/null; then
+  alias vim=nvim
+fi
 
 # Git aliases
 alias g='git'
@@ -154,7 +175,11 @@ alias ga='git commit --amend'
 alias dm='docker-machine'
 
 # Kubernetes aliases
-alias k='kubectl'
+if command -v kubectl >/dev/null; then
+  source <(kubectl completion zsh)
+  alias k='kubectl'
+  complete -o default -F __start_kubectl k
+fi
 
 # Taskwarrior aliases
 alias t='task'
