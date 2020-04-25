@@ -1,0 +1,79 @@
+// vim:ts=4:sw=4:et
+{
+    "layout": "splitv",
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "pixel",
+            "current_border_width": 1,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 364,
+               "width": 564,
+               "x": 0,
+               "y": 0
+            },
+            "name": "terminal",
+            "percent": 0.7,
+            "swallows": [
+               {
+                 "class": "^Termite$"
+               }
+            ],
+            "type": "con"
+        },
+
+        {
+            // splith split container with 2 children
+            "border": "normal",
+            "floating": "auto_off",
+            "layout": "splith",
+            "percent": 0.3,
+            "type": "con",
+            "nodes": [
+                {
+                    "border": "pixel",
+                    "current_border_width": 1,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 364,
+                       "width": 564,
+                       "x": 0,
+                       "y": 0
+                    },
+                    "name": "terminal",
+                    "percent": 0.5,
+                    "swallows": [
+                       {
+                        "class": "^Termite$",
+                        "title": "^code1$"
+                       }
+                    ],
+                    "type": "con"
+                },
+                {
+                    "border": "pixel",
+                    "current_border_width": 1,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 364,
+                       "width": 564,
+                       "x": 0,
+                       "y": 0
+                    },
+                    "name": "terminal",
+                    "percent": 0.5,
+                    "swallows": [
+                       {
+                        "class": "^Termite$",
+                        "title": "^code2$"
+                       }
+                    ],
+                    "type": "con"
+                }
+            ]
+        }
+    ]
+}
+
