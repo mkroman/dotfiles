@@ -182,6 +182,7 @@ set statusline=%f\ %h%m%r%y%=%c,%l/%L\ %P
 set lazyredraw
 
 let g:loaded_sql_completion = 1
+let g:omni_sql_no_default_maps = 1
 
 let g:cpp_class_scope_highlight = 1
 let g:cpp_experimental_template_highlight = 1
@@ -583,3 +584,12 @@ map <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> t
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
+" Test fix for yaml indentation
+augroup yaml_fix
+    autocmd!
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:>
+augroup END
+
+autocmd FileType c setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
+autocmd FileType python setlocal tabstop=2 softtabstop=0 shiftwidth=2 expandtab
+autocmd FileType rust setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
