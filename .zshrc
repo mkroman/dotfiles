@@ -252,6 +252,10 @@ function vzf {
   vim "$(fzf)"
 }
 
+function open {
+  nohup xdg-open $* > /dev/null &
+}
+
 if [ -e "${HOME}/.restic/${HOST}.key" ]; then
   export RESTIC_REPOSITORY="${HOME}/Backups"
   export RESTIC_PASSWORD_FILE="${HOME}/.restic/${HOST}.key"
