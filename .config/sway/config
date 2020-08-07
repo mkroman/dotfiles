@@ -1,14 +1,5 @@
 set $mod Mod4
 
-# Workspaces
-set $chat 1:chat
-set $www 2:www
-set $code 3:code
-set $docs 4:docs
-set $media 5:media
-set $games 6:games
-set $vms 7:vms
-
 font pango:Terminus 10
 
 output eDP-1 scale 2
@@ -18,7 +9,7 @@ input 1:1:AT_Translated_Set_2_keyboard {
   xkb_layout us
   xkb_variant mac
   repeat_delay 250
-  repeat_rate 20
+  repeat_rate 50
 }
 
 input 2:7:SynPS/2_Synaptics_TouchPad {
@@ -86,25 +77,25 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # switch to workspace
-bindsym $mod+1 workspace $chat
-bindsym $mod+2 workspace $www
-bindsym $mod+3 workspace $code
-bindsym $mod+4 workspace $docs
-bindsym $mod+5 workspace $media
-bindsym $mod+6 workspace $games
-bindsym $mod+7 workspace $vms
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $chat
-bindsym $mod+Shift+2 move container to workspace $www
-bindsym $mod+Shift+3 move container to workspace $code
-bindsym $mod+Shift+4 move container to workspace $docs
-bindsym $mod+Shift+5 move container to workspace $media
-bindsym $mod+Shift+6 move container to workspace $games
-bindsym $mod+Shift+7 move container to workspace $vms
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
@@ -130,6 +121,10 @@ bindsym XF86AudioStop exec "mpc stop; pkill -44 i3blocks"
 bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-mute 0 false; pactl set-sink-volume 0 +5%; pkill -44 i3blocks"
 bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-mute 0 false; pactl -- set-sink-volume 0 -5%; pkill -44 i3blocks"
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
+
+# Brightness control
+bindsym XF86MonBrightnessDown exec --no-startup-id "light -U 5"
+bindsym XF86MonBrightnessUp exec --no-startup-id "light -A 5"
 
 # open the default browser
 bindsym $mod+b exec "$BROWSER"
@@ -180,7 +175,7 @@ bar {
   colors {
     background #23252D
   }
-  status_command SCRIPT_DIR=$HOME/.config/i3blocks i3blocks
+  status_command SCRIPT_DIR=$HOME/.config/i3blocks i3blocks -c ~/.config/i3blocks/laptop-config
   tray_output primary
   strip_workspace_numbers yes
 }
@@ -241,14 +236,14 @@ for_window [class="Pidgin" window_role="file transfer"] floating enable
 for_window [class="Vmware"] floating enable
 assign [class="Vmware"] $vms
 
-for_window [class="Termite" title="irssi"] move scratchpad, scratchpad show
+for_window [class="Termite" title="weechat"] move scratchpad, scratchpad show
 
 for_window [class="chromium" window_role="app"] floating enable
 
 # Workspace assignment
-assign [class="mumble|ricochet|Pidgin"] $chat
-assign [class="Chromium|Firefox"] $www
-assign [class="Steam"] $games
+assign [class="mumble|ricochet|Pidgin"] 1
+assign [class="Chromium|Firefox"] 2
+assign [class="Steam"] 6
 
 
 # Move the Gtk file chooser dialog to the center and set a fixed size.
@@ -259,22 +254,22 @@ for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 
 # Make the first workspace appear on the left-hand monitor.
-workspace $chat output DVI-D-0
-workspace $www output DP-0
-workspace $code output DP-0
+workspace 1 output DVI-D-0
+workspace 2 output DP-0
+workspace 3 output DP-0
 
 # Restore the first workspace.
-exec --no-startup-id swaymsg "workspace $chat; append_layout ~/.config/i3/workspaces/chat.json"
-exec --no-startup-id swaymsg "workspace $www; append_layout ~/.config/i3/workspaces/www.json"
-exec --no-startup-id swaymsg "workspace $code; append_layout ~/.config/i3/workspaces/code.json"
+exec --no-startup-id swaymsg "workspace 1; append_layout ~/.config/i3/workspaces/chat.json"
+exec --no-startup-id swaymsg "workspace 2; append_layout ~/.config/i3/workspaces/www.json"
+exec --no-startup-id swaymsg "workspace 3; append_layout ~/.config/i3/workspaces/code.json"
 
 # Start applications.
-exec --no-startup-id swaymsg "workspace $code; exec sh -c 'sleep 4 && exec termite --title code1'"
-exec --no-startup-id swaymsg "workspace $code; exec sh -c 'sleep 2 && exec termite --title code2'"
-exec --no-startup-id swaymsg "workspace $chat; exec termite --title irssi"
-exec --no-startup-id swaymsg "workspace $www; exec $BROWSER"
+exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 4 && exec termite --title code1'"
+exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 2 && exec termite --title code2'"
+exec --no-startup-id swaymsg "workspace 1; exec termite --title weechat"
+exec --no-startup-id swaymsg "workspace 2; exec $BROWSER"
 
 # Make the currently focused window a scratchpad
-bindsym $mod+grave [title="irssi"] scratchpad show
+bindsym $mod+grave [title="weechat"] scratchpad show
 
 # vim: syntax=i3
