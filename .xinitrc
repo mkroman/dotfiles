@@ -10,6 +10,9 @@ fi
 
 export BROWSER
 
+# Add ~/.bin to PATH for use in `dmenu` etc.
+export PATH=$HOME/.bin:$PATH
+
 # WM-specific autolaunch
 case $WM in
   sway)
