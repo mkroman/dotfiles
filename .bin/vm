@@ -4,14 +4,16 @@
 
 declare -A SSH RDP
 
-# List of VMs running SSH
+# {{{ List of VMs running SSH
 SSH[debian-9]="debian-9.lan"
 SSH[debian-10]="debian-10.lan"
+SSH[ci-runner-01]="ci-runner-01.lan"
 SSH[ubuntu-16]="ubuntu-16.lan"
 SSH[ubuntu-19]="ubuntu-19.lan"
 SSH[ubuntu-20]="ubuntu-20.lan"
 SSH[freebsd-12]="freebsd-12.lan"
 SSH[home-assistant]="hass.lan"
+# }}}
 
 # List of VMs running Microsoft RDP
 RDP[windows-10]="DESKTOP-JF4DBIP.lan"
@@ -39,7 +41,7 @@ if [ "${host}" != "" ]; then
   case $host in
     DESKTOP-JF4DBIP.lan)
       xfreerdp "/u:User" "/v:${host}" "/p:password" /dynamic-resolution \
-        /sound /size:1600x900 '+gfx-progressive' &
+        /sound /size:1600x900 /rfx /gfx
       ;;
   esac
 
