@@ -35,6 +35,8 @@ endif
 " Use vim-coffee-script for coffee-script syntax highlighting
 Plug 'kchmck/vim-coffee-script'
 
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 " Use vim-crystal for Crystal syntax highlighting
 Plug 'rhysd/vim-crystal'
 
@@ -118,6 +120,7 @@ Plug 'zchee/vim-flatbuffers'
 
 " Use vim-javascript for improved syntax highlighting and indentation
 Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'
 
 Plug 'HerringtonDarkholme/yats.vim'
 
@@ -143,6 +146,20 @@ Plug 'jreybert/vimagit'
 
 " Snippets
 Plug 'honza/vim-snippets'
+
+function! BuildComposer(info)
+  if a:info.status != 'unchanged' || a:info.force
+    if has('nvim')
+      !cargo build --release --locked
+    else
+      !cargo build --release --locked --no-default-features --features json-rpc
+    endif
+  endif
+endfunction
+
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+
+Plug 'junegunn/vim-easy-align'
 
 " Initialize plugin system
 call plug#end()

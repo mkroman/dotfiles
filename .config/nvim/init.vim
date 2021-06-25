@@ -458,7 +458,7 @@ autocmd FileType defx call s:defx_my_settings()
 function! s:defx_my_settings() abort
   " Define mappings
   nnoremap <silent><buffer><expr> <CR>
-  \ defx#do_action('drop')
+  \ defx#is_directory() ? defx#do_action('open_or_close_tree') : defx#do_action('drop')
   nnoremap <silent><buffer><expr> c
   \ defx#do_action('copy')
   nnoremap <silent><buffer><expr> m
@@ -466,7 +466,7 @@ function! s:defx_my_settings() abort
   nnoremap <silent><buffer><expr> p
   \ defx#do_action('paste')
   nnoremap <silent><buffer><expr> l
-  \ defx#do_action('open')
+  \ defx#is_directory() ? defx#do_action('open') : defx#do_action('redraw')
   nnoremap <silent><buffer><expr> E
   \ defx#do_action('open', 'vsplit')
   nnoremap <silent><buffer><expr> P
@@ -522,12 +522,15 @@ function! s:defx_my_settings() abort
   \ defx#do_action('change_vim_cwd')
 
   call defx#custom#option('_', {
-        \ 'root_marker': ':',
+        \ 'auto_recursive_level': '3',
+        \ 'columns': 'indent:icon:filename',
+        \ 'split': 'vertical',
+        \ 'ignored_files': '.*,./target,Cargo.lock'
         \ })
+
   call defx#custom#column('filename', {
         \ 'root_marker_highlight': 'Ignore',
         \ })
-  
   
   call defx#custom#column('icon', {
         \ 'directory_icon': '▸',
@@ -536,7 +539,7 @@ function! s:defx_my_settings() abort
         \ })
   
   call defx#custom#column('filename', {
-        \ 'min_width': 40,
+        \ 'min_width': 1,
         \ 'max_width': 40,
         \ })
   
@@ -564,8 +567,8 @@ let g:vimfiler_readonly_file_icon = '✗'
 let g:vimfiler_marked_file_icon = '✓'
 
 " Mappings
-nnoremap <leader>e :VimFilerExplorer<CR>
-nnoremap <silent> <C-e> :Defx -toggle -split=vertical -winwidth=35 -direction=topleft<CR>
+nnoremap <silent> <C-e> :Defx -winwidth=30 -direction=topleft<CR>
+" nnoremap <silent> <C-e> :Defx -toggle -split=floating<CR>
 
 " }}}
 " {{{ ALE
@@ -593,3 +596,18 @@ augroup END
 autocmd FileType c setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
 autocmd FileType python setlocal tabstop=2 softtabstop=0 shiftwidth=2 expandtab
 autocmd FileType rust setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
+autocmd FileType markdown setlocal nowrap
+" Align GitHub-flavored Markdown tables
+autocmd FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { }, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = {},  -- list of language that will be disabled
+  },
+}
+EOF
+
