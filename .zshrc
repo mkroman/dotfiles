@@ -56,7 +56,7 @@ setopt extendedhistory appendhistory incappendhistorytime
 # {{{ Environment
 
 # History options
-export HISTFILE=~/.history HISTSIZE=2000 SAVEHIST=2000
+export HISTFILE=~/.history HISTSIZE=200000000 SAVEHIST=200000000
 # Set the left part of the prompt.
 export PROMPT="%F{cyan}%n@%m%f %~ %# "
 # Print a grey ¬ (U+00AC) when trying to preserve a partial line
@@ -94,10 +94,9 @@ if [ -d /usr/local/go ]; then
 fi
 
 # Add cargo to PATH if ~/.cargo/bin exists
-if [ -e ~/.cargo/bin ]; then
-  export PATH="${HOME}/.cargo/bin:${PATH}"
-  export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
-fi
+# if [ -e ~/.cargo/bin ]; then
+#  export PATH="${HOME}/.cargo/bin:${PATH}"
+#fi
 
 
 # {{{ Ruby tools.
@@ -229,6 +228,7 @@ fi
 
 bindkey '^R' history-incremental-search-backward
 bindkey '^B' backward-word
+bindkey '^E' forward-word
 
 ## Miscellaneous functions
 
@@ -272,11 +272,11 @@ if [ -e ~/.zsh/fzf-completion.zsh ]; then
   source ~/.zsh/fzf-completion.zsh
 fi
 
-# https://github.com/thestinger/termite#user-content-id2
-if [[ $TERM == xterm-termite ]]; then
-  if [ -e /etc/profile.d/vte.sh ]; then
-    . /etc/profile.d/vte.sh
-    __vte_osc7
-  fi
-fi
+function matrix-youtubedl {
+  youtube-dl -f 'bestvideo[height<=720]+bestaudio' --merge-output-format mp4 $*
+}
 
+alias send='croc --relay croc.maero.dk send'
+export RUSTC_FORCE_INCREMENTAL=1
+
+eval "$(/home/mk/anaconda3/bin/conda shell.zsh hook)"
