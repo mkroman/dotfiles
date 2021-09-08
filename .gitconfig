@@ -1,0 +1,73 @@
+[user]
+	name = Mikkel Kroman
+	signingkey = CFD3219C
+	email = mk@maero.dk
+[color]
+	ui = auto
+	interactive = auto
+	diff = auto
+	branch = auto
+	status = auto
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	features = line-numbers decorations
+	whitespace-error-style = 22 reverse
+[delta "decorations"]
+	commit-decoration-style = bold yellow box ul
+	file-style = bold yellow ul
+	file-decoration-style = none
+[github]
+	user = mkroman
+[core]
+	pager = delta
+	excludesfile = /home/mk/.gitignore
+	hooksPath = /home/mk/.hooks
+[giggle]
+	main-window-maximized = true
+	main-window-geometry = 0x0+0+0
+	history-view-vpane-position = 584
+	file-view-vpane-position = 946
+	main-window-view = HistoryView
+	show-graph = true
+[alias]
+	a = add -A .
+	br = branch
+	ci = commit -a
+	co = checkout
+	df = diff
+	dwc = diff -w -M --color-words
+	lg = log
+	ll = log -p
+	rb = rebase
+	fix = rebase -i origin/master
+	rbc = rebase --continue
+	re = remote
+	st = status -sb
+	tree = log --graph --decorate --pretty=oneline --abbrev-commit
+	up = pull --rebase --autostash
+	amend = commit --amend
+[log]
+	decorate = short
+[pager]
+	status = true
+	show-branch = true
+[format]
+	numbered = auto
+[push]
+	default = current
+[merge]
+	tool = gvimdiff
+[diff]
+	compactionHeuristic = true
+[git]
+	email = mk@maero.dk
+[pull]
+	rebase = false
+[init]
+	defaultBranch = main
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
