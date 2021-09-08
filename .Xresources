@@ -6,6 +6,8 @@
 ! Xft.hintstyle: hintfull
 ! Xft.autohint:  false
 
+xterm*font:     *-fixed-*-*-*-18-*
+
 URxvt.font: \
  xft:DejaVu Sans Mono:size=9,\
  xft:Droid Sans Mono:size=9,\
