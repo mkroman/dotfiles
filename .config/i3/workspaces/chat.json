@@ -27,7 +27,7 @@
             "percent": 1,
             "swallows": [
                {
-                "class": "^Termite$",
+                "class": "^Alacritty$",
                 "title": "^weechat$"
                }
             ],
