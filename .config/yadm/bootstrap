@@ -22,20 +22,3 @@ if ! command -v rustup >/dev/null 2>&1; then
   export PATH="${PATH}:${HOME}/.cargo/bin"
   hash -r
 fi
-
-# Install ripgrep
-if ! command -v rg >/dev/null 2>&1; then
-  echo "Installing ripgrep"
-  cargo install ripgrep
-fi
-
-if ! command -v fd >/dev/null 2>&1; then
-  echo "Installing fd"
-  cargo install fd-find
-fi
-
-if ! command -v exa >/dev/null 2>&1; then
-  echo "Installing exa"
-  cargo install exa
-fi
-
