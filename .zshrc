@@ -134,6 +134,9 @@ if [ -e ~/.nodenv ]; then
 
 fi
 
+# Initialize nvm if it's installed on the system
+[ -e /usr/share/nvim/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+
 # Add executable dirs to PATH
 [ -e ~/.node/bin ] && export PATH="${HOME}/.node/bin:${PATH}"
 [ -d ~/.npm-packages ] && export PATH="${HOME}/.npm-packages/bin:${PATH}"
@@ -283,4 +286,8 @@ function matrix-youtubedl {
 alias send='croc --relay croc.maero.dk send'
 export RUSTC_FORCE_INCREMENTAL=1
 
-eval "$(/home/mk/anaconda3/bin/conda shell.zsh hook)"
+# Load Anaconda3 if it's present
+[ -e "${HOME}/anaconda3/bin/conda" ] && eval "$(${HOME}/anaconda3/bin/conda shell.zsh hook)"
+
+# Fix for Java applications on i3 and sway
+export _JAVA_AWT_WM_NONREPARENTING=1
