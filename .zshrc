@@ -188,6 +188,9 @@ alias gpg='gpg2'
 
 alias :e='vim' # :e <file>
 
+# Other program aliases
+alias objdump='objdump -M intel'
+
 typeset -A key
 
 key[Home]="$terminfo[khome]"
@@ -263,6 +266,7 @@ fi
 
 [ -e ~/.zshrc.local ] && source ~/.zshrc.local
 [ -e ~/.local/bin ] && export PATH="${HOME}/.local/bin:${PATH}"
+[ -e ~/.linkerd2/bin ] && export PATH="$PATH}:${HOME}/.linkerd2/bin"
 
 if [ -e /usr/share/fzf/shell/key-bindings.zsh ]; then
   source /usr/share/fzf/shell/key-bindings.zsh
