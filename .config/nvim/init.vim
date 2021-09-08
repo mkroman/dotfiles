@@ -85,6 +85,9 @@ set termguicolors
 
 " {{{ VIM Configuration
 
+" Set the directory for swapfiles etc.
+set directory^=$HOME/.local/share/nvim/tmp//
+
 " Set the minimum number of lines displayed above and below the current line
 " when scrolling
 set scrolloff=5
@@ -146,8 +149,8 @@ set cursorline
 " Enable TextMate-style invisibles
 set list listchars=tab:▸\ 
 
-" Don't write swap-files or backup files
-set noswapfile nobackup nowritebackup
+" Don't write backup files
+set nobackup nowritebackup
 
 " Write the swap much more often, this will make diagnostic messages more useful
 set updatetime=300
@@ -596,9 +599,10 @@ augroup END
 autocmd FileType c setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
 autocmd FileType python setlocal tabstop=2 softtabstop=0 shiftwidth=2 expandtab
 autocmd FileType rust setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
+autocmd FileType rust nnoremap <silent> <buffer> gb :CocCommand rust-analyzer.openDocs<CR>
 autocmd FileType markdown setlocal nowrap
 " Align GitHub-flavored Markdown tables
-autocmd FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
+autocmd FileType markdown,rust vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
