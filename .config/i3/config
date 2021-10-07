@@ -243,6 +243,9 @@ for_window [class="Pidgin" window_role="file transfer"] floating enable
 for_window [class="Vmware"] floating enable border none
 assign [class="Vmware"] 7
 
+# Floating Toggl desktop windows.
+for_window [class="Toggl Desktop"] floating enable
+
 # Floating virt-manager windows
 for_window [class="Virt-manager"] floating enable
 
