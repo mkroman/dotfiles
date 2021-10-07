@@ -3,11 +3,6 @@
 WM=${WM:-i3}
 BROWSER=${BROWSER:-firefox}
 
-if command -v termite >/dev/null 2>&1; then
-  TERMINAL=${TERMINAL:-termite}
-  export TERMINAL
-fi
-
 export BROWSER
 
 # Add ~/.bin to PATH for use in `dmenu` etc.
