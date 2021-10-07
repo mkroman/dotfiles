@@ -29,13 +29,10 @@
 autoload -Uz colors && colors
 # Load and initialize tab-completion
 autoload -Uz compinit && compinit
-setopt completealiases
 zstyle ':completion:*' menu select
 # Load the url-quote-magic module that automagically adds quotes when a
 # URL is inserted as an argument
 autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
-
-autoload bashcompinit && bashcompinit # Needed for k=kubectl alias autocompletion
 
 
 # }}}
@@ -50,7 +47,8 @@ setopt autocd
 setopt promptsubst
 # Incrementally append history so multiple zsh sessions can share a history
 setopt extendedhistory appendhistory incappendhistorytime
-
+# Disable history expansion (reduces problems when typing '!')
+unsetopt banghist
 # }}}
 
 # {{{ Environment
@@ -135,7 +133,7 @@ if [ -e ~/.nodenv ]; then
 fi
 
 # Initialize nvm if it's installed on the system
-[ -e /usr/share/nvim/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+[ -e /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
 
 # Add executable dirs to PATH
 [ -e ~/.node/bin ] && export PATH="${HOME}/.node/bin:${PATH}"
@@ -180,14 +178,10 @@ alias dm='docker-machine'
 if command -v kubectl >/dev/null; then
   source <(kubectl completion zsh)
   alias k='kubectl'
-  complete -o default -F __start_kubectl k
 fi
 
 # Taskwarrior aliases
 alias t='task'
-
-# alias bat='bat --style=plain'
-alias gpg='gpg2'
 
 alias :e='vim' # :e <file>
 
@@ -291,3 +285,8 @@ export RUSTC_FORCE_INCREMENTAL=1
 
 # Fix for Java applications on i3 and sway
 export _JAVA_AWT_WM_NONREPARENTING=1
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
