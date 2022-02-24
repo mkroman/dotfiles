@@ -95,14 +95,10 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' '~/.bin/i3-graceful-exit'"
 bindsym $mod+z exec i3-input -P 'Zeal: ' -F 'exec zeal "%s"' -f "pango:Droid Sans Mono"
 
-# mpd - skip to next song
-bindsym XF86AudioNext exec "mpc next; pkill -44 i3blocks"
-# mpd - go to previous song
-bindsym XF86AudioPrev exec "mpc prev; pkill -44 i3blocks"
-# mpd - pause
-bindsym XF86AudioPlay exec "mpc toggle; pkill -44 i3blocks"
-# mpd - stop
-bindsym XF86AudioStop exec "mpc stop; pkill -44 i3blocks"
+bindsym XF86AudioNext exec "playerctl next; pkill -44 i3blocks"
+bindsym XF86AudioPrev exec "playerctl previous; pkill -44 i3blocks"
+bindsym XF86AudioPlay exec "playerctl play-pause; pkill -44 i3blocks"
+bindsym XF86AudioStop exec "playerctl stop; pkill -44 i3blocks"
 
 # Volume control
 bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-mute alsa_output.pci-0000_10_00.3.analog-stereo false; pactl set-sink-volume alsa_output.pci-0000_10_00.3.analog-stereo +5%; pkill -44 i3blocks"
@@ -296,6 +292,6 @@ exec --no-startup-id i3-msg "workspace 1; exec alacritty --title weechat"
 exec --no-startup-id i3-msg "workspace 2; exec firefox"
 
 # Make the currently focused window a scratchpad
-bindsym $mod+grave [title="weechat"] focus
+bindsym $mod+grave [title="weechat"] scratchpad show
 
 # vim: syntax=i3
