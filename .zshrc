@@ -125,15 +125,19 @@ function pyenv-init() {
 # {{{ Node executables and nodenv.
 #
 # Initialize nodenv if it's installed locally
-if [ -e ~/.nodenv ]; then
-  export PATH="$HOME/.nodenv/bin:$PATH"
+nodenv-init() {
+  if [ -e ~/.nodenv ]; then
+    export PATH="$HOME/.nodenv/bin:$PATH"
 
-  eval "$(nodenv init -)"
+    eval "$(nodenv init -)"
 
-fi
+  fi
+}
 
 # Initialize nvm if it's installed on the system
-[ -e /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+nvm-init() {
+  [ -e /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+}
 
 # Add executable dirs to PATH
 [ -e ~/.node/bin ] && export PATH="${HOME}/.node/bin:${PATH}"
@@ -229,6 +233,8 @@ fi
 bindkey '^R' history-incremental-search-backward
 bindkey '^B' backward-word
 bindkey '^E' forward-word
+# Unbind overwrite-mode on the insert key
+bindkey -r '^[[2~'
 
 ## Miscellaneous functions
 
@@ -281,7 +287,9 @@ alias send='croc --relay croc.maero.dk send'
 export RUSTC_FORCE_INCREMENTAL=1
 
 # Load Anaconda3 if it's present
-[ -e "${HOME}/anaconda3/bin/conda" ] && eval "$(${HOME}/anaconda3/bin/conda shell.zsh hook)"
+load-anaconda3() {
+  [ -e "${HOME}/anaconda3/bin/conda" ] && eval "$(${HOME}/anaconda3/bin/conda shell.zsh hook)"
+}
 
 # Fix for Java applications on i3 and sway
 export _JAVA_AWT_WM_NONREPARENTING=1
