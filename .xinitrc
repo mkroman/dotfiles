@@ -39,7 +39,7 @@ case $WM in
     xmodmap ~/.Xmodmap
 
     # Start desktop applications.
-    # dapper -s -u &
+    dex -a -s ~/.config/autostart &
 
     # Start notification daemon.
     dunst -config "${HOME}/.config/dunst/dunstrc" &
