@@ -409,7 +409,7 @@ let g:airline#extensions#branch#enabled = 0
 " {{{ ClangFormat
 
 " Mappings
-" noremap <leader>f :pyf /usr/share/clang/clang-format.py<CR>
+noremap <leader>F :pyf /usr/share/clang/clang-format.py<CR>
 " inoremap <C-i> <c-o>:pyf /usr/share/clang/clang-format.py<CR>
 
 " }}}
@@ -576,6 +576,12 @@ nnoremap <silent> <C-e> :Defx -winwidth=30 -direction=topleft<CR>
 " }}}
 " {{{ ALE
 highlight ALEWarning ctermbg=black cterm=bold
+" }}}
+" {{{ Markdown Preview
+" Automatically open a browser window when entering a markdown buffer.
+let g:mkdp_auto_start = 1
+" Automatically close the browser window when exiting a mrkdown buffer.
+let g:mkdp_auto_close = 1
 " }}}
 
 " Automatically format the code according to the Rust guidelines when a buffer
