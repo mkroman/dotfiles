@@ -1,5 +1,6 @@
 {
   "solargraph.diagnostics": true,
+  "solargraph.transport": "stdio",
   "languageserver": {
     "ccls": {
       "command": "ccls",
