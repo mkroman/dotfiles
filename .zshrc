@@ -24,7 +24,6 @@
 # For more information, please refer to <http://unlicense.org>
 
 # {{{ Load Zsh modules
-
 # Load and initialize the `colors' environment variable with ANSI colors
 autoload -Uz colors && colors
 # Load and initialize tab-completion
@@ -33,8 +32,6 @@ zstyle ':completion:*' menu select
 # Load the url-quote-magic module that automagically adds quotes when a
 # URL is inserted as an argument
 autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
-
-
 # }}}
 
 # {{{ Zsh options
@@ -65,7 +62,7 @@ export BROWSER=firefox
 export EDITOR=nvim
 export SYSTEMD_EDITOR=$EDITOR
 # Set the default terminal
-export TERMINAL=termite
+export TERMINAL=alacritty
 # Print the wall-time for a process when it runs for a longer period of time
 export REPORTTIME=4
 
@@ -174,9 +171,6 @@ alias gushh='git push origin master'
 alias gul='git pull'
 alias gull='git pull origin master'
 alias ga='git commit --amend'
-
-# Docker aliases
-alias dm='docker-machine'
 
 # Kubernetes aliases
 if command -v kubectl >/dev/null; then
@@ -291,6 +285,10 @@ load-anaconda3() {
   [ -e "${HOME}/anaconda3/bin/conda" ] && eval "$(${HOME}/anaconda3/bin/conda shell.zsh hook)"
 }
 
+
+esp-idf-init() {
+  source ~/Projects/ESP32/esp-idf/export.sh
+}
 # Fix for Java applications on i3 and sway
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
