@@ -1,6 +1,7 @@
 {
   "solargraph.diagnostics": true,
   "solargraph.transport": "stdio",
+  "pyright.trace.server": "verbose",
   "languageserver": {
     "ccls": {
       "command": "ccls",
