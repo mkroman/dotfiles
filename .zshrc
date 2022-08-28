@@ -253,7 +253,7 @@ function vzf {
 }
 
 function open {
-  nohup xdg-open $* > /dev/null &
+  handlr open $*
 }
 
 if [ -e "${HOME}/.restic/${HOST}.key" ]; then
@@ -264,6 +264,10 @@ fi
 [ -e ~/.zshrc.local ] && source ~/.zshrc.local
 [ -e ~/.local/bin ] && export PATH="${HOME}/.local/bin:${PATH}"
 [ -e ~/.linkerd2/bin ] && export PATH="$PATH}:${HOME}/.linkerd2/bin"
+
+if command -v direnv >/dev/null; then
+  eval "$(direnv hook zsh)"
+fi
 
 if [ -e /usr/share/fzf/shell/key-bindings.zsh ]; then
   source /usr/share/fzf/shell/key-bindings.zsh
@@ -286,9 +290,15 @@ load-anaconda3() {
 }
 
 
+# Open the given file in binaryninja while disowning the process.
+function binja() {
+  binaryninja "$@" &!
+}
+
 esp-idf-init() {
   source ~/Projects/ESP32/esp-idf/export.sh
 }
+
 # Fix for Java applications on i3 and sway
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
@@ -296,3 +306,8 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep.conf
+
+[ -d "$HOME/.nix-profile/bin" ] && export PATH="$HOME/.nix-profile/bin:$PATH"
+
