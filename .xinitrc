@@ -39,6 +39,7 @@ case $WM in
     xmodmap ~/.Xmodmap
 
     # Start desktop applications.
+    dex -a &
     dex -a -s ~/.config/autostart &
 
     # Start notification daemon.
