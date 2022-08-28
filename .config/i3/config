@@ -210,6 +210,7 @@ for_window [class="Veracrypt"] floating enable
 for_window [class="URxvt|Gvim"] border 1pixel
 for_window [class="Thunderbird" title="Feed Subscriptions"] floating enable
 for_window [class="Sublime_merge"] floating enable
+for_window [class="Binary Ninja"] floating enable
 
 # Discord window settings
 for_window [class="discord"] border 1pixel
@@ -221,6 +222,7 @@ for_window [class="Alacritty"] border 1pixel
 
 # KeePassXC-specific window settings.
 for_window [class="keepassxc"] floating enable, move position center
+for_window [class="1Password"] floating enable, move position center
 
 # Kicad-specific window settings.
 for_window [class="Kicad"] floating disable
@@ -265,7 +267,6 @@ for_window [class="KeePassXC"] floating enable
 # Workspace assignment
 assign [class="mumble|ricochet|Pidgin"] 1
 assign [class="Chromium|Firefox"] 2
-assign [class="Steam"] 6
 
 
 # Move the Gtk file chooser dialog to the center and set a fixed size.
