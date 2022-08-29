@@ -60,6 +60,7 @@ if &t_Co > 2 || has('gui_running')
 
   try
     colorscheme base16-tomorrow-night
+    "colorscheme base16-solarized-light
   catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme desert
   endtry
@@ -577,6 +578,9 @@ nnoremap <silent> <C-e> :Defx -winwidth=30 -direction=topleft<CR>
 " {{{ ALE
 highlight ALEWarning ctermbg=black cterm=bold
 " }}}
+" {{{ Markdown preview
+let g:mkdp_auto_start = 1
+" }}}
 
 " Automatically format the code according to the Rust guidelines when a buffer
 " if saved and rust.vim is loaded
@@ -597,7 +601,7 @@ augroup yaml_fix
 augroup END
 
 autocmd FileType c setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
-autocmd FileType python setlocal tabstop=2 softtabstop=0 shiftwidth=2 expandtab
+autocmd FileType python setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
 autocmd FileType rust setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
 autocmd FileType rust nnoremap <silent> <buffer> gb :CocCommand rust-analyzer.openDocs<CR>
 autocmd FileType markdown setlocal nowrap

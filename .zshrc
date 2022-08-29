@@ -65,7 +65,7 @@ export BROWSER=firefox
 export EDITOR=nvim
 export SYSTEMD_EDITOR=$EDITOR
 # Set the default terminal
-export TERMINAL=termite
+export TERMINAL=alacritty
 # Print the wall-time for a process when it runs for a longer period of time
 export REPORTTIME=4
 
@@ -133,7 +133,9 @@ if [ -e ~/.nodenv ]; then
 fi
 
 # Initialize nvm if it's installed on the system
-[ -e /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+nvm-init() {
+  [ -e /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+}
 
 # Add executable dirs to PATH
 [ -e ~/.node/bin ] && export PATH="${HOME}/.node/bin:${PATH}"
@@ -289,4 +291,10 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdkman-init() {
+  [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+}
+
+[ -d "$HOME/rp2040/pico-sdk" ] && export PICO_SDK_PATH=$HOME/rp2040/pico-sdk
+
+export MOZ_ENABLE_WAYLAND=1

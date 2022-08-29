@@ -157,9 +157,9 @@ function! BuildComposer(info)
   endif
 endfunction
 
-Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
-
 Plug 'junegunn/vim-easy-align'
+
+Plug 'efabens/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'branch': 'versions-bumps' }
 
 " Initialize plugin system
 call plug#end()
