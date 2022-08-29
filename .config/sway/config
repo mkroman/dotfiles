@@ -271,6 +271,7 @@ exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 4 && exec alacritty
 exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 2 && exec alacritty --title code2'"
 exec --no-startup-id swaymsg "workspace 1; exec alacritty --title weechat"
 exec --no-startup-id swaymsg "workspace 2; exec $BROWSER"
+exec --no-startup-id 1password --silent
 
 exec --no-startup-id dex -a
 

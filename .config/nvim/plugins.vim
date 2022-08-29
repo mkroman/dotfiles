@@ -147,6 +147,8 @@ Plug 'jreybert/vimagit'
 " Snippets
 Plug 'honza/vim-snippets'
 
+Plug 'nathanaelkane/vim-indent-guides'
+
 function! BuildComposer(info)
   if a:info.status != 'unchanged' || a:info.force
     if has('nvim')
@@ -160,6 +162,10 @@ endfunction
 Plug 'junegunn/vim-easy-align'
 
 Plug 'efabens/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'branch': 'versions-bumps' }
+" Markdown preview
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+
+Plug 'google/vim-jsonnet'
 
 " Initialize plugin system
 call plug#end()

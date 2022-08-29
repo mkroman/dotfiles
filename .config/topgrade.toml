@@ -1,1 +1,1 @@
-disable = ["gem", "node", "go"]
+disable = ["gem", "node"]

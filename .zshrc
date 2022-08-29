@@ -24,7 +24,6 @@
 # For more information, please refer to <http://unlicense.org>
 
 # {{{ Load Zsh modules
-
 # Load and initialize the `colors' environment variable with ANSI colors
 autoload -Uz colors && colors
 # Load and initialize tab-completion
@@ -33,8 +32,6 @@ zstyle ':completion:*' menu select
 # Load the url-quote-magic module that automagically adds quotes when a
 # URL is inserted as an argument
 autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
-
-
 # }}}
 
 # {{{ Zsh options
@@ -125,12 +122,14 @@ function pyenv-init() {
 # {{{ Node executables and nodenv.
 #
 # Initialize nodenv if it's installed locally
-if [ -e ~/.nodenv ]; then
-  export PATH="$HOME/.nodenv/bin:$PATH"
+nodenv-init() {
+  if [ -e ~/.nodenv ]; then
+    export PATH="$HOME/.nodenv/bin:$PATH"
 
-  eval "$(nodenv init -)"
+    eval "$(nodenv init -)"
 
-fi
+  fi
+}
 
 # Initialize nvm if it's installed on the system
 nvm-init() {
@@ -172,9 +171,6 @@ alias gushh='git push origin master'
 alias gul='git pull'
 alias gull='git pull origin master'
 alias ga='git commit --amend'
-
-# Docker aliases
-alias dm='docker-machine'
 
 # Kubernetes aliases
 if command -v kubectl >/dev/null; then
@@ -231,6 +227,8 @@ fi
 bindkey '^R' history-incremental-search-backward
 bindkey '^B' backward-word
 bindkey '^E' forward-word
+# Unbind overwrite-mode on the insert key
+bindkey -r '^[[2~'
 
 ## Miscellaneous functions
 
@@ -255,7 +253,7 @@ function vzf {
 }
 
 function open {
-  nohup xdg-open $* > /dev/null &
+  handlr open $*
 }
 
 if [ -e "${HOME}/.restic/${HOST}.key" ]; then
@@ -266,6 +264,10 @@ fi
 [ -e ~/.zshrc.local ] && source ~/.zshrc.local
 [ -e ~/.local/bin ] && export PATH="${HOME}/.local/bin:${PATH}"
 [ -e ~/.linkerd2/bin ] && export PATH="$PATH}:${HOME}/.linkerd2/bin"
+
+if command -v direnv >/dev/null; then
+  eval "$(direnv hook zsh)"
+fi
 
 if [ -e /usr/share/fzf/shell/key-bindings.zsh ]; then
   source /usr/share/fzf/shell/key-bindings.zsh
@@ -283,7 +285,19 @@ alias send='croc --relay croc.maero.dk send'
 export RUSTC_FORCE_INCREMENTAL=1
 
 # Load Anaconda3 if it's present
-[ -e "${HOME}/anaconda3/bin/conda" ] && eval "$(${HOME}/anaconda3/bin/conda shell.zsh hook)"
+load-anaconda3() {
+  [ -e "${HOME}/anaconda3/bin/conda" ] && eval "$(${HOME}/anaconda3/bin/conda shell.zsh hook)"
+}
+
+
+# Open the given file in binaryninja while disowning the process.
+function binja() {
+  binaryninja "$@" &!
+}
+
+esp-idf-init() {
+  source ~/Projects/ESP32/esp-idf/export.sh
+}
 
 # Fix for Java applications on i3 and sway
 export _JAVA_AWT_WM_NONREPARENTING=1
@@ -291,6 +305,7 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
+
 sdkman-init() {
   [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 }
@@ -298,3 +313,6 @@ sdkman-init() {
 [ -d "$HOME/rp2040/pico-sdk" ] && export PICO_SDK_PATH=$HOME/rp2040/pico-sdk
 
 export MOZ_ENABLE_WAYLAND=1
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep.conf
+
+[ -d "$HOME/.nix-profile/bin" ] && export PATH="$HOME/.nix-profile/bin:$PATH"

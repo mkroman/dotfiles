@@ -258,25 +258,25 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 " Format the selected paragraph
 vmap <leader>l :!par -w80<CR>
 
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-
-let g:coc_snippet_next = '<tab>'
-
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
+" {{ CoC
+function! CheckBackSpace() abort
   let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+  return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-let g:coc_snippet_next = '<tab>'
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1):
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
@@ -293,14 +293,13 @@ let g:coc_snippet_prev = '<c-k>'
 " Use <C-j> for both expand and jump (make expand higher priority.)
 imap <C-j> <Plug>(coc-snippets-expand-jump)
 
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y><CR>" : "\<C-g>u\<CR>"
-" Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+let g:coc_snippet_next = '<tab>'
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -350,11 +349,16 @@ nmap <leader>ac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" Create mappings for function text object, requires document symbols feature of languageserver.
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
 xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
 omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
 
 " Use <TAB> for select selections ranges, needs server support, like: coc-tsserver, coc-python
 nmap <silent> <TAB> <Plug>(coc-range-select)
@@ -390,9 +394,6 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-" Open FlyGrep when pressing <leader>/
-nnoremap <leader>/ :FlyGrep<CR>
-
 " }}}
 " Plugins
 " {{{ Airline
@@ -410,7 +411,7 @@ let g:airline#extensions#branch#enabled = 0
 " {{{ ClangFormat
 
 " Mappings
-" noremap <leader>f :pyf /usr/share/clang/clang-format.py<CR>
+noremap <leader>F :pyf /usr/share/clang/clang-format.py<CR>
 " inoremap <C-i> <c-o>:pyf /usr/share/clang/clang-format.py<CR>
 
 " }}}
@@ -578,8 +579,11 @@ nnoremap <silent> <C-e> :Defx -winwidth=30 -direction=topleft<CR>
 " {{{ ALE
 highlight ALEWarning ctermbg=black cterm=bold
 " }}}
-" {{{ Markdown preview
-let g:mkdp_auto_start = 1
+" {{{ Markdown Preview
+" Automatically open a browser window when entering a markdown buffer.
+let g:mkdp_auto_start = 0
+" Automatically close the browser window when exiting a mrkdown buffer.
+let g:mkdp_auto_close = 1
 " }}}
 
 " Automatically format the code according to the Rust guidelines when a buffer
@@ -608,14 +612,14 @@ autocmd FileType markdown setlocal nowrap
 " Align GitHub-flavored Markdown tables
 autocmd FileType markdown,rust vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = { }, -- List of parsers to ignore installing
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = {},  -- list of language that will be disabled
-  },
-}
-EOF
+" lua <<EOF
+" require'nvim-treesitter.configs'.setup {
+"   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+"   ignore_install = { }, -- List of parsers to ignore installing
+"   highlight = {
+"     enable = true,              -- false will disable the whole extension
+"     disable = {},  -- list of language that will be disabled
+"   },
+" }
+" EOF
 
