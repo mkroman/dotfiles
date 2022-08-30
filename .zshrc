@@ -253,7 +253,7 @@ function vzf {
 }
 
 function open {
-  handlr open $*
+  handlr open $* &!
 }
 
 if [ -e "${HOME}/.restic/${HOST}.key" ]; then
@@ -294,6 +294,18 @@ load-anaconda3() {
 function binja() {
   binaryninja "$@" &!
 }
+
+# Generate a random alphanumeric password of LENGTH.
+#
+# Usage: generate-password [LENGTH]
+generate-password() {
+  local length="${1:-32}"
+  local password="$(tr -dc '_A-Z-a-z-0-9' < /dev/urandom | head -c "${length}")"
+
+  echo "${password}"
+}
+
+alias random-password=generate-password
 
 esp-idf-init() {
   source ~/Projects/ESP32/esp-idf/export.sh
