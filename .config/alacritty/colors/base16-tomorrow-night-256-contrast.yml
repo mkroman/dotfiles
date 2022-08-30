@@ -1,0 +1,10 @@
+# This is base16-tomorrow-night-256 but with a contrast between the foreground
+# and the background.
+
+import:
+- ~/.config/alacritty/colors/base16-tomorrow-night-256.yml
+
+colors:
+  primary:
+    foreground: '0xffffff'
+    background: '0x121212'

@@ -1,0 +1,18 @@
+import:
+- ~/.config/alacritty/colors/base16-tomorrow-night-256.yml
+
+font:
+  # Normal (roman) font face
+  normal:
+    # Font family
+    #
+    # Default:
+    #   - (macOS) Menlo
+    #   - (Linux/BSD) monospace
+    #   - (Windows) Consolas
+    family: Source Code Pro
+
+  # Point size
+  size: 13.0
+  
+# vim: ft=yaml
