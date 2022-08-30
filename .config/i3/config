@@ -259,6 +259,7 @@ for_window [class="Ghidra"] floating enable
 for_window [class="Alacritty" title="weechat"] move scratchpad, scratchpad show
 
 for_window [class="chromium" window_role="app"] floating enable
+for_window [class="gnuplot_qt"] floating enable
 
 # Make KeepassXC a floating window
 for_window [class="KeePassXC"] floating enable
