@@ -122,9 +122,6 @@ Plug 'tpope/vim-speeddating'
 
 Plug 'inkarkat/vim-SyntaxRange'
 
-" Markdown syntax and preview
-" Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
-
 " Enhanced vim integration
 Plug 'jreybert/vimagit'
 
@@ -145,11 +142,16 @@ endfunction
 
 Plug 'junegunn/vim-easy-align'
 
-Plug 'efabens/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'branch': 'versions-bumps' }
 " Markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
 Plug 'google/vim-jsonnet'
+
+" Ansible syntax highlighting
+Plug 'pearofducks/ansible-vim', { 'commit': '93798e8c89c441d29d4678da0c0d5e1429eb43b0' }
+
+" Terraform syntax highlighting etc.
+Plug 'hashivim/vim-terraform'
 
 " Initialize plugin system
 call plug#end()

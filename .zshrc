@@ -99,8 +99,11 @@ fi
 if [ -e ~/.rbenv/bin/rbenv ]; then
   export PATH="${HOME}/.rbenv/bin:${PATH}"
 
-  eval "$(rbenv init -)"
 fi
+
+rbenv-init() {
+  eval "$(rbenv init -)"
+}
 
 # Ruby aliases
 alias be='bundle exec'
@@ -114,24 +117,23 @@ function pyenv-init() {
     export PYENV_ROOT="${HOME}/.pyenv"
     export PATH="${PYENV_ROOT}/bin:${PATH}"
 
-    eval "$(pyenv init - )"
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
   fi
 }
 # }}}
 
 # {{{ Node executables and nodenv.
 #
-# Initialize nodenv if it's installed locally
+# Initialize nodenv if it's installed on the system
+if [ -e ~/.nodenv ]; then
+  export PATH="$HOME/.nodenv/bin:$PATH"
+fi
+
 nodenv-init() {
-  if [ -e ~/.nodenv ]; then
-    export PATH="$HOME/.nodenv/bin:$PATH"
-
-    eval "$(nodenv init -)"
-
-  fi
+  eval "$(nodenv init -)"
 }
 
-# Initialize nvm if it's installed on the system
 nvm-init() {
   [ -e /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
 }
@@ -311,9 +313,66 @@ esp-idf-init() {
   source ~/Projects/ESP32/esp-idf/export.sh
 }
 
+ghopen() {
+  local branch=$(git symbolic-ref --short -q HEAD)
+  gh browse --branch="${branch}" .
+}
+
+# Prepare a shell environment with help from a 1Password vault
+#
+# Prepares a shell environment by reading the `script` field from an item with
+# the given NAME inside the `Environments` vault and then evaluating it in the
+# current shell after injecting 1Password references.
+#
+# Usage:
+#
+# op-env <NAME>
+#
+# Example:
+#
+# op-env npm
+#
+# The `script` field for the `hello-world` item in the `Environments` vault:
+#
+# export GITHUB_ACTOR="{{ op://${vault}/GitHub/username }}"
+# export GITHUB_TOKEN="{{ op://${vault}/GitHub/Personal Access Tokens/read_packages }}"
+op-env() {
+  local name="${1}"
+  local vault="Private"
+
+  # Read the template from the Environments vault
+  local tpl=
+  tpl="$(op read -n "op://Environments/${name}/script")"
+  [ $? -ne 0 ] && return
+
+  # Inject variables and evaluate 1Password references
+  local script=
+  script="$(echo -n "${tpl}" | vault="${vault}" env_name="${name}" op inject --cache)"
+  [ $? -ne 0 ] && return
+
+  # Print and evaluate the final script
+  echo "${script}"
+  eval "${script}"
+}
+
+case "$TERM" in
+  xterm*|rxvt*|alacritty)
+   precmd() {
+     builtin print -P -n -- "\e]0;$HOST: zsh - %8~\a"
+   }
+
+   preexec() {
+     builtin print -P -n -- "\e]0;$HOST: ${1[(w)1]} - %8~\a"
+   }
+   ;;
+esac
+
 # Fix for Java applications on i3 and sway
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
+export PY_COLORS=1
+
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
@@ -328,3 +387,5 @@ export MOZ_ENABLE_WAYLAND=1
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep.conf
 
 [ -d "$HOME/.nix-profile/bin" ] && export PATH="$HOME/.nix-profile/bin:$PATH"
+
+eval "$(direnv hook zsh)"

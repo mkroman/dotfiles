@@ -1,4 +1,4 @@
-" Copyright (c) 2019, Mikkel Kroman <mk@maero.dk>
+" Copyright (c) 2022, Mikkel Kroman <mk@maero.dk>
 "
 " Permission is hereby granted, free of charge, to any person obtaining
 " a copy of this software and associated documentation files (the
@@ -31,6 +31,7 @@ if &t_Co > 2 || has('gui_running')
   try
     colorscheme base16-tomorrow-night
     " colorscheme base16-solarized-light
+    "
   catch /^Vim\%((\a\+)\)\=:E185/
     " Fall back to the desert colorscheme if the requested wasn't found
     colorscheme desert
@@ -197,7 +198,7 @@ vmap <leader>l :!par -w80<CR>
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1):
+      \ coc#pum#visible() ? coc#pum#next(1) :
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
@@ -370,6 +371,9 @@ let g:mkdp_auto_start = 0
 " Automatically close the browser window when exiting a mrkdown buffer.
 let g:mkdp_auto_close = 1
 " }}}
+" {{{ Ansible
+let g:ansible_unindent_after_newline = 1
+" }}}
 
 " {{{ netrw Configuration
 function ToggleExplorer()
@@ -406,7 +410,7 @@ map <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> t
 " Test fix for yaml indentation
 augroup yaml_fix
     autocmd!
-    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:>
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0#
 augroup END
 
 autocmd FileType c setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
@@ -415,5 +419,7 @@ autocmd FileType rust setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
 autocmd FileType rust nnoremap <silent> <buffer> gb :CocCommand rust-analyzer.openDocs<CR>
 autocmd FileType markdown setlocal nowrap
 autocmd BufNewFile,BufRead *.plt setf gnuplot
+autocmd FileType Jenkinsfile setlocal shiftwidth=4 tabstop=4 textwidth&
 " Align GitHub-flavored Markdown tables
 autocmd FileType markdown,rust vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
+autocmd FileType yaml.ansible setlocal indentkeys-=\- indentkeys-=0# indentkeys-=<:>

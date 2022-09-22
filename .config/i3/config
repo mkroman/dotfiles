@@ -211,6 +211,7 @@ for_window [class="URxvt|Gvim"] border 1pixel
 for_window [class="Thunderbird" title="Feed Subscriptions"] floating enable
 for_window [class="Sublime_merge"] floating enable
 for_window [class="Binary Ninja"] floating enable
+for_window [class="Code"] floating enable
 
 # Discord window settings
 for_window [class="discord"] border 1pixel
@@ -265,6 +266,8 @@ for_window [class="gnuplot-wxt"] floating enable
 # Make KeepassXC a floating window
 for_window [class="KeePassXC"] floating enable
 
+# Make 1Password windows float
+for_window [class="1Password"] floating enable
 
 # Workspace assignment
 assign [class="mumble|ricochet|Pidgin"] 1
