@@ -18,20 +18,6 @@ Plug 'tpope/vim-fugitive'
 " Use vim-rspec for rspec integration
 Plug 'thoughtbot/vim-rspec'
 
-" Use unite for whatever
-Plug 'Shougo/unite.vim'
-
-" Use vimfiler for file exploration
-" Plug 'Shougo/vimfiler'
-
-if has('nvim')
-  Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/defx.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-
 " Use vim-coffee-script for coffee-script syntax highlighting
 Plug 'kchmck/vim-coffee-script'
 

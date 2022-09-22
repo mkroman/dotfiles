@@ -457,104 +457,6 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " }}}
-" {{{ Defx
-autocmd FileType defx call s:defx_my_settings()
-
-function! s:defx_my_settings() abort
-  " Define mappings
-  nnoremap <silent><buffer><expr> <CR>
-  \ defx#is_directory() ? defx#do_action('open_or_close_tree') : defx#do_action('drop')
-  nnoremap <silent><buffer><expr> c
-  \ defx#do_action('copy')
-  nnoremap <silent><buffer><expr> m
-  \ defx#do_action('move')
-  nnoremap <silent><buffer><expr> p
-  \ defx#do_action('paste')
-  nnoremap <silent><buffer><expr> l
-  \ defx#is_directory() ? defx#do_action('open') : defx#do_action('redraw')
-  nnoremap <silent><buffer><expr> E
-  \ defx#do_action('open', 'vsplit')
-  nnoremap <silent><buffer><expr> P
-  \ defx#do_action('open', 'pedit')
-  nnoremap <silent><buffer><expr> o
-  \ defx#is_directory() ?
-  \ defx#do_action('open_or_close_tree') :
-  \ defx#do_action('drop')
-  nnoremap <silent><buffer><expr> K
-  \ defx#do_action('new_directory')
-  nnoremap <silent><buffer><expr> N
-  \ defx#do_action('new_file')
-  nnoremap <silent><buffer><expr> M
-  \ defx#do_action('new_multiple_files')
-  nnoremap <silent><buffer><expr> C
-  \ defx#do_action('toggle_columns',
-  \                'mark:indent:icon:filename:type:size:time')
-  nnoremap <silent><buffer><expr> S
-  \ defx#do_action('toggle_sort', 'time')
-  nnoremap <silent><buffer><expr> d
-  \ defx#do_action('remove')
-  nnoremap <silent><buffer><expr> r
-  \ defx#do_action('rename')
-  nnoremap <silent><buffer><expr> !
-  \ defx#do_action('execute_command')
-  nnoremap <silent><buffer><expr> x
-  \ defx#do_action('execute_system')
-  nnoremap <silent><buffer><expr> yy
-  \ defx#do_action('yank_path')
-  nnoremap <silent><buffer><expr> .
-  \ defx#do_action('toggle_ignored_files')
-  nnoremap <silent><buffer><expr> ;
-  \ defx#do_action('repeat')
-  nnoremap <silent><buffer><expr> h
-  \ defx#do_action('cd', ['..'])
-  nnoremap <silent><buffer><expr> ~
-  \ defx#do_action('cd')
-  nnoremap <silent><buffer><expr> q
-  \ defx#do_action('quit')
-  nnoremap <silent><buffer><expr> <Space>
-  \ defx#do_action('toggle_select') . 'j'
-  nnoremap <silent><buffer><expr> *
-  \ defx#do_action('toggle_select_all')
-  nnoremap <silent><buffer><expr> j
-  \ line('.') == line('$') ? 'gg' : 'j'
-  nnoremap <silent><buffer><expr> k
-  \ line('.') == 1 ? 'G' : 'k'
-  nnoremap <silent><buffer><expr> <C-l>
-  \ defx#do_action('redraw')
-  nnoremap <silent><buffer><expr> <C-g>
-  \ defx#do_action('print')
-  nnoremap <silent><buffer><expr> cd
-  \ defx#do_action('change_vim_cwd')
-
-  call defx#custom#option('_', {
-        \ 'auto_recursive_level': '3',
-        \ 'columns': 'indent:icon:filename',
-        \ 'split': 'vertical',
-        \ 'ignored_files': '.*,./target,Cargo.lock'
-        \ })
-
-  call defx#custom#column('filename', {
-        \ 'root_marker_highlight': 'Ignore',
-        \ })
-  
-  call defx#custom#column('icon', {
-        \ 'directory_icon': '▸',
-        \ 'opened_icon': '▾',
-        \ 'root_icon': ' ',
-        \ })
-  
-  call defx#custom#column('filename', {
-        \ 'min_width': 1,
-        \ 'max_width': 40,
-        \ })
-  
-  call defx#custom#column('mark', {
-        \ 'readonly_icon': '✗',
-        \ 'selected_icon': '✓',
-        \ })
-endfunction
-
-" }}}
 " {{{ VimFiler
 
 " Settings
@@ -572,8 +474,6 @@ let g:vimfiler_readonly_file_icon = '✗'
 let g:vimfiler_marked_file_icon = '✓'
 
 " Mappings
-nnoremap <silent> <C-e> :Defx -winwidth=30 -direction=topleft<CR>
-" nnoremap <silent> <C-e> :Defx -toggle -split=floating<CR>
 
 " }}}
 " {{{ ALE
@@ -584,6 +484,26 @@ highlight ALEWarning ctermbg=black cterm=bold
 let g:mkdp_auto_start = 0
 " Automatically close the browser window when exiting a mrkdown buffer.
 let g:mkdp_auto_close = 1
+" }}}
+
+" {{{ netrw Configuration
+function ToggleExplorer()
+  if &ft == "netrw"
+    if exists("w:netrw_rexlocal")
+      Rexplore
+    endif
+  else
+    Explore
+  endif
+endfun
+
+let g:netrw_banner = 0 " Don't show the banner.
+let g:netrw_browse_split = 0 " Open in the current window.
+let g:netrw_list_hide=netrw_gitignore#Hide() .. ',^\./$' " Hide the current dot dir.
+let g:netrw_liststyle = 3 " Use tree-style listing.
+let g:netrw_sizestyle='H' " Display human-readable file sizes.
+
+nnoremap <silent> <C-e> :call ToggleExplorer()<CR>
 " }}}
 
 " Automatically format the code according to the Rust guidelines when a buffer
@@ -609,6 +529,7 @@ autocmd FileType python setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
 autocmd FileType rust setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
 autocmd FileType rust nnoremap <silent> <buffer> gb :CocCommand rust-analyzer.openDocs<CR>
 autocmd FileType markdown setlocal nowrap
+autocmd BufNewFile,BufRead *.plt setf gnuplot
 " Align GitHub-flavored Markdown tables
 autocmd FileType markdown,rust vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 
