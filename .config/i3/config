@@ -101,9 +101,9 @@ bindsym XF86AudioPlay exec "playerctl play-pause; pkill -44 i3blocks"
 bindsym XF86AudioStop exec "playerctl stop; pkill -44 i3blocks"
 
 # Volume control
-bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-mute alsa_output.pci-0000_10_00.3.analog-stereo false; pactl set-sink-volume alsa_output.pci-0000_10_00.3.analog-stereo +5%; pkill -44 i3blocks"
-bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-mute alsa_output.pci-0000_10_00.3.analog-stereo false; pactl -- set-sink-volume alsa_output.pci-0000_10_00.3.analog-stereo -5%; pkill -44 i3blocks"
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute alsa_output.pci-0000_10_00.3.analog-stereo toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-mute alsa_output.pci-0000_10_00.4.analog-stereo false; pactl set-sink-volume alsa_output.pci-0000_10_00.4.analog-stereo +5%; pkill -44 i3blocks"
+bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-mute alsa_output.pci-0000_10_00.4.analog-stereo false; pactl -- set-sink-volume alsa_output.pci-0000_10_00.4.analog-stereo -5%; pkill -44 i3blocks"
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute alsa_output.pci-0000_10_00.4.analog-stereo toggle
 
 # Lock screen
 bindsym $mod+Home exec --no-startup-id $HOME/.bin/lock-screen
@@ -260,6 +260,7 @@ for_window [class="Alacritty" title="weechat"] move scratchpad, scratchpad show
 
 for_window [class="chromium" window_role="app"] floating enable
 for_window [class="gnuplot_qt"] floating enable
+for_window [class="gnuplot-wxt"] floating enable
 
 # Make KeepassXC a floating window
 for_window [class="KeePassXC"] floating enable
