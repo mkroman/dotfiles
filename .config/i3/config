@@ -115,7 +115,7 @@ bindsym $mod+b exec "firefox"
 bindsym $mod+x exec "gvim"
 
 # open the file manager
-bindsym $mod+u exec "nautilus --new-window"
+bindsym $mod+u exec "thunar"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
