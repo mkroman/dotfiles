@@ -1,7 +1,3 @@
-[user]
-	name = Mikkel Kroman
-	signingkey = CFD3219C
-	email = mk@maero.dk
 [color]
 	ui = auto
 	interactive = auto
@@ -21,8 +17,6 @@
 	user = mkroman
 [core]
 	pager = delta
-	excludesfile = /home/mk/.gitignore
-	hooksPath = /home/mk/.hooks
 [giggle]
 	main-window-maximized = true
 	main-window-geometry = 0x0+0+0
@@ -60,8 +54,6 @@
 	tool = gvimdiff
 [diff]
 	compactionHeuristic = true
-[git]
-	email = mk@maero.dk
 [pull]
 	rebase = false
 	default = current
@@ -72,3 +64,8 @@
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[include]
+	path = .gitconfig.local

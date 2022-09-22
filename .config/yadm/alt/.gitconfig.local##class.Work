@@ -1,0 +1,9 @@
+[user]
+	name = Mikkel Kroman
+	signingkey = 377D68DACA693AA8B69F959898063C4A93558298
+	email = mikkel.kroman@omnigame.com
+
+[commit]
+	gpgsign = true
+
+# vim: ft=gitconfig

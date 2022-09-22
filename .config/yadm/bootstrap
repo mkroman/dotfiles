@@ -1,8 +1,11 @@
 #!/bin/sh
 
 # Init submodules
-cd "${HOME}"
+cd "${HOME}" || exit
 yadm submodule update --recursive --init
+# Use personal user information for the dotfiles repository.
+yadm config user.name "Mikkel Kroman"
+yadm config user.email "mk@maero.dk"
 
 if command -v vim >/dev/null 2>&1; then
   echo "Bootstrapping vim"
