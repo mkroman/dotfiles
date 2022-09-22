@@ -48,19 +48,17 @@ Plug 'austintaylor/vim-indentobject'
 Plug 'godlygeek/tabular'
 
 " {{{ Colorschemes
-"
-" Jellybeans colorscheme
-Plug 'nanotech/jellybeans.vim'
 
 " Alduin colorscheme
 Plug 'AlessandroYorba/Alduin'
 
 " Challenger deep colorscheme
 Plug 'challenger-deep-theme/vim'
-" }}}
 
 " Add a bunch of color schemes
 Plug 'chriskempson/base16-vim'
+
+" }}}
 
 " TOML syntax support
 Plug 'cespare/vim-toml'
