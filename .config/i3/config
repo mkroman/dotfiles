@@ -9,7 +9,7 @@ focus_follows_mouse no
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -257,7 +257,7 @@ for_window [class="xfreerdp"] floating enable move position center
 # Floating Ghidra windows
 for_window [class="Ghidra"] floating enable
 
-for_window [class="Alacritty" title="weechat"] move scratchpad, scratchpad show
+for_window [class="kitty" title="weechat"] move scratchpad, scratchpad show
 
 for_window [class="chromium" window_role="app"] floating enable
 for_window [class="gnuplot_qt"] floating enable
@@ -292,9 +292,9 @@ exec --no-startup-id i3-msg "workspace 2; append_layout ~/.config/i3/workspaces/
 exec --no-startup-id i3-msg "workspace 3; append_layout ~/.config/i3/workspaces/code.json"
 
 # Start applications.
-exec --no-startup-id i3-msg "workspace 3; exec sh -c 'exec alacritty'"
-exec --no-startup-id i3-msg "workspace 3; exec sh -c 'exec alacritty'"
-exec --no-startup-id i3-msg "workspace 1; exec alacritty --title weechat"
+exec --no-startup-id i3-msg "workspace 3; exec sh -c 'exec kitty'"
+exec --no-startup-id i3-msg "workspace 3; exec sh -c 'exec kitty'"
+exec --no-startup-id i3-msg "workspace 1; exec kitty --title weechat"
 exec --no-startup-id i3-msg "workspace 2; exec firefox"
 
 # Make the currently focused window a scratchpad

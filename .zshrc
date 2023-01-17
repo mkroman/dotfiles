@@ -62,7 +62,7 @@ export BROWSER=firefox
 export EDITOR=nvim
 export SYSTEMD_EDITOR=$EDITOR
 # Set the default terminal
-export TERMINAL=alacritty
+export TERMINAL=kitty
 # Print the wall-time for a process when it runs for a longer period of time
 export REPORTTIME=4
 
