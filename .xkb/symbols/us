@@ -1,0 +1,14 @@
+default partial alphanumeric_keys modifier_keys
+
+xkb_symbols "mac-extended" {
+  include "us(mac)"
+
+  name[Group1] = "English (Macintosh, Extended)";
+
+  key <AE01> { [ 1, exclaim, exclaimdown, U203D ] };
+  key <AE07> { [ 7, ampersand, U00BD, doubledagger ] };
+  key <AD05> { [ t, T, U25C9, dead_caron ] };
+  key <AD06> { [ y, Y, U0CA0, onequarter ] };
+  key <AD10> { [ p, P, Greek_pi, Greek_tau ] };
+  key <AB03> { [ c, C, U2665, Ccedilla ] };
+};
