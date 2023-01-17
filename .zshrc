@@ -383,7 +383,6 @@ sdkman-init() {
 
 [ -d "$HOME/rp2040/pico-sdk" ] && export PICO_SDK_PATH=$HOME/rp2040/pico-sdk
 
-export MOZ_ENABLE_WAYLAND=1
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep.conf
 
 [ -d "$HOME/.nix-profile/bin" ] && export PATH="$HOME/.nix-profile/bin:$PATH"
