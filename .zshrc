@@ -384,7 +384,13 @@ sdkman-init() {
 [ -d "$HOME/rp2040/pico-sdk" ] && export PICO_SDK_PATH=$HOME/rp2040/pico-sdk
 
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep.conf
+export MOZ_ENABLE_WAYLAND=1
 
 [ -d "$HOME/.nix-profile/bin" ] && export PATH="$HOME/.nix-profile/bin:$PATH"
+
+export GOPATH="${HOME}/.local/share/go"
+
+[ ! -d "${GOPATH}" ] && mkdir -p "${GOPATH}"
+[ -d "${GOPATH}/bin" ] && export PATH="${PATH}:${GOPATH}/bin"
 
 eval "$(direnv hook zsh)"

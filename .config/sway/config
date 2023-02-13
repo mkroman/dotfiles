@@ -2,12 +2,26 @@ set $mod Mod4
 
 font pango:Terminus 10
 
-output eDP-1 scale 2
+include /etc/sway/config.d/*
 
-input 1:1:AT_Translated_Set_2_keyboard {
+# Configuration with nvidia:
+set $left DP-3
+set $middle DP-1
+set $right HDMI-A-1
+
+# Configuration with nouveau:
+# set $left DP-1
+# set $middle DP-3
+# set $right HDMI-A-1
+
+output $left   position 0 0 scale 1
+output $middle position 1920 0 scale 2
+output $right  position 3840 0 scale 1
+
+input type:keyboard {
   xkb_model apple
   xkb_layout us
-  xkb_variant mac
+  xkb_variant mac-extended
   repeat_delay 250
   repeat_rate 50
 }
@@ -16,8 +30,6 @@ input type:touchpad {
   tap enabled
   natural_scroll enabled
 }
-
-output HDMI-A-1 pos 1920 0 res 1920x1080@60Hz
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -257,9 +269,10 @@ for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 
 # Make the first workspace appear on the left-hand monitor.
-workspace 1 output DVI-D-0
-workspace 2 output DP-0
-workspace 3 output DP-0
+workspace 1 output $left
+workspace 2 output $middle
+workspace 3 output $middle
+workspace 7 output $right
 
 # Restore the first workspace.
 exec --no-startup-id swaymsg "workspace 1; append_layout ~/.config/i3/workspaces/chat.json"
@@ -272,6 +285,9 @@ exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 2 && exec alacritty
 exec --no-startup-id swaymsg "workspace 1; exec alacritty --title weechat"
 exec --no-startup-id swaymsg "workspace 2; exec $BROWSER"
 exec --no-startup-id 1password --silent
+
+exec --no-startup-id eval $(gnome-keyring-daemon --start)
+exec --no-startup-id export SSH_AUTH_SOCK
 
 exec --no-startup-id dex -a
 
