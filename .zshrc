@@ -71,6 +71,8 @@ export REPORTTIME=4
 # Load directory colors for `ls'
 [ -e ~/.dircolors ] && eval "$(dircolors ~/.dircolors)"
 
+# {{{ PATH injection
+
 # Add ~/.bin to the PATH stack if the directory exists
 [ -d ~/.bin ] && export PATH="${HOME}/.bin:${PATH}"
 
@@ -93,14 +95,14 @@ fi
 #  export PATH="${HOME}/.cargo/bin:${PATH}"
 #fi
 
-
-# {{{ Ruby tools.
 # Initialize rbenv if it's installed locally
 if [ -e ~/.rbenv/bin/rbenv ]; then
   export PATH="${HOME}/.rbenv/bin:${PATH}"
-
 fi
 
+# }}}
+
+# {{{ Ruby tools.
 rbenv-init() {
   eval "$(rbenv init -)"
 }
@@ -185,6 +187,17 @@ alias t='task'
 
 alias :e='vim' # :e <file>
 
+## String manipulation aliases
+
+# Replace all newlines with a literal '\n'.
+alias escape-newlines="sed 's/$/\\\n/g' | tr -d '\n'"
+# Trim whitespace at the beginning of each line.
+alias trim-line-prefixes="sed 's/^\s*//g'"
+# Trim whitespace at the end of each line.
+alias trim-line-suffixes="sed 's/\s*$//g'"
+# Trim whitespace at the beginning and end of all lines.
+alias trim-lines="trim-line-prefixes | trim-line-suffixes"
+
 # Other program aliases
 alias objdump='objdump -M intel'
 
@@ -226,9 +239,16 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
     zle -N zle-line-finish
 fi
 
+restore-job() {
+  fg
+}
+
+zle -N restore-job
+
 bindkey '^R' history-incremental-search-backward
 bindkey '^B' backward-word
 bindkey '^E' forward-word
+bindkey '^F' restore-job
 # Unbind overwrite-mode on the insert key
 bindkey -r '^[[2~'
 
@@ -374,7 +394,7 @@ export PY_COLORS=1
 
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+# THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 
 sdkman-init() {
