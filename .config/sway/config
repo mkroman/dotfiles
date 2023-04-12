@@ -5,14 +5,14 @@ font pango:Terminus 10
 include /etc/sway/config.d/*
 
 # Configuration with nvidia:
-set $left DP-3
-set $middle DP-1
-set $right HDMI-A-1
+# set $left DP-3
+# set $middle DP-1
+# set $right HDMI-A-1
 
 # Configuration with nouveau:
-# set $left DP-1
-# set $middle DP-3
-# set $right HDMI-A-1
+set $left DP-1
+set $middle DP-3
+set $right HDMI-A-1
 
 output $left   position 0 0 scale 1
 output $middle position 1920 0 scale 2
@@ -120,7 +120,6 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r reload
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your X session.' -b 'Yes, exit sway' 'swaymsg exit'"
-bindsym $mod+z exec i3-input -P 'Zeal: ' -F 'exec zeal "%s"' -f "pango:Droid Sans Mono"
 
 # mpd - skip to next song
 bindsym XF86AudioNext exec "mpc next; pkill -44 i3blocks"
@@ -183,6 +182,7 @@ bindsym $mod+r mode "resize"
 bindsym Mod1+Shift+2 exec "~/.bin/screencap desktop"
 bindsym Mod1+Shift+3 exec "~/.bin/screencap window"
 bindsym Mod1+Shift+4 exec "~/.bin/screencap selection"
+bindsym $mod+z exec "rofimoji --selector wofi"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
@@ -203,7 +203,6 @@ for_window [class="Thunar"] floating enable
 for_window [class="Mumble"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Steam"] floating enable
-for_window [class="Zeal"] floating enable
 for_window [class="Viewnior"] floating enable
 for_window [class="Nautilus"] floating enable
 for_window [class="Xarchiver"] floating enable
@@ -230,15 +229,24 @@ for_window [class="discord"] border 1pixel
 # alacritty-specific window settings.
 for_window [app_id="Alacritty"] border pixel 2 
 
+# Enable floating for policykit password prompts
+for_window [app_id="lxqt-policykit-agent"] floating enable, move position center
+
 # KeePassXC-specific window settings.
 for_window [class="keepassxc"] floating enable, move position center
 for_window [class="1Password"] floating enable, move position center
+
+# KDE Connect dialog windows
+for_window [app_id="org.kde.kdeconnect.handler"] floating enable, move position center
 
 # Kicad-specific window settings.
 for_window [class="Kicad"] floating disable
 for_window [class="Kicad" window_type="dialog"] floating enable, move position center
 for_window [class="Kicad" title="Eeschema$"] floating enable border normal
 for_window [class="Kicad" title="Pcbnew$"] floating enable border normal
+
+# Xournalpp settings.
+for_window [app_id="xournalpp"] floating enable
 
 # Floating media players.
 for_window [class="Vlc|mpv"] floating enable
@@ -259,7 +267,6 @@ for_window [class="chromium" window_role="app"] floating enable
 assign [class="mumble|ricochet|Pidgin"] 1
 assign [class="Chromium|Firefox"] 2
 assign [class="Steam"] 6
-
 
 # Move the Gtk file chooser dialog to the center and set a fixed size.
 for_window [window_role="GtkFileChooserDialog"] floating enable, resize set 800 600, move position center
@@ -286,15 +293,15 @@ exec --no-startup-id swaymsg "workspace 1; exec alacritty --title weechat"
 exec --no-startup-id swaymsg "workspace 2; exec $BROWSER"
 exec --no-startup-id 1password --silent
 
-exec --no-startup-id eval $(gnome-keyring-daemon --start)
-exec --no-startup-id export SSH_AUTH_SOCK
-
 exec --no-startup-id dex -a
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec --no-startup-id dunst -config "${HOME}/.config/dunst/dunstrc"
+exec --no-startup-id kdeconnect-indicator
 
 # Make the currently focused window a scratchpad
 bindsym $mod+grave [title="weechat"] scratchpad show
 
-bindsym Ctrl+P exec 1password --show
+# bindsym Ctrl+Shift+P exec 1password --show
 bindsym Ctrl+Shift+space exec 1password --quick-access
 bindsym Ctrl+Shift+l exec 1password --lock
 
