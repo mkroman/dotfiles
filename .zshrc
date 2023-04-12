@@ -401,6 +401,26 @@ sdkman-init() {
   [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 }
 
+send-to-phone() {
+  local device_name="Pixel 6A" input=
+
+  if [[ $# -gt 0 ]]; then
+    input="${1}"
+  else
+    input="$(cat -)"
+  fi
+
+  if [[ ("${input}" =~ "^\./" || "${input}" =~ "^/") && -e "${input}" ]] || [[ "${input}" =~ "^http" ]]; then
+    kdeconnect-cli \
+      --name "${device_name}" \
+      --share "${input}"
+  else
+    kdeconnect-cli \
+      --name "${device_name}" \
+      --share-text "${input}"
+  fi
+}
+
 [ -d "$HOME/rp2040/pico-sdk" ] && export PICO_SDK_PATH=$HOME/rp2040/pico-sdk
 
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep.conf
