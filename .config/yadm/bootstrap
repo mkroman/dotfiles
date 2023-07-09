@@ -3,14 +3,15 @@
 # Init submodules
 cd "${HOME}" || exit
 yadm submodule update --recursive --init
+
 # Use personal user information for the dotfiles repository.
 yadm config user.name "Mikkel Kroman"
 yadm config user.email "mk@maero.dk"
 
-if command -v vim >/dev/null 2>&1; then
-  echo "Bootstrapping vim"
-  vim '+PlugInstall' '+PlugClean' '+qall'
-fi
+os_name="$(uname -s)"
+
+# Create a local bin directory
+mkdir -p "${HOME}/.local/bin"
 
 if command -v nvim >/dev/null 2>&1; then
   echo "Bootstrapping Neovim"
@@ -19,9 +20,105 @@ if command -v nvim >/dev/null 2>&1; then
 fi
 
 # Install rustup
-if ! command -v rustup >/dev/null 2>&1; then
+if ! command -v rustup >/dev/null 2>&1 ; then
   echo "Downloading rustup"
-  curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain stable
+
+  curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain stable -y
+
   export PATH="${PATH}:${HOME}/.cargo/bin"
   hash -r
+fi
+
+if [ "${os_name}" = "Darwin" ]; then
+  # Setup iTerm2
+  if [ -d "$HOME/.config/iterm2" ]; then
+    echo "Setting iTerm preference folder"
+
+    defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.config/iterm2"
+    defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+    defaults write com.googlecode.iterm2 NoSyncNeverRemindPrefsChangesLostForFile -bool true
+    defaults write com.googlecode.iterm2 NoSyncNeverRemindPrefsChangesLostForFile_selection -bool true
+  fi
+
+  # Set up Dock
+  # Copied from https://github.com/pawelgrzybek/dotfiles/blob/00c78c0f21041d5d3f506e49da8b70ecc8d0f636/setup-macos.sh
+  
+  ################################################################################
+  # System Preferences > Desktop & Dock
+  ################################################################################
+
+  # Dock > Size:
+  defaults write com.apple.dock tilesize -int 36
+
+  # Dock > Magnification
+  defaults write com.apple.dock largesize -int 54
+
+  # Dock > Magnification
+  defaults write com.apple.dock magnification -bool true
+
+  # Dock > Minimize windows using: Scale effect
+  defaults write com.apple.dock mineffect -string "scale"
+
+  # Dock > Minimize windows into application icon
+  defaults write com.apple.dock minimize-to-application -bool true
+
+  # Dock > Automatically hide and show the Dock
+  defaults write com.apple.dock autohide -bool true
+
+  # Dock > Automatically hide and show the Dock (duration)
+  defaults write com.apple.dock autohide-time-modifier -float 0.4
+
+  # Dock > Automatically hide and show the Dock (delay)
+  defaults write com.apple.dock autohide-delay -float 0
+
+  # Show recent applications in Dock
+  defaults write com.apple.dock "show-recents"  -bool false
+
+  # Windows & Apps > Prefer tabs when opening documents
+  defaults write -globalDomain AppleWindowTabbingMode -string "always"
+
+  # Mission Controll > Automatically rearrange Spaces based on most recent use
+  defaults write com.apple.dock mru-spaces -bool false
+
+  ################################################################################
+  # Finder > Preferences
+  ################################################################################
+
+  # Show all filename extensions
+  defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+  # Show wraning before changing an extension
+  defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+  # Show wraning before removing from iCloud Drive
+  defaults write com.apple.finder FXEnableRemoveFromICloudDriveWarning -bool false
+
+  # Finder > View > As List
+  defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+
+  # Finder > View > Show Path Bar
+  defaults write com.apple.finder ShowPathbar -bool true
+
+  ################################################################################
+  # System Preferences > Control Centre
+  ################################################################################
+
+  # Control Centre Modules > Bluetooth > Show in Menu Bar
+  defaults write "com.apple.controlcenter" "NSStatusItem Visible Bluetooth" -bool true
+
+  # Control Centre Modules > Screen Mirroring > Don't Show in Menu Bar
+  defaults write "com.apple.airplay" showInMenuBarIfPresent -bool false
+
+  # Control Centre Modules > Sound > Always Show in Menu Bar
+  defaults write "com.apple.controlcenter" "NSStatusItem Visible Sound" -bool true
+
+  # Control Centre Modules > Now Playing > Don't Show in Menu Bar
+  defaults write "com.apple.airplay" "NSStatusItem Visible NowPlaying" -bool false
+
+  # Menu Bar Only > Spotlight > Don't Show in Menu Bar
+  defaults -currentHost write com.apple.Spotlight MenuItemHidden -int 1
+
+  for app in "Dock" "Finder"; do
+    killall "${app}" > /dev/null 2>&1
+  done
 fi
