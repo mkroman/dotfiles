@@ -23,6 +23,12 @@
 #
 # For more information, please refer to <http://unlicense.org>
 
+# Include shell completions from homebrew if it is installed.
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
+
 # {{{ Load Zsh modules
 # Load and initialize the `colors' environment variable with ANSI colors
 autoload -Uz colors && colors
@@ -136,10 +142,6 @@ nodenv-init() {
   eval "$(nodenv init -)"
 }
 
-nvm-init() {
-  [ -e /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
-}
-
 # Add executable dirs to PATH
 [ -e ~/.node/bin ] && export PATH="${HOME}/.node/bin:${PATH}"
 [ -d ~/.npm-packages ] && export PATH="${HOME}/.npm-packages/bin:${PATH}"
@@ -153,6 +155,7 @@ alias ls='ls --color=auto -F'
 
 if command -v exa >/dev/null; then
   alias ll='exa -l'
+  alias ls='exa'
 else
   alias ll='ls -l'
 fi
@@ -311,23 +314,10 @@ load-anaconda3() {
   [ -e "${HOME}/anaconda3/bin/conda" ] && eval "$(${HOME}/anaconda3/bin/conda shell.zsh hook)"
 }
 
-
 # Open the given file in binaryninja while disowning the process.
 function binja() {
   binaryninja "$@" &!
 }
-
-# Generate a random alphanumeric password of LENGTH.
-#
-# Usage: generate-password [LENGTH]
-generate-password() {
-  local length="${1:-32}"
-  local password="$(tr -dc '_A-Z-a-z-0-9' < /dev/urandom | head -c "${length}")"
-
-  echo "${password}"
-}
-
-alias random-password=generate-password
 
 esp-idf-init() {
   source ~/Projects/ESP32/esp-idf/export.sh
@@ -421,6 +411,33 @@ send-to-phone() {
   fi
 }
 
+# Generate a random e-mail address using `petname` which is available at
+# https://github.com/allenap/rust-petname
+generate-mail() {
+  echo "$(petname --separator '.' --words 3 --complexity 2)@maero.dk"
+}
+
+gen() {
+  case "${1}" in
+    mail)
+      generate-mail
+      ;;
+    pass|password|pw)
+      generate-password
+      ;;
+  esac
+}
+
+# Generate a random alphanumeric password of LENGTH.
+#
+# Usage: generate-password [LENGTH]
+generate-password() {
+  local length="${1:-32}"
+  local password="$(LC_CTYPE=C tr -dc '_A-Z-a-z-0-9' < /dev/urandom | head -c "${length}")"
+
+  echo "${password}"
+}
+
 [ -d "$HOME/rp2040/pico-sdk" ] && export PICO_SDK_PATH=$HOME/rp2040/pico-sdk
 
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep.conf
@@ -434,3 +451,8 @@ export GOPATH="${HOME}/.local/share/go"
 [ -d "${GOPATH}/bin" ] && export PATH="${PATH}:${GOPATH}/bin"
 
 eval "$(direnv hook zsh)"
+
+# Use fnm for managing Node versions if it is installed.
+if command -v fnm >/dev/null; then
+  eval "$(fnm env --use-on-cd)"
+fi
