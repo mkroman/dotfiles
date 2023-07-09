@@ -39,7 +39,7 @@ if [ "$(uname -s)" = "Darwin" ] && [ "$(whoami)" = "work" ]; then
   # Load insecure files because Homebrew is retarded
   compinit -u
 else
-  compinit
+ compinit
 fi
 
 zstyle ':completion:*' menu select
