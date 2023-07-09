@@ -33,7 +33,15 @@ fi
 # Load and initialize the `colors' environment variable with ANSI colors
 autoload -Uz colors && colors
 # Load and initialize tab-completion
-autoload -Uz compinit && compinit
+autoload -Uz compinit
+
+if [ "$(uname -s)" = "Darwin" ] && [ "$(whoami)" = "work" ]; then
+  # Load insecure files because Homebrew is retarded
+  compinit -u
+else
+  compinit
+fi
+
 zstyle ':completion:*' menu select
 # Load the url-quote-magic module that automagically adds quotes when a
 # URL is inserted as an argument
