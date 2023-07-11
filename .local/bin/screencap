@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+#
+# Copyright (C) 2023, Mikkel Kroman <mk@maero.dk>
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+# 
+#    * Redistributions of source code must retain the above copyright
+# notice, this list of conditions and the following disclaimer.
+#    * Redistributions in binary form must reproduce the above
+# copyright notice, this list of conditions and the following disclaimer
+# in the documentation and/or other materials provided with the
+# distribution.
+#    * Neither the name of Google LLC nor the names of its
+# contributors may be used to endorse or promote products derived from
+# this software without specific prior written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+# OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# The base directory where to store captured screenshots.
+IMAGE_BASE_DIR="${IMAGE_BASE_DIR:-/private/var/tmp}"
+# The format to to use for filenames.
+IMAGE_FILE_NAME_FORMAT="${IMAGE_FILE_NAME_FORMAT:-Screenshot %Y-%m-%d at %H.%M.%S}"
+
+capture_selection() {
+  local image_path="${1}"
+  screencapture -i -o "${image_path}"
+}
+
+resize_image() {
+  local image_path="${1}"
+  local image_details dpi_width dpi_height pixel_width pixel_height
+
+  image_details="$(sips -g dpiWidth -g dpiHeight -g pixelWidth -g pixelHeight "${image_path}")"
+  dpi_width="$(awk '/dpiWidth:/ { print $2 }' <<< "${image_details}")"
+  dpi_height="$(awk '/dpiHeight:/ { print $2 }' <<< "${image_details}")"
+  pixel_width="$(awk '/pixelWidth:/ { print $2 }' <<< "${image_details}")"
+  pixel_height="$(awk '/pixelHeight:/ { print $2 }' <<< "${image_details}")"
+
+  if [ "${dpi_width}" = "72.000" ] && [ "${dpi_height}" = "72.000" ]; then
+    return 0
+  fi
+
+  local w h
+
+  w="$(bc <<< "${pixel_width} * 72 / ${dpi_width}")"
+  h="$(bc <<< "${pixel_height} * 72 / ${dpi_height}")"
+
+  sips "${image_path}" -s dpiWidth 72 -s dpiHeight 72 -z "${h}" "${w}"
+}
+
+set -o errexit
+
+image_filename="$(date +"${IMAGE_FILE_NAME_FORMAT}").png"
+image_path="${IMAGE_BASE_DIR}/${image_filename}"
+
+# Capture the image and save it to $image_path.
+capture_selection "${image_path}"
+
+if [ ! -f "${image_path}" ]; then
+  echo "Aborting as an image was never saved."
+  exit 1
+fi
+
+# resize_image "${image_path}"
+
+# Upload it using `mkpub`
+result="$(mkpub "${image_path}" | tr -d '\n')"
+
+if [[ "${result}" == https* ]]; then
+  pbcopy <<< "${result}"
+  echo "${result}"
+  osascript -e "display notification \"Uploaded image ${image_filename}\" with title \"Screencapture\""
+else
+  echo "Could not upload image"
+  exit 1
+fi
+
+rm "${image_path}"
