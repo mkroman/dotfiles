@@ -40,6 +40,11 @@ if [ "${os_name}" = "Darwin" ]; then
     defaults write com.googlecode.iterm2 NoSyncNeverRemindPrefsChangesLostForFile_selection -bool true
   fi
 
+  # Key repeat rate
+  defaults write NSGlobalDomain KeyRepeat -int 2
+  # Delay until repeat
+  defaults write NSGlobalDomain InitialKeyRepeat 15
+
   # Set up Dock
   # Copied from https://github.com/pawelgrzybek/dotfiles/blob/00c78c0f21041d5d3f506e49da8b70ecc8d0f636/setup-macos.sh
   
