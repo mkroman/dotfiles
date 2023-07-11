@@ -97,3 +97,6 @@ alt - f : yabai -m window --toggle zoom-fullscreen
 
 # toggle window native fullscreen
 alt + shift - f : yabai -m window --toggle native-fullscreen
+
+# Open a new terminal window
+alt - return : osascript -e 'tell application "iTerm2" to create window with default profile command ""' || open -na iTerm
