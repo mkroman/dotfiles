@@ -10,16 +10,17 @@ yadm config user.email "mk@maero.dk"
 
 os_name="$(uname -s)"
 
-# Create a local bin directory
+# Create a local bin directory.
 mkdir -p "${HOME}/.local/bin"
 
+# Install all neovim plugins if it's installed.
 if command -v nvim >/dev/null 2>&1; then
   echo "Bootstrapping Neovim"
 
   nvim '+PlugInstall' '+PlugClean' '+qall'
 fi
 
-# Install rustup
+# Install rustup.
 if ! command -v rustup >/dev/null 2>&1 ; then
   echo "Downloading rustup"
 
@@ -30,27 +31,44 @@ if ! command -v rustup >/dev/null 2>&1 ; then
 fi
 
 if [ "${os_name}" = "Darwin" ]; then
-  # Setup iTerm2
-  if [ -d "$HOME/.config/iterm2" ]; then
+  ##
+  ## iTerm2
+  ##
+
+  # Configure iTerm2 to read from the specified folder.
+  if [ -d "${HOME}/.config/iterm2" ]; then
     echo "Setting iTerm preference folder"
 
-    defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.config/iterm2"
+    defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "${HOME}/.config/iterm2"
     defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
     defaults write com.googlecode.iterm2 NoSyncNeverRemindPrefsChangesLostForFile -bool true
     defaults write com.googlecode.iterm2 NoSyncNeverRemindPrefsChangesLostForFile_selection -bool true
   fi
+
+  ##
+  ## Helm
+  ##
+  
+  # Link starter templates to the macOS-specific directory.
+  if [ -d "${HOME}/.local/share/helm/starters" ]; then
+    echo "Symlinking ~/.local/share/helm/starters to ~/Library/helm/starters"
+
+    mkdir -p "${HOME}/Library/helm"
+    ln -s "${HOME}/.local/share/helm/starters" "${HOME}/Library/helm/starters"
+  fi
+
+  ##
+  ## Keyboard
+  ##
 
   # Key repeat rate
   defaults write NSGlobalDomain KeyRepeat -int 2
   # Delay until repeat
   defaults write NSGlobalDomain InitialKeyRepeat 15
 
-  # Set up Dock
-  # Copied from https://github.com/pawelgrzybek/dotfiles/blob/00c78c0f21041d5d3f506e49da8b70ecc8d0f636/setup-macos.sh
-  
-  ################################################################################
-  # System Preferences > Desktop & Dock
-  ################################################################################
+  ##
+  ## Dock
+  ##
 
   # Dock > Size:
   defaults write com.apple.dock tilesize -int 36
@@ -82,12 +100,12 @@ if [ "${os_name}" = "Darwin" ]; then
   # Windows & Apps > Prefer tabs when opening documents
   defaults write -globalDomain AppleWindowTabbingMode -string "always"
 
-  # Mission Controll > Automatically rearrange Spaces based on most recent use
+  # Mission Control > Automatically rearrange Spaces based on most recent use
   defaults write com.apple.dock mru-spaces -bool false
 
-  ################################################################################
-  # Finder > Preferences
-  ################################################################################
+  ##
+  ## Finder
+  ##
 
   # Show all filename extensions
   defaults write NSGlobalDomain AppleShowAllExtensions -bool true
@@ -104,9 +122,9 @@ if [ "${os_name}" = "Darwin" ]; then
   # Finder > View > Show Path Bar
   defaults write com.apple.finder ShowPathbar -bool true
 
-  ################################################################################
-  # System Preferences > Control Centre
-  ################################################################################
+  ##
+  ## Control Centre
+  ##
 
   # Control Centre Modules > Bluetooth > Show in Menu Bar
   defaults write "com.apple.controlcenter" "NSStatusItem Visible Bluetooth" -bool true
