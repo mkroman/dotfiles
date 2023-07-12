@@ -42,6 +42,7 @@
     pkgs.neovim
     pkgs.nmap
     pkgs.postgresql
+    pkgs.rust-petname
     pkgs.restic
     pkgs.ripgrep
     pkgs.taskwarrior
