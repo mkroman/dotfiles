@@ -30,7 +30,6 @@
     pkgs.gh
     pkgs.git
     pkgs.git-lfs
-    pkgs.gnupg
     pkgs.k9s
     pkgs.kubectl
     pkgs.kubernetes-helm
@@ -51,6 +50,7 @@
     pkgs.vault
     pkgs.wget
     pkgs.yadm
+    pkgs.yarn
     pkgs.yq
     pkgs.zola
   ];
