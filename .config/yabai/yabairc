@@ -11,8 +11,8 @@
 # see this wiki page for information:
 #  - https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
 #
-# sudo yabai --load-sa
-# yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
 # bar settings
 yabai -m config top_padding 0
@@ -26,7 +26,7 @@ yabai -m config window_topmost               off
 
 yabai -m config window_opacity               off
 yabai -m config window_opacity_duration      0.0
-yabai -m config window_shadow                float
+yabai -m config window_shadow                off
 
 yabai -m config active_window_opacity        1.0
 yabai -m config normal_window_opacity        0.90
@@ -52,7 +52,31 @@ yabai -m rule --add app='^System Settings$' manage=off
 
 yabai -m rule --add app='^1Password$' manage=off
 
+yabai -m rule --add app="^Firefox$" space=2
+yabai -m rule --add app="^Spotify$" space=5
+
 # float settings windows
 yabai -m rule --add title='Settings$' manage=off
+
+function setup_space {
+  local idx="$1"
+  local name="$2"
+  local space=
+  echo "setup space $idx : $name"
+
+  space="$(yabai -m query --spaces --space "$idx")"
+  if [ -z "$space" ]; then
+    yabai -m space --create
+  fi
+
+  yabai -m space "$idx" --label "$name"
+}
+
+setup_space 1 chat
+setup_space 2 web
+setup_space 3 code
+setup_space 4 docs
+setup_space 5 media
+setup_space 6 other
 
 echo "yabai configuration loaded.."
