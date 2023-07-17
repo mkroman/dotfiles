@@ -20,6 +20,7 @@
     pkgs.act
     pkgs.actionlint
     pkgs.argo
+    pkgs.argocd
     pkgs.awscli
     pkgs.bat
     pkgs.delta
@@ -41,6 +42,7 @@
     pkgs.ncdu
     pkgs.neovim
     pkgs.nmap
+    pkgs.nushell
     pkgs.postgresql
     pkgs.rust-petname
     pkgs.restic
