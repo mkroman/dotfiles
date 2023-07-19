@@ -23,6 +23,7 @@
     pkgs.argocd
     pkgs.awscli
     pkgs.bat
+    pkgs.cmake
     pkgs.delta
     pkgs.doctl
     pkgs.exa
@@ -93,5 +94,6 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  programs.go.enable = true;
   programs.direnv.enable = true;
 }
