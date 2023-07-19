@@ -28,24 +28,13 @@ endif
 if &t_Co > 2 || has('gui_running')
   " Enable syntax highlighting.
   syntax on
+
   try
     colorscheme base16-tomorrow-night
-    " colorscheme base16-solarized-light
-    "
   catch /^Vim\%((\a\+)\)\=:E185/
     " Fall back to the desert colorscheme if the requested wasn't found
     colorscheme desert
   endtry
-
-  if has('gui')
-    set guifont=Fira\ Code\ 9
-    " Disable the menu, scrollbar, etc.
-    set guioptions-=m guioptions-=T guioptions-=e guioptions-=r guioptions-=L
-    set guiheadroom=0
-    " Set the default window size. 205 columns is enough to have 2 splits that
-    " spans 99 columns each.
-    set lines=50 columns=209
-  endif
 endif
 
 if has('autocmd')
@@ -335,7 +324,6 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 " Mappings
 noremap <leader>F :pyf /usr/share/clang/clang-format.py<CR>
-" inoremap <C-i> <c-o>:pyf /usr/share/clang/clang-format.py<CR>
 
 " }}}
 " {{{ CtrlP
@@ -346,24 +334,6 @@ let g:ctrlp_custom_ignore = 'node_modules$\|build$\|tmp$'
 " Mappings
 nnoremap <C-u> :CtrlPMixed<CR>
 
-" }}}
-" {{{ Tagbar
-
-" Mappings
-nnoremap <C-t> :Tagbar<CR>
-
-" }}}
-" {{{ UltiSnips
-
-" Mappings
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:SuperTabDefaultCompletionType = '<C-n>'
-
-" }}}
-" {{{ ALE
-highlight ALEWarning ctermbg=black cterm=bold
 " }}}
 " {{{ Markdown Preview
 " Automatically open a browser window when entering a markdown buffer.
@@ -403,23 +373,23 @@ let g:tmpl_author_name = 'Mikkel Kroman'
 let g:tmpl_author_email = 'mk@maero.dk'
 let g:tmpl_search_paths = ['~/.vim/templates']
 
+" Print the name of the syntax elements under the cursor.
 map <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-" Test fix for yaml indentation
-augroup yaml_fix
-    autocmd!
-    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0#
+augroup autocmds
+  autocmd!
+  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0#
+  autocmd FileType rust setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
+  autocmd FileType rust nnoremap <silent> <buffer> gb :CocCommand rust-analyzer.openDocs<CR>
+  autocmd FileType c setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
+  autocmd FileType python setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
+  autocmd FileType markdown setlocal nowrap
+  autocmd BufNewFile,BufRead *.plt setf gnuplot
+  autocmd FileType Jenkinsfile setlocal shiftwidth=4 tabstop=4 textwidth&
+  " Align GitHub-flavored Markdown tables
+  autocmd FileType markdown,rust vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
+  autocmd FileType yaml.ansible setlocal indentkeys-=\- indentkeys-=0# indentkeys-=<:>
 augroup END
 
-autocmd FileType c setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
-autocmd FileType python setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
-autocmd FileType rust setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
-autocmd FileType rust nnoremap <silent> <buffer> gb :CocCommand rust-analyzer.openDocs<CR>
-autocmd FileType markdown setlocal nowrap
-autocmd BufNewFile,BufRead *.plt setf gnuplot
-autocmd FileType Jenkinsfile setlocal shiftwidth=4 tabstop=4 textwidth&
-" Align GitHub-flavored Markdown tables
-autocmd FileType markdown,rust vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
-autocmd FileType yaml.ansible setlocal indentkeys-=\- indentkeys-=0# indentkeys-=<:>
