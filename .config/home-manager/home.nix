@@ -45,6 +45,7 @@
     pkgs.nmap
     pkgs.nushell
     pkgs.postgresql
+    pkgs.qrencode
     pkgs.rust-petname
     pkgs.restic
     pkgs.ripgrep
