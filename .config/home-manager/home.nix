@@ -26,6 +26,7 @@
     pkgs.delta
     pkgs.doctl
     pkgs.exa
+    pkgs.exiftool
     pkgs.fnm
     pkgs.gh
     pkgs.git
@@ -50,6 +51,7 @@
     pkgs.taskwarrior
     pkgs.terraform
     pkgs.terraform-ls
+    pkgs.tmux
     pkgs.vault
     pkgs.wget
     pkgs.yadm
