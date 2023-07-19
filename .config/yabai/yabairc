@@ -52,11 +52,20 @@ yabai -m rule --add app='^System Settings$' manage=off
 
 yabai -m rule --add app='^1Password$' manage=off
 
-yabai -m rule --add app="^Firefox$" space=2
-yabai -m rule --add app="^Spotify$" space=5
+#yabai -m rule --add app="^Firefox$" space=2
+# yabai -m rule --add app="^Spotify$" space=5
 
 # float settings windows
 yabai -m rule --add title='Settings$' manage=off
+
+# Float discord updater splash screen
+yabai -m rule --add app='^Discord$' title='^Discord Updater$' manage=off
+
+# yabai -m signal --add event=space_changed action="~/.config/yabai/maintain_paired_spaces.sh"
+
+left_display_idx="$(yabai -m query --displays | jq -r '.[] | select(.uuid == "6276F7F3-38A8-4F14-95D4-97F7EA1452AD") | .index')"
+center_display_idx="$(yabai -m query --displays | jq -r '.[] | select(.uuid == "DE5C71B3-BA81-49EA-B77F-3242BF7C70CA") | .index')"
+right_display_idx="$(yabai -m query --displays | jq -r '.[] | select(.uuid == "37D8832A-2D66-02CA-B9F7-8F30A301B230") | .index')"
 
 function setup_space {
   local idx="$1"
@@ -65,18 +74,36 @@ function setup_space {
   echo "setup space $idx : $name"
 
   space="$(yabai -m query --spaces --space "$idx")"
+
   if [ -z "$space" ]; then
     yabai -m space --create
   fi
 
-  yabai -m space "$idx" --label "$name"
+  if [ "${name}" = "chat" ]; then
+    yabai -m space "$idx" --label "$name" --display "${left_display_idx}"
+  elif [ "${name}" = "web" ]; then
+    yabai -m space "$idx" --label "$name" --display "${center_display_idx}"
+  elif [ "${name}" = "code" ]; then
+    yabai -m space "$idx" --label "$name" --display "${center_display_idx}"
+  elif [ "${name}" = "docs" ]; then
+    yabai -m space "$idx" --label "$name" --display "${right_display_idx}"
+  elif [ "${name}" = "media" ]; then
+    yabai -m space "$idx" --label "$name" --display "${right_display_idx}"
+  elif [ "${name}" = "other" ]; then
+    yabai -m space "$idx" --label "$name" --display "${right_display_idx}"
+  else
+    yabai -m space "$idx" --label "$name"
+  fi
 }
 
-setup_space 1 chat
+echo "left display index: ${left_display_idx}"
+
+setup_space 1 main
 setup_space 2 web
 setup_space 3 code
 setup_space 4 docs
 setup_space 5 media
 setup_space 6 other
+setup_space 7 chat
 
 echo "yabai configuration loaded.."
