@@ -285,9 +285,12 @@ function vzf {
   vim "$(fzf)"
 }
 
-function open {
-  handlr open $* &!
-}
+# Use `handlr` to open files if `open` is already used for something else.
+if ! command -v open &>/dev/null 2>&1; then
+  function open {
+    handlr open $* &!
+  }
+fi
 
 if [ -e "${HOME}/.restic/${HOST}.key" ]; then
   export RESTIC_REPOSITORY="${HOME}/Backups"
