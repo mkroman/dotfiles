@@ -23,6 +23,11 @@
     pkgs.argocd
     pkgs.awscli
     pkgs.bat
+    pkgs.cargo-audit
+    pkgs.cargo-binstall
+    pkgs.cargo-deb
+    pkgs.cargo-release
+    pkgs.chatterino2
     pkgs.cmake
     pkgs.delta
     pkgs.doctl
