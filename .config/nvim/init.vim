@@ -371,7 +371,7 @@ let g:rustfmt_autosave = 1
 
 let g:tmpl_author_name = 'Mikkel Kroman'
 let g:tmpl_author_email = 'mk@maero.dk'
-let g:tmpl_search_paths = ['~/.vim/templates']
+let g:tmpl_search_paths = ['~/.config/nvim/templates']
 
 " Print the name of the syntax elements under the cursor.
 map <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
