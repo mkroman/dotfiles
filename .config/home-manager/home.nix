@@ -28,6 +28,7 @@
     pkgs.cargo-deb
     pkgs.cargo-release
     pkgs.chatterino2
+    pkgs.chart-testing
     pkgs.cmake
     pkgs.delta
     pkgs.doctl
@@ -43,6 +44,7 @@
     pkgs.kubetail
     pkgs.htop
     pkgs.hugo
+    pkgs.istioctl
     pkgs.jq
     pkgs.lima
     pkgs.minikube
