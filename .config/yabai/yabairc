@@ -58,6 +58,8 @@ yabai -m rule --add app='^1Password$' manage=off
 # float settings windows
 yabai -m rule --add title='Settings$' manage=off
 
+yabai -m rule --add app='^Archive Utility$' manage=off
+
 # Float discord updater splash screen
 yabai -m rule --add app='^Discord$' title='^Discord Updater$' manage=off
 
