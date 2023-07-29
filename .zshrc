@@ -463,6 +463,11 @@ export GOPATH="${HOME}/.local/share/go"
 
 eval "$(direnv hook zsh)"
 
+# Alias tailscale on macOS as it's not in a shell PATH.
+if [ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]; then
+  alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+fi
+
 # Use fnm for managing Node versions if it is installed.
 if command -v fnm >/dev/null; then
   eval "$(fnm env --use-on-cd)"
