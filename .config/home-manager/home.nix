@@ -55,6 +55,7 @@
     pkgs.rust-petname
     pkgs.restic
     pkgs.ripgrep
+    pkgs.socat
     pkgs.taskwarrior
     pkgs.terraform
     pkgs.terraform-ls
