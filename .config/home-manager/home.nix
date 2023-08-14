@@ -31,9 +31,11 @@
     pkgs.chart-testing
     pkgs.cmake
     pkgs.delta
+    pkgs.dive
     pkgs.doctl
     pkgs.exa
     pkgs.exiftool
+    pkgs.fd
     pkgs.fnm
     pkgs.gh
     pkgs.git
@@ -42,11 +44,11 @@
     pkgs.kubectl
     pkgs.kubernetes-helm
     pkgs.kubetail
+    pkgs.kubevirt
     pkgs.htop
     pkgs.hugo
     pkgs.istioctl
     pkgs.jq
-    pkgs.lima
     pkgs.minikube
     pkgs.ncdu
     pkgs.neovim
@@ -55,6 +57,7 @@
     pkgs.postgresql
     pkgs.qrencode
     pkgs.rust-petname
+    pkgs.reg
     pkgs.restic
     pkgs.ripgrep
     pkgs.socat
