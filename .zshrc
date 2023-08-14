@@ -301,7 +301,7 @@ fi
 [ -e ~/.local/bin ] && export PATH="${HOME}/.local/bin:${PATH}"
 [ -e ~/.linkerd2/bin ] && export PATH="$PATH}:${HOME}/.linkerd2/bin"
 
-if command -v direnv >/dev/null; then
+if command -v direnv &>/dev/null; then
   eval "$(direnv hook zsh)"
 fi
 
@@ -460,8 +460,6 @@ export GOPATH="${HOME}/.local/share/go"
 
 [ ! -d "${GOPATH}" ] && mkdir -p "${GOPATH}"
 [ -d "${GOPATH}/bin" ] && export PATH="${PATH}:${GOPATH}/bin"
-
-eval "$(direnv hook zsh)"
 
 # Alias tailscale on macOS as it's not in a shell PATH.
 if [ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]; then
