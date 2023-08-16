@@ -10,13 +10,13 @@ include /etc/sway/config.d/*
 # set $right HDMI-A-1
 
 # Configuration with nouveau:
-set $left DP-1
-set $middle DP-3
-set $right HDMI-A-1
+set $left HDMI-A-1
+set $middle DP-4
+set $right DP-4
 
 output $left   position 0 0 scale 1
 output $middle position 1920 0 scale 2
-output $right  position 3840 0 scale 1
+# output $right  position 3840 0 scale 1
 
 input type:keyboard {
   xkb_model apple
