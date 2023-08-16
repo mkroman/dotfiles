@@ -26,6 +26,7 @@
     pkgs.cargo-audit
     pkgs.cargo-binstall
     pkgs.cargo-deb
+    pkgs.cargo-outdated
     pkgs.cargo-release
     pkgs.chatterino2
     pkgs.chart-testing
