@@ -5,10 +5,15 @@ xkb_symbols "mac-extended" {
 
   name[Group1] = "English (Macintosh, Extended)";
 
-  key <AE01> { [ 1, exclaim, exclaimdown, U203D ] };
+  key <AE01> { [ 1, exclaim, U203D, exclaimdown ] };
   key <AE07> { [ 7, ampersand, U00BD, doubledagger ] };
   key <AD05> { [ t, T, U25C9, dead_caron ] };
   key <AD06> { [ y, Y, U0CA0, onequarter ] };
   key <AD10> { [ p, P, Greek_pi, Greek_tau ] };
   key <AB03> { [ c, C, U2665, Ccedilla ] };
+
+  // The less-than/greater-than key left of z.
+  key <LSGT> { [ grave, asciitilde ] };
 };
+
+// vim: ft=xkb
