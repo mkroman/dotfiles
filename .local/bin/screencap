@@ -1,90 +1,112 @@
 #!/usr/bin/env bash
 #
-# Copyright (C) 2023, Mikkel Kroman <mk@maero.dk>
+# This script will let you capture screenshots regardless of your display
+# server by relying on third-party tools to select a region and save a
+# screenshot, and then it uploads it to s3.
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are
-# met:
-# 
-#    * Redistributions of source code must retain the above copyright
-# notice, this list of conditions and the following disclaimer.
-#    * Redistributions in binary form must reproduce the above
-# copyright notice, this list of conditions and the following disclaimer
-# in the documentation and/or other materials provided with the
-# distribution.
-#    * Neither the name of Google LLC nor the names of its
-# contributors may be used to endorse or promote products derived from
-# this software without specific prior written permission.
-# 
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-# OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# For wayland you will need the tools `grim`, `wl-copy` and `slurp`
+# For X11 you will need the tools `maim`, xsel` and `slop`
+#
+# In addition to these you need to install aws-cli, libnotify (or set OSD=false) and 
 
-# The base directory where to store captured screenshots.
-IMAGE_BASE_DIR="${IMAGE_BASE_DIR:-/private/var/tmp}"
-# The format to to use for filenames.
-IMAGE_FILE_NAME_FORMAT="${IMAGE_FILE_NAME_FORMAT:-Screenshot %Y-%m-%d at %H.%M.%S}"
+# User configuration
+OSD=true # Notify when the screenshot has been uploaded (requires imagemagick and libnotify)
+# The S3 website prefix
+s3_website_url="https://rwx.s3-website.nl-ams.scw.cloud/"
+# The s3 bucket prefix for uploading
+s3_bucket_prefix="s3://rwx/"
+# The command or path to run aws-cli
+aws_cli="aws"
+# Optional arguments to the aws_cli command
+aws_cli_args="--profile scaleway --endpoint-url https://s3.nl-ams.scw.cloud"
+# The output filename
+name="$(date +%s).png"
 
-capture_selection() {
-  local image_path="${1}"
-  screencapture -i -o "${image_path}"
+save() {
+  case "$1" in
+    selection)
+      if [ "${XDG_SESSION_TYPE}" == "wayland" ]; then
+        local region="$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | slurp)"
+        grim -g "${region}" "/tmp/${name}"
+      else
+        maim -b 1 -u -s "/tmp/${name}" 2> /dev/null
+      fi
+      ;;
+    desktop)
+      if [ "${XDG_SESSION_TYPE}" == "wayland" ]; then
+        grim "/tmp/${name}"
+      else
+        maim "/tmp/${name}" 2> /dev/null
+      fi
+      ;;
+    window)
+      if [ "${XDG_SESSION_TYPE}" == "wayland" ]; then
+        grim "/tmp/${name}"
+      else
+        maim -i "$(xdotool getactivewindow)" -b 1 "/tmp/${name}" 2> /dev/null
+      fi
+      ;;
+    *)
+      echo "Usage: ${0} <selection|desktop|window>"
+      exit 1
+      ;;
+  esac
+
+  if [ ! -f "/tmp/${name}" ]; then
+    echo "Screenshot was not taken. Aborting."
+    exit 1
+  fi
 }
 
-resize_image() {
-  local image_path="${1}"
-  local image_details dpi_width dpi_height pixel_width pixel_height
-
-  image_details="$(sips -g dpiWidth -g dpiHeight -g pixelWidth -g pixelHeight "${image_path}")"
-  dpi_width="$(awk '/dpiWidth:/ { print $2 }' <<< "${image_details}")"
-  dpi_height="$(awk '/dpiHeight:/ { print $2 }' <<< "${image_details}")"
-  pixel_width="$(awk '/pixelWidth:/ { print $2 }' <<< "${image_details}")"
-  pixel_height="$(awk '/pixelHeight:/ { print $2 }' <<< "${image_details}")"
-
-  if [ "${dpi_width}" = "72.000" ] && [ "${dpi_height}" = "72.000" ]; then
-    return 0
+upload() {
+  echo "Uploading ${name}."
+  
+  if [ $OSD ]; then # generate thumbnail (requires imagemagick)
+    convert -thumbnail 120x240 "/tmp/${name}" "/tmp/t${name}"
   fi
 
-  local w h
+  ext_name="$(date +%Y/%m)/${name}"
+  output=$()
 
-  w="$(bc <<< "${pixel_width} * 72 / ${dpi_width}")"
-  h="$(bc <<< "${pixel_height} * 72 / ${dpi_height}")"
+  if output=$(mkpub "/tmp/${name}" 2>&1); then
+    url="${output}"
+  else
+    notify-send \
+      --urgency=critical \
+      --category=transfer.error \
+      "Screenshot" \
+      "Could not upload file to s3:\r\n${output}"
+  fi
 
-  sips "${image_path}" -s dpiWidth 72 -s dpiHeight 72 -z "${h}" "${w}"
+  if [[ $url == http* ]]; then
+    if [ "${XDG_SESSION_TYPE}" == "wayland" ]; then
+      echo "${url}" | tr -d '\n' | wl-copy
+    else
+      echo "${url}" | tr -d '\n' | xsel -ibp
+    fi
+    echo "Upload complete - ${url}"
+    
+    if [ $OSD ]; then
+      notify-send \
+        -i "/tmp/t${name}" \
+        --category=transfer.complete \
+        "Screenshot" \
+        "The screenshot has been uploaded."
+    fi
+  else
+    echo "${url}"
+    exit 1
+  fi
 }
 
-set -o errexit
+delete() {
+  rm "/tmp/${name}"
 
-image_filename="$(date +"${IMAGE_FILE_NAME_FORMAT}").png"
-image_path="${IMAGE_BASE_DIR}/${image_filename}"
+  if [ $OSD ]; then
+    rm "/tmp/t${name}"
+  fi
+}
 
-# Capture the image and save it to $image_path.
-capture_selection "${image_path}"
-
-if [ ! -f "${image_path}" ]; then
-  echo "Aborting as an image was never saved."
-  exit 1
-fi
-
-# resize_image "${image_path}"
-
-# Upload it using `mkpub`
-result="$(mkpub "${image_path}" | tr -d '\n')"
-
-if [[ "${result}" == https* ]]; then
-  pbcopy <<< "${result}"
-  echo "${result}"
-  osascript -e "display notification \"Uploaded image ${image_filename}\" with title \"Screencapture\""
-else
-  echo "Could not upload image"
-  exit 1
-fi
-
-rm "${image_path}"
+save "${1}"
+upload
+delete
