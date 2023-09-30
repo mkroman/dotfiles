@@ -21,7 +21,6 @@
     pkgs.actionlint
     pkgs.argo
     pkgs.argocd
-    pkgs.awscli
     pkgs.bat
     pkgs.cargo-audit
     pkgs.cargo-binstall
@@ -34,7 +33,7 @@
     pkgs.delta
     pkgs.dive
     pkgs.doctl
-    pkgs.exa
+    pkgs.eza
     pkgs.exiftool
     pkgs.fd
     pkgs.fnm

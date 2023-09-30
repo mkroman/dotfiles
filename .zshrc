@@ -71,7 +71,7 @@ export PROMPT="%F{cyan}%n@%m%f %~ %# "
 # Print a grey ¬ (U+00AC) when trying to preserve a partial line
 export PROMPT_EOL_MARK="%F{59}¬%f"
 # Set the default browser
-export BROWSER=firefox
+export BROWSER=firefox-beta
 # Set the default editor
 export EDITOR=nvim
 export SYSTEMD_EDITOR=$EDITOR
@@ -161,9 +161,9 @@ nodenv-init() {
 # Unix aliases
 alias ls='ls --color=auto -F'
 
-if command -v exa >/dev/null; then
-  alias ll='exa -l'
-  alias ls='exa'
+if command -v eza >/dev/null; then
+  alias ll='eza -l'
+  alias ls='eza'
 else
   alias ll='ls -l'
 fi
