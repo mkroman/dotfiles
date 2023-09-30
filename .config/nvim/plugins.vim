@@ -36,6 +36,9 @@ Plug 'cespare/vim-toml'
 " Udev rules syntax support
 Plug 'vim-scripts/syntaxudev.vim'
 
+" Rhai syntax support
+Plug 'rhaiscript/vim-rhai'
+
 " Smali syntax support
 Plug 'kelwin/vim-smali'
 
