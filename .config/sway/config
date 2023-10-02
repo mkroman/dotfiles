@@ -18,6 +18,8 @@ output $left   position 0 0 scale 1
 output $middle position 1920 0 scale 2
 # output $right  position 3840 0 scale 1
 
+output * bg ~/Pictures/Wallpapers/wallpaper.webp fit
+
 input type:keyboard {
   xkb_model apple
   xkb_layout us
@@ -259,7 +261,8 @@ for_window [class="Pidgin" window_role="file transfer"] floating enable
 for_window [class="Vmware"] floating enable
 assign [class="Vmware"] $vms
 
-for_window [app_id="Alacritty" title="weechat"] move scratchpad, scratchpad show
+assign [app_id="Alacritty" title="weechat"] 1
+# for_window [app_id="Alacritty" title="weechat"]
 
 for_window [class="chromium" window_role="app"] floating enable
 
@@ -267,6 +270,7 @@ for_window [class="chromium" window_role="app"] floating enable
 assign [class="mumble|ricochet|Pidgin"] 1
 assign [class="Chromium|Firefox"] 2
 assign [class="Steam"] 6
+
 
 # Move the Gtk file chooser dialog to the center and set a fixed size.
 for_window [window_role="GtkFileChooserDialog"] floating enable, resize set 800 600, move position center
