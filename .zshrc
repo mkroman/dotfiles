@@ -116,6 +116,20 @@ fi
 
 # }}}
 
+# Use fzf for selecting when typing `**<TAB>`.
+if [ -e /usr/share/fzf/completion.zsh ]; then
+  source /usr/share/fzf/completion.zsh
+fi
+
+# Use fzf keybindings.
+#
+# CTRL-T - fuzzy find a file and insert it on the command line
+# ALT-C  - fuzzy find and change working directory to the selected one
+# CTRL-r - fuzzy find shell history
+if [ -e /usr/share/fzf/key-bindings.zsh ]; then
+  source /usr/share/fzf/key-bindings.zsh
+fi
+
 # {{{ Ruby tools.
 rbenv-init() {
   eval "$(rbenv init -)"
@@ -469,4 +483,13 @@ fi
 # Use fnm for managing Node versions if it is installed.
 if command -v fnm >/dev/null; then
   eval "$(fnm env --use-on-cd)"
+fi
+
+# bun completions
+if [ -d "${HOME}/.bun" ]; then
+  [ -s "/home/work/.bun/_bun" ] && source "/home/work/.bun/_bun"
+
+  # bun
+  export BUN_INSTALL="$HOME/.bun"
+  export PATH="$BUN_INSTALL/bin:$PATH"
 fi
