@@ -65,10 +65,15 @@ upload() {
     convert -thumbnail 120x240 "/tmp/${name}" "/tmp/t${name}"
   fi
 
+  # Optimize the PNG image if an optimizer is available
+  if command -v pngquant > /dev/null; then
+    pngquant --force --output "/tmp/${name}" "/tmp/${name}"
+  fi
+
   ext_name="$(date +%Y/%m)/${name}"
   output=$()
 
-  if output=$(mkpub "/tmp/${name}" 2>&1); then
+  if output=$(mkpub --script "${HOME}/.config/mkpub/program.rhai" "/tmp/${name}" 2>&1); then
     url="${output}"
   else
     notify-send \
@@ -100,7 +105,7 @@ upload() {
 }
 
 delete() {
-  rm "/tmp/${name}"
+  # rm "/tmp/${name}"
 
   if [ $OSD ]; then
     rm "/tmp/t${name}"
