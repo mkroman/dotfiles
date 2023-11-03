@@ -6,19 +6,8 @@
 #
 # For wayland you will need the tools `grim`, `wl-copy` and `slurp`
 # For X11 you will need the tools `maim`, xsel` and `slop`
-#
-# In addition to these you need to install aws-cli, libnotify (or set OSD=false) and 
-
-# User configuration
 OSD=true # Notify when the screenshot has been uploaded (requires imagemagick and libnotify)
-# The S3 website prefix
-s3_website_url="https://rwx.s3-website.nl-ams.scw.cloud/"
-# The s3 bucket prefix for uploading
-s3_bucket_prefix="s3://rwx/"
-# The command or path to run aws-cli
-aws_cli="aws"
-# Optional arguments to the aws_cli command
-aws_cli_args="--profile scaleway --endpoint-url https://s3.nl-ams.scw.cloud"
+
 # The output filename
 name="$(date +%s).png"
 
@@ -26,7 +15,10 @@ save() {
   case "$1" in
     selection)
       if [ "${XDG_SESSION_TYPE}" == "wayland" ]; then
-        local region="$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | slurp)"
+        local region
+
+        region="$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | slurp)"
+
         grim -g "${region}" "/tmp/${name}"
       else
         maim -b 1 -u -s "/tmp/${name}" 2> /dev/null
@@ -70,7 +62,6 @@ upload() {
     pngquant --force --output "/tmp/${name}" "/tmp/${name}"
   fi
 
-  ext_name="$(date +%Y/%m)/${name}"
   output=$()
 
   if output=$(mkpub --script "${HOME}/.config/mkpub/program.rhai" "/tmp/${name}" 2>&1); then
