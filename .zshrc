@@ -90,32 +90,6 @@ export REPORTTIME=4
 # Add ~/.bin to the PATH stack if the directory exists
 [ -d ~/.bin ] && export PATH="${HOME}/.bin:${PATH}"
 
-[ -d ~/Projects/ESP32/xtensa-esp32-elf ] && export PATH="${PATH}:${HOME}/Projects/ESP32/xtensa-esp32-elf/bin"
-[ -d ~/Projects/ESP32/esp-idf ] && export IDF_PATH="${HOME}/Projects/ESP32/esp-idf"
-
-# Set the GOPATH if the ~/.go directory exists
-if [ -d ~/.go ]; then
-  export GOPATH="${HOME}/.go"
-  export PATH="${HOME}/.go/bin:${PATH}"
-fi
-
-# Add the /usr/local/go bin dir to PATH if it exists
-if [ -d /usr/local/go ]; then
-  export PATH="/usr/local/go/bin:${PATH}"
-fi
-
-# Add cargo to PATH if ~/.cargo/bin exists
-# if [ -e ~/.cargo/bin ]; then
-#  export PATH="${HOME}/.cargo/bin:${PATH}"
-#fi
-
-# Initialize rbenv if it's installed locally
-if [ -e ~/.rbenv/bin/rbenv ]; then
-  export PATH="${HOME}/.rbenv/bin:${PATH}"
-fi
-
-# }}}
-
 # Use fzf for selecting when typing `**<TAB>`.
 if [ -e /usr/share/fzf/completion.zsh ]; then
   source /usr/share/fzf/completion.zsh
@@ -306,14 +280,8 @@ if ! command -v open &>/dev/null 2>&1; then
   }
 fi
 
-if [ -e "${HOME}/.restic/${HOST}.key" ]; then
-  export RESTIC_REPOSITORY="${HOME}/Backups"
-  export RESTIC_PASSWORD_FILE="${HOME}/.restic/${HOST}.key"
-fi
-
 [ -e ~/.zshrc.local ] && source ~/.zshrc.local
 [ -e ~/.local/bin ] && export PATH="${HOME}/.local/bin:${PATH}"
-[ -e ~/.linkerd2/bin ] && export PATH="$PATH}:${HOME}/.linkerd2/bin"
 
 if command -v direnv &>/dev/null; then
   eval "$(direnv hook zsh)"
@@ -332,7 +300,6 @@ function matrix-youtubedl {
 }
 
 alias send='croc --relay croc.maero.dk send'
-export RUSTC_FORCE_INCREMENTAL=1
 
 # Load Anaconda3 if it's present
 load-anaconda3() {
@@ -342,10 +309,6 @@ load-anaconda3() {
 # Open the given file in binaryninja while disowning the process.
 function binja() {
   binaryninja "$@" &!
-}
-
-esp-idf-init() {
-  source ~/Projects/ESP32/esp-idf/export.sh
 }
 
 ghopen() {
@@ -470,19 +433,9 @@ export MOZ_ENABLE_WAYLAND=1
 
 [ -d "$HOME/.nix-profile/bin" ] && export PATH="$HOME/.nix-profile/bin:$PATH"
 
-export GOPATH="${HOME}/.local/share/go"
-
-[ ! -d "${GOPATH}" ] && mkdir -p "${GOPATH}"
-[ -d "${GOPATH}/bin" ] && export PATH="${PATH}:${GOPATH}/bin"
-
 # Alias tailscale on macOS as it's not in a shell PATH.
 if [ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]; then
   alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-fi
-
-# Use fnm for managing Node versions if it is installed.
-if command -v fnm >/dev/null; then
-  eval "$(fnm env --use-on-cd)"
 fi
 
 # bun completions
@@ -492,4 +445,9 @@ if [ -d "${HOME}/.bun" ]; then
   # bun
   export BUN_INSTALL="$HOME/.bun"
   export PATH="$BUN_INSTALL/bin:$PATH"
+fi
+
+# Use rxt for managing runtime versions
+if command -v rtx >/dev/null; then
+  eval "$(rtx activate zsh)"
 fi
