@@ -27,7 +27,6 @@
     pkgs.cargo-deb
     pkgs.cargo-outdated
     pkgs.cargo-release
-    pkgs.chatterino2
     pkgs.chart-testing
     pkgs.cmake
     pkgs.delta
@@ -36,18 +35,15 @@
     pkgs.eza
     pkgs.exiftool
     pkgs.fd
-    pkgs.fnm
     pkgs.gh
     pkgs.git
     pkgs.git-lfs
     pkgs.k9s
     pkgs.kubectl
     pkgs.kubernetes-helm
-    pkgs.kubetail
     pkgs.kubevirt
     pkgs.htop
     pkgs.hugo
-    pkgs.istioctl
     pkgs.jq
     pkgs.minikube
     pkgs.ncdu
