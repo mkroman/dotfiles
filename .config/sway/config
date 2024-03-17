@@ -10,15 +10,15 @@ include /etc/sway/config.d/*
 # set $right HDMI-A-1
 
 # Configuration with nouveau:
-set $left HDMI-A-1
-set $middle DP-4
-set $right DP-4
+set $left 'Ancor Communications Inc VG248 F4LMQS090070'
+set $middle 'Dell Inc. DELL U2723QE CS0P8H3'
+set $right 'Dell Inc. DELL U2723QE CS0P8H3'
 
 output $left   position 0 0 scale 1
 output $middle position 1920 0 scale 2
 # output $right  position 3840 0 scale 1
 
-output * bg ~/Pictures/Wallpapers/wallpaper.webp fit
+output * bg ~/Pictures/Wallpapers/wallpaper.png fit
 
 input type:keyboard {
   xkb_model apple
@@ -46,7 +46,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec "bemenu-run"
 
 # Lock the screen
-bindsym $mod+Home exec swaylock -c 000000ff
+bindsym $mod+Home exec "1password --lock; swaylock -c 000000ff"
 
 # Make the currently focused window a scratchpad
 bindsym $mod+Shift+minus move scratchpad
@@ -252,17 +252,25 @@ for_window [app_id="xournalpp"] floating enable
 
 # Floating media players.
 for_window [class="Vlc|mpv"] floating enable
+for_window [app_id="mpv"] floating enable
 
 # Floating conversation windows for Pidgin.
 for_window [class="Pidgin" window_role="conversation"] floating enable
 for_window [class="Pidgin" window_role="file transfer"] floating enable
 
+# Enable floating for specific firefox windows
+for_window [app_id="firefox" title="Extension: (Kagi Search for Firefox)*"] floating enable
+
+# JADX dialog fixes
+for_window [instance="jadx-gui-JadxGUI" title="Usage search*"] floating enable
+for_window [instance="jadx-gui-JadxGUI" title="Text search*"] floating enable
 # Floating VirtualBox windows.
 for_window [class="Vmware"] floating enable
 assign [class="Vmware"] $vms
 
 assign [app_id="Alacritty" title="weechat"] 1
 # for_window [app_id="Alacritty" title="weechat"]
+
 
 for_window [class="chromium" window_role="app"] floating enable
 
