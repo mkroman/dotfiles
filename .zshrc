@@ -447,6 +447,10 @@ if [ -d "${HOME}/.bun" ]; then
   export PATH="$BUN_INSTALL/bin:$PATH"
 fi
 
+if [ -d "${KREW_ROOT:-$HOME/.krew}/bin" ]; then
+  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+fi
+
 # Use rxt for managing runtime versions
 if command -v mise >/dev/null; then
   eval "$(mise activate zsh)"
