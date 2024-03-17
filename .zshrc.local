@@ -1,11 +1,7 @@
 # Copyright (C) 2016 Mikkel Kroman <mk@maero.dk>
 
-alias irb='pry'
-alias adt='addtorrent'
 alias b='bat'
-alias cat='bat -pp'
 
-# Alias `vim` to `vimx` (vim enhanced) if it exists
-if command -v vimx >/dev/null 2>&1; then
-  # alias vim='vimx'
+if command -v bat > /dev/null; then
+  alias cat='bat -pp'
 fi

@@ -71,7 +71,7 @@ export PROMPT="%F{cyan}%n@%m%f %~ %# "
 # Print a grey ¬ (U+00AC) when trying to preserve a partial line
 export PROMPT_EOL_MARK="%F{59}¬%f"
 # Set the default browser
-export BROWSER=firefox-beta
+export BROWSER=firefox
 # Set the default editor
 export EDITOR=nvim
 export SYSTEMD_EDITOR=$EDITOR
@@ -448,6 +448,6 @@ if [ -d "${HOME}/.bun" ]; then
 fi
 
 # Use rxt for managing runtime versions
-if command -v rtx >/dev/null; then
-  eval "$(rtx activate zsh)"
+if command -v mise >/dev/null; then
+  eval "$(mise activate zsh)"
 fi
