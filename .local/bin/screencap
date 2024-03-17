@@ -64,7 +64,7 @@ upload() {
 
   output=$()
 
-  if output=$(mkpub --script "${HOME}/.config/mkpub/program.rhai" "/tmp/${name}" 2>&1); then
+  if output=$(mkpub "/tmp/${name}" 2>&1); then
     url="${output}"
   else
     notify-send \
