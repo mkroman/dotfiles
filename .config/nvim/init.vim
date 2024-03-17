@@ -385,6 +385,7 @@ augroup autocmds
   autocmd FileType rust nnoremap <silent> <buffer> gb :CocCommand rust-analyzer.openDocs<CR>
   autocmd FileType c setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
   autocmd FileType python setlocal tabstop=4 softtabstop=0 shiftwidth=4 expandtab
+  autocmd FileType python let g:pyindent_open_paren=shiftwidth()
   autocmd FileType markdown setlocal nowrap
   autocmd BufNewFile,BufRead *.plt setf gnuplot
   autocmd FileType Jenkinsfile setlocal shiftwidth=4 tabstop=4 textwidth&
