@@ -50,6 +50,7 @@
 	numbered = auto
 [push]
 	default = current
+	autoSetupRemote = true
 [merge]
 	tool = gvimdiff
 [diff]
