@@ -18,7 +18,7 @@ output $left   position 0 0 scale 1
 output $middle position 1920 0 scale 2
 # output $right  position 3840 0 scale 1
 
-output * bg ~/Pictures/Wallpapers/wallpaper.png fit
+# output * bg ~/Pictures/Wallpapers/wallpaper.png fit
 
 input type:keyboard {
   xkb_model apple
@@ -124,13 +124,13 @@ bindsym $mod+Shift+r reload
 bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your X session.' -b 'Yes, exit sway' 'swaymsg exit'"
 
 # mpd - skip to next song
-bindsym XF86AudioNext exec "mpc next; pkill -44 i3blocks"
+bindsym XF86AudioNext exec "playerctl next; pkill -44 i3blocks"
 # mpd - go to previous song
-bindsym XF86AudioPrev exec "mpc prev; pkill -44 i3blocks"
+bindsym XF86AudioPrev exec "playerctl prev; pkill -44 i3blocks"
 # mpd - pause
-bindsym XF86AudioPlay exec "mpc toggle; pkill -44 i3blocks"
+bindsym XF86AudioPlay exec "playerctl toggle; pkill -44 i3blocks"
 # mpd - stop
-bindsym XF86AudioStop exec "mpc stop; pkill -44 i3blocks"
+bindsym XF86AudioStop exec "playerctl stop; pkill -44 i3blocks"
 
 # Volume control
 bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-mute 0 false; pactl set-sink-volume 0 +5%; pkill -44 i3blocks"
@@ -202,10 +202,12 @@ workspace_auto_back_and_forth no
 # Assign floating windows
 for_window [class="File-roller"] floating enable
 for_window [class="Thunar"] floating enable
+for_window [app_id="Thunar"] floating enable
 for_window [class="Mumble"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Steam"] floating enable
 for_window [class="Viewnior"] floating enable
+for_window [app_id="oculante"] floating enable
 for_window [class="Nautilus"] floating enable
 for_window [class="Xarchiver"] floating enable
 for_window [class="feh"] floating enable
@@ -261,12 +263,13 @@ for_window [class="Pidgin" window_role="file transfer"] floating enable
 # Enable floating for specific firefox windows
 for_window [app_id="firefox" title="Extension: (Kagi Search for Firefox)*"] floating enable
 
+for_window [app_id="thunderbird" title="Write: *"] floating enable
+
+for_window [app_id="virt-manager"] floating enable
+
 # JADX dialog fixes
 for_window [instance="jadx-gui-JadxGUI" title="Usage search*"] floating enable
 for_window [instance="jadx-gui-JadxGUI" title="Text search*"] floating enable
-# Floating VirtualBox windows.
-for_window [class="Vmware"] floating enable
-assign [class="Vmware"] $vms
 
 assign [app_id="Alacritty" title="weechat"] 1
 # for_window [app_id="Alacritty" title="weechat"]
@@ -304,11 +307,13 @@ exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 2 && exec alacritty
 exec --no-startup-id swaymsg "workspace 1; exec alacritty --title weechat"
 exec --no-startup-id swaymsg "workspace 2; exec $BROWSER"
 exec --no-startup-id 1password --silent
+exec --no-startup-id swww-daemon
 
 exec --no-startup-id dex -a
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id dunst -config "${HOME}/.config/dunst/dunstrc"
 exec --no-startup-id kdeconnect-indicator
+exec --no-startup-id swww-daemon
 
 # Make the currently focused window a scratchpad
 bindsym $mod+grave [title="weechat"] scratchpad show
