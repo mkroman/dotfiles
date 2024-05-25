@@ -1,7 +1,0 @@
-#!/bin/sh
-
-for window in $(wmctrl -l | awk '$4 !~ "^nagbar-cmd" { print $1 }'); do
-  wmctrl -i -c "${window}"
-done
-
-i3-msg exit
