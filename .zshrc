@@ -105,38 +105,11 @@ if [ -e /usr/share/fzf/key-bindings.zsh ]; then
 fi
 
 # {{{ Ruby tools.
-rbenv-init() {
-  eval "$(rbenv init -)"
-}
 
 # Ruby aliases
 alias be='bundle exec'
 
 # }}}
-
-# {{{ Python tools.
-# Initialize rbenv if it's installed locally
-function pyenv-init() {
-  if [ -e ~/.pyenv ]; then
-    export PYENV_ROOT="${HOME}/.pyenv"
-    export PATH="${PYENV_ROOT}/bin:${PATH}"
-
-    eval "$(pyenv init --path)"
-    eval "$(pyenv init -)"
-  fi
-}
-# }}}
-
-# {{{ Node executables and nodenv.
-#
-# Initialize nodenv if it's installed on the system
-if [ -e ~/.nodenv ]; then
-  export PATH="$HOME/.nodenv/bin:$PATH"
-fi
-
-nodenv-init() {
-  eval "$(nodenv init -)"
-}
 
 # Add executable dirs to PATH
 [ -e ~/.node/bin ] && export PATH="${HOME}/.node/bin:${PATH}"
@@ -454,4 +427,9 @@ fi
 # Use rxt for managing runtime versions
 if command -v mise >/dev/null; then
   eval "$(mise activate zsh)"
+fi
+
+# Activate esp-idf using the alias `idf` if it's installed.
+if [ -f "${HOME}/Projects/ESP32/esp-idf/export.sh" ]; then
+  alias idf="source ${HOME}/Projects/ESP32/esp-idf/export.sh"
 fi
