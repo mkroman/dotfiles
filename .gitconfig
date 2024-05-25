@@ -16,7 +16,7 @@
 [github]
 	user = mkroman
 [core]
-	pager = delta
+  # pager = delta
 [giggle]
 	main-window-maximized = true
 	main-window-geometry = 0x0+0+0
@@ -30,6 +30,7 @@
 	ci = commit -a
 	co = checkout
 	df = diff
+	dft = difftool
 	dwc = diff -w -M --color-words
 	lg = log
 	ll = log -p
@@ -46,6 +47,7 @@
 [pager]
 	status = true
 	show-branch = true
+  difftool = true
 [format]
 	numbered = auto
 [push]
@@ -55,6 +57,12 @@
 	tool = gvimdiff
 [diff]
 	compactionHeuristic = true
+	tool = difftastic
+[difftool]
+	prompt = false
+
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
 [pull]
 	rebase = false
 	default = current
@@ -70,3 +78,5 @@
 	helper = !/usr/bin/gh auth git-credential
 [include]
 	path = .gitconfig.local
+[rebase]
+	autoStash = true
