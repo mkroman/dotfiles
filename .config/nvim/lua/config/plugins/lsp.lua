@@ -63,3 +63,4 @@ lspconfig.lua_ls.setup {
 lspconfig.solargraph.setup {}
 lspconfig.gopls.setup {}
 lspconfig.tsserver.setup {}
+lspconfig.bashls.setup {}
