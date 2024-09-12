@@ -38,9 +38,7 @@
     pkgs.gh
     pkgs.git
     pkgs.git-lfs
-    pkgs.k9s
     pkgs.kubectl
-    pkgs.kubernetes-helm
     pkgs.kubevirt
     pkgs.htop
     pkgs.hugo

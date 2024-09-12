@@ -62,7 +62,7 @@ if [ "${os_name}" = "Darwin" ]; then
   ##
 
   # Key repeat rate
-  defaults write NSGlobalDomain KeyRepeat -int 2
+  defaults write NSGlobalDomain KeyRepeat -int 1
   # Delay until repeat
   defaults write NSGlobalDomain InitialKeyRepeat 15
 
