@@ -431,5 +431,5 @@ fi
 
 # Activate esp-idf using the alias `idf` if it's installed.
 if [ -f "${HOME}/Projects/ESP32/esp-idf/export.sh" ]; then
-  alias idf="source ${HOME}/Projects/ESP32/esp-idf/export.sh"
+  alias idf="source ${HOME}/Projects/esp/esp-idf/export.sh"
 fi

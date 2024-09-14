@@ -200,6 +200,7 @@ bar {
 workspace_auto_back_and_forth no
 
 # Assign floating windows
+for_window [app_id="Rink"] floating enable, move position center, border normal
 for_window [class="File-roller"] floating enable
 for_window [class="Thunar"] floating enable
 for_window [app_id="Thunar"] floating enable
@@ -209,6 +210,7 @@ for_window [class="Steam"] floating enable
 for_window [class="Viewnior"] floating enable
 for_window [app_id="oculante"] floating enable
 for_window [class="Nautilus"] floating enable
+for_window [class="Pcmanfm"] floating enable
 for_window [class="Xarchiver"] floating enable
 for_window [class="feh"] floating enable
 for_window [class="Pinentry"] floating enable
@@ -321,6 +323,8 @@ bindsym $mod+grave [title="weechat"] scratchpad show
 # bindsym Ctrl+Shift+P exec 1password --show
 bindsym Ctrl+Shift+space exec 1password --quick-access
 bindsym Ctrl+Shift+l exec 1password --lock
+
+bindsym $mod+c exec alacritty --class Rink --title rink --option font.size=14 -e rink
 
 
 # vim: syntax=i3

@@ -1,1 +1,2 @@
+[misc]
 disable = ["gem", "node"]
