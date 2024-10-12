@@ -9,7 +9,7 @@
 OSD=true # Notify when the screenshot has been uploaded (requires imagemagick and libnotify)
 
 # The output filename
-name="$(date +%s).png"
+name="$(openssl rand -base64 12 | tr '+/' '-_' | tr -d '=').png"
 
 save() {
   case "$1" in
