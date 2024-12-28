@@ -14,7 +14,7 @@ set $left 'Ancor Communications Inc VG248 F4LMQS090070'
 set $middle 'Dell Inc. DELL U2723QE CS0P8H3'
 set $right 'Dell Inc. DELL U2723QE CS0P8H3'
 
-output $left   position 0 0 scale 1
+output $left   position 0 0 scale 1 mode 1920x1080@144Hz
 output $middle position 1920 0 scale 2
 # output $right  position 3840 0 scale 1
 
@@ -37,7 +37,7 @@ input type:touchpad {
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec ghostty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -87,7 +87,7 @@ bindsym $mod+t floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+# bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -123,13 +123,9 @@ bindsym $mod+Shift+r reload
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your X session.' -b 'Yes, exit sway' 'swaymsg exit'"
 
-# mpd - skip to next song
 bindsym XF86AudioNext exec "playerctl next; pkill -44 i3blocks"
-# mpd - go to previous song
 bindsym XF86AudioPrev exec "playerctl prev; pkill -44 i3blocks"
-# mpd - pause
-bindsym XF86AudioPlay exec "playerctl toggle; pkill -44 i3blocks"
-# mpd - stop
+bindsym XF86AudioPlay exec "playerctl play-pause; pkill -44 i3blocks"
 bindsym XF86AudioStop exec "playerctl stop; pkill -44 i3blocks"
 
 # Volume control
@@ -143,9 +139,6 @@ bindsym XF86MonBrightnessDown exec --no-startup-id "brightnessctl s 5%-"
 
 # open the default browser
 bindsym $mod+b exec "$BROWSER"
-
-# open the default editor
-bindsym $mod+x exec "gvim"
 
 # open the file manager
 bindsym $mod+u exec "thunar"
@@ -229,11 +222,12 @@ for_window [class="Veracrypt"] floating enable
 for_window [class="URxvt|Gvim"] border 1pixel
 for_window [class="Thunderbird" title="Feed Subscriptions"] floating enable
 
+
 # Discord window settings
 for_window [class="discord"] border 1pixel
 
 # alacritty-specific window settings.
-for_window [app_id="Alacritty"] border pixel 2 
+for_window [app_id="com.mitchellh.ghostty"] border pixel 2 
 
 # Enable floating for policykit password prompts
 for_window [app_id="lxqt-policykit-agent"] floating enable, move position center
@@ -258,6 +252,9 @@ for_window [app_id="xournalpp"] floating enable
 for_window [class="Vlc|mpv"] floating enable
 for_window [app_id="mpv"] floating enable
 
+# 3D printer live camera
+for_window [app_id="mpv" title="Creality Ender 3 V3 KE"] floating disable, border none
+
 # Floating conversation windows for Pidgin.
 for_window [class="Pidgin" window_role="conversation"] floating enable
 for_window [class="Pidgin" window_role="file transfer"] floating enable
@@ -273,8 +270,7 @@ for_window [app_id="virt-manager"] floating enable
 for_window [instance="jadx-gui-JadxGUI" title="Usage search*"] floating enable
 for_window [instance="jadx-gui-JadxGUI" title="Text search*"] floating enable
 
-assign [app_id="Alacritty" title="weechat"] 1
-# for_window [app_id="Alacritty" title="weechat"]
+assign [app_id="com.mitchellh.ghostty" title="weechat"] 1
 
 
 for_window [class="chromium" window_role="app"] floating enable
@@ -304,9 +300,9 @@ exec --no-startup-id swaymsg "workspace 2; append_layout ~/.config/i3/workspaces
 exec --no-startup-id swaymsg "workspace 3; append_layout ~/.config/i3/workspaces/code.json"
 
 # Start applications.
-exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 4 && exec alacritty --title code1'"
-exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 2 && exec alacritty --title code2'"
-exec --no-startup-id swaymsg "workspace 1; exec alacritty --title weechat"
+exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 4 && exec ghostty --title code1'"
+exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 2 && exec ghostty --title code2'"
+exec --no-startup-id swaymsg "workspace 1; exec ghostty --title weechat"
 exec --no-startup-id swaymsg "workspace 2; exec $BROWSER"
 exec --no-startup-id 1password --silent
 exec --no-startup-id swww-daemon
@@ -314,7 +310,6 @@ exec --no-startup-id swww-daemon
 exec --no-startup-id dex -a
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id dunst -config "${HOME}/.config/dunst/dunstrc"
-exec --no-startup-id kdeconnect-indicator
 exec --no-startup-id swww-daemon
 
 # Make the currently focused window a scratchpad
@@ -325,6 +320,4 @@ bindsym Ctrl+Shift+space exec 1password --quick-access
 bindsym Ctrl+Shift+l exec 1password --lock
 
 bindsym $mod+c exec alacritty --class Rink --title rink --option font.size=14 -e rink
-
-
-# vim: syntax=i3
+bindsym $mod+x exec sh -c "firefox 'http://localhost:30001' && swaymsg '[app_id="firefox"] focus'"
