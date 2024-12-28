@@ -1,2 +1,8 @@
 [misc]
-disable = ["gem", "node"]
+disable = [
+  "gem",
+  "node",
+  "containers",
+  "platformio_core",
+  "lensfun"
+]
