@@ -24,7 +24,6 @@
     pkgs.bat
     pkgs.cargo-audit
     pkgs.cargo-binstall
-    pkgs.cargo-deb
     pkgs.cargo-outdated
     pkgs.cargo-release
     pkgs.chart-testing
@@ -56,10 +55,9 @@
     pkgs.ripgrep
     pkgs.socat
     pkgs.taskwarrior
-    pkgs.terraform
+    pkgs.opentofu
     pkgs.terraform-ls
     pkgs.tmux
-    pkgs.vault
     pkgs.wget
     pkgs.yadm
     pkgs.yarn
