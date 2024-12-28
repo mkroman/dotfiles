@@ -274,11 +274,6 @@ function matrix-youtubedl {
 
 alias send='croc --relay croc.maero.dk send'
 
-# Load Anaconda3 if it's present
-load-anaconda3() {
-  [ -e "${HOME}/anaconda3/bin/conda" ] && eval "$(${HOME}/anaconda3/bin/conda shell.zsh hook)"
-}
-
 # Open the given file in binaryninja while disowning the process.
 function binja() {
   binaryninja "$@" &!
@@ -343,8 +338,6 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 export PY_COLORS=1
 
-export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
-
 # THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 
@@ -401,10 +394,7 @@ generate-password() {
 
 [ -d "$HOME/rp2040/pico-sdk" ] && export PICO_SDK_PATH=$HOME/rp2040/pico-sdk
 
-export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep.conf
 export MOZ_ENABLE_WAYLAND=1
-
-[ -d "$HOME/.nix-profile/bin" ] && export PATH="$HOME/.nix-profile/bin:$PATH"
 
 # Alias tailscale on macOS as it's not in a shell PATH.
 if [ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]; then
@@ -430,6 +420,6 @@ if command -v mise >/dev/null; then
 fi
 
 # Activate esp-idf using the alias `idf` if it's installed.
-if [ -f "${HOME}/Projects/ESP32/esp-idf/export.sh" ]; then
+if [ -f "${HOME}/Projects/esp/esp-idf/export.sh" ]; then
   alias idf="source ${HOME}/Projects/esp/esp-idf/export.sh"
 fi
