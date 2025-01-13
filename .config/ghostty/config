@@ -1,0 +1,11 @@
+# Hide the tab bar etc.
+window-decoration = false
+# Hide the title (this also seems to remove rounded edges)
+gtk-titlebar = false
+window-theme = auto
+font-family = Source Code Pro
+font-size = 10
+theme = Tomorrow Night Contrast
+# Don't show the overlay popup that shows the size of the window when resizing.
+resize-overlay = never
+auto-update = off
