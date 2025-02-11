@@ -300,9 +300,9 @@ exec --no-startup-id swaymsg "workspace 2; append_layout ~/.config/i3/workspaces
 exec --no-startup-id swaymsg "workspace 3; append_layout ~/.config/i3/workspaces/code.json"
 
 # Start applications.
-exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 4 && exec ghostty --title code1'"
-exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 2 && exec ghostty --title code2'"
-exec --no-startup-id swaymsg "workspace 1; exec ghostty --title weechat"
+exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 4 && exec ghostty --title=code1'"
+exec --no-startup-id swaymsg "workspace 3; exec sh -c 'sleep 2 && exec ghostty --title=code2'"
+exec --no-startup-id swaymsg "workspace 1; exec ghostty --title=weechat"
 exec --no-startup-id swaymsg "workspace 2; exec $BROWSER"
 exec --no-startup-id 1password --silent
 exec --no-startup-id swww-daemon
@@ -320,4 +320,5 @@ bindsym Ctrl+Shift+space exec 1password --quick-access
 bindsym Ctrl+Shift+l exec 1password --lock
 
 bindsym $mod+c exec alacritty --class Rink --title rink --option font.size=14 -e rink
-bindsym $mod+x exec sh -c "firefox 'http://localhost:30001' && swaymsg '[app_id="firefox"] focus'"
+bindsym $mod+x exec sh -c "firefox 'https://open-webui.rwx.im' && swaymsg '[app_id="firefox"] focus'"
+bindsym $mod+shift+g exec sh -c "firefox 'https://gemini.google.com/app' && swaymsg '[app_id="firefox"] focus'"
