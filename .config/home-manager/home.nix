@@ -61,7 +61,7 @@
     pkgs.wget
     pkgs.yadm
     pkgs.yarn
-    pkgs.yq
+    pkgs.yq-go
     pkgs.zola
   ];
 
