@@ -76,7 +76,7 @@ export BROWSER=firefox
 export EDITOR=nvim
 export SYSTEMD_EDITOR=$EDITOR
 # Set the default terminal
-export TERMINAL=alacritty
+export TERMINAL=ghostty
 # Print the wall-time for a process when it runs for a longer period of time
 export REPORTTIME=4
 
@@ -217,7 +217,7 @@ restore-job() {
 
 zle -N restore-job
 
-bindkey '^R' history-incremental-search-backward
+bindkey '^R' history-incremental-pattern-search-backward
 bindkey '^B' backward-word
 bindkey '^E' forward-word
 bindkey '^F' restore-job
@@ -337,13 +337,6 @@ esac
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 export PY_COLORS=1
-
-# THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-
-sdkman-init() {
-  [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-}
 
 send-to-phone() {
   local device_name="Pixel 6A" input=
