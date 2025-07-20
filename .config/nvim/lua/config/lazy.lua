@@ -35,6 +35,7 @@ local plugins = {
 		dependencies = {
 			"nvim-telescope/telescope-ui-select.nvim",
 		},
+		enabled = true,
 		config = function()
 			require("config.plugins.lsp")
 		end,
@@ -57,6 +58,7 @@ local plugins = {
 	-- Completion
 	{
 		"hrsh7th/nvim-cmp",
+		enabled = true,
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
@@ -64,7 +66,12 @@ local plugins = {
 			"hrsh7th/cmp-cmdline",
 			"L3MON4D3/LuaSnip",
 			"saadparwaiz1/cmp_luasnip",
-			"Maan2003/lsp_lines.nvim",
+			{
+				"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+				config = function()
+					require("lsp_lines").setup()
+				end,
+			},
 			{
 				"saecki/crates.nvim",
 				config = function()
@@ -80,6 +87,7 @@ local plugins = {
 	-- Linting
 	{
 		"mfussenegger/nvim-lint",
+		enabled = false,
 		config = function()
 			require("config.plugins.lint")
 		end,
@@ -88,7 +96,8 @@ local plugins = {
 	-- Telescope
 	{
 		"nvim-telescope/telescope.nvim",
-		tag = "0.1.6",
+		tag = "0.1.8",
+		enabled = true,
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
 			require("config.plugins.telescope")
