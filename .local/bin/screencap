@@ -9,7 +9,7 @@
 OSD=true # Notify when the screenshot has been uploaded (requires imagemagick and libnotify)
 
 # The output filename
-name="$(openssl rand -base64 12 | tr '+/' '-_' | tr -d '=').png"
+name="$(LC_ALL=C tr -dc 'a-zA-Z0-9_-' < /dev/urandom | dd bs=1 count=11 2>/dev/null).png"
 
 save() {
   case "$1" in
@@ -57,9 +57,11 @@ upload() {
     convert -thumbnail 120x240 "/tmp/${name}" "/tmp/t${name}"
   fi
 
-  # Optimize the PNG image if an optimizer is available
-  if command -v pngquant > /dev/null; then
-    pngquant --force --output "/tmp/${name}" "/tmp/${name}"
+  if command -v cwebp > /dev/null; then
+    oldname="${name}"
+    name="${name/.png/.webp}"
+    cwebp -lossless "/tmp/${oldname}" -o "/tmp/${name}"
+    rm "${oldname}"
   fi
 
   output=$()
@@ -96,10 +98,10 @@ upload() {
 }
 
 delete() {
-  # rm "/tmp/${name}"
+  rm "/tmp/${name}"
 
   if [ $OSD ]; then
-    rm "/tmp/t${name}"
+    rm "/tmp/t${name/.webp/.png}"
   fi
 }
 
