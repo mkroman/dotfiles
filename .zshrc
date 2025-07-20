@@ -23,72 +23,106 @@
 #
 # For more information, please refer to <http://unlicense.org>
 
-# Include shell completions from homebrew if it is installed.
-if type brew &>/dev/null
-then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-fi
 
 # {{{ Load Zsh modules
 # Load and initialize the `colors' environment variable with ANSI colors
 autoload -Uz colors && colors
-# Load and initialize tab-completion
-autoload -Uz compinit
 
-if [ "$(uname -s)" = "Darwin" ] && [ "$(whoami)" = "work" ]; then
-  # Load insecure files because Homebrew is retarded
+# Load and initialize tab-completion.
+autoload -Uz compinit
+if [[ "$(uname -s)" == "Darwin" ]] && [[ "$(whoami)" == "work" ]]; then
+  # Load insecure files because Homebrew is stupid.
   compinit -u
 else
  compinit
 fi
 
+# Style for completion menu.
 zstyle ':completion:*' menu select
-# Load the url-quote-magic module that automagically adds quotes when a
-# URL is inserted as an argument
+
+# Automatically quote URLs pasted into the command line.
 autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
 # }}}
+# {{{ Zsh Options
 
-# {{{ Zsh options
-
-# Automatically push `cd' dirs to the stack`
+# Directory stack management.
 setopt autopushd pushdminus pushdsilent pushdtohome
-# Allow commands like `..' to act like `cd ..'
+
+# Allow `..' to act like `cd ..'.
 setopt autocd
-# Enable variable substitution in PROMPT and RPROMPT
+
+# Enable variable substitution in prompts.
 setopt promptsubst
+
 # Incrementally append history so multiple zsh sessions can share a history
 setopt extendedhistory appendhistory incappendhistorytime
-# Disable history expansion (reduces problems when typing '!')
+
+# Disable history expansion to avoid issues with '!'.
 unsetopt banghist
+
 # }}}
+# {{{ Environment Variables
 
-# {{{ Environment
+# History file configuration.
+export HISTFILE="${HOME}/.history"
+export HISTSIZE=200000000
+export SAVEHIST=200000000
 
-# History options
-export HISTFILE=~/.history HISTSIZE=200000000 SAVEHIST=200000000
-# Set the left part of the prompt.
+# Prompt configuration.
 export PROMPT="%F{cyan}%n@%m%f %~ %# "
-# Print a grey ¬ (U+00AC) when trying to preserve a partial line
-export PROMPT_EOL_MARK="%F{59}¬%f"
-# Set the default browser
-export BROWSER=firefox
-# Set the default editor
+export PROMPT_EOL_MARK="%F{59}¬%f" # Character for preserved partial lines.
+
+# Default applications.
 export EDITOR=nvim
-export SYSTEMD_EDITOR=$EDITOR
-# Set the default terminal
+export BROWSER=firefox
 export TERMINAL=ghostty
-# Print the wall-time for a process when it runs for a longer period of time
+export SYSTEMD_EDITOR=$EDITOR
+
+# Report wall-time for commands running longer than 4 seconds.
 export REPORTTIME=4
 
+# Fix for Java GUI applications on tiling window managers.
+export _JAVA_AWT_WM_NONREPARENTING=1
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
+
+# Enable colors for Python.
+export PY_COLORS=1
+
+# Enable Wayland backend for Mozilla applications.
+export MOZ_ENABLE_WAYLAND=kich1
+
+# SDK Paths
+[ -d "$HOME/rp2040/pico-sdk" ] && export PICO_SDK_PATH="$HOME/rp2040/pico-sdk"
+
 # }}}
 
-# Load directory colors for `ls'
-[ -e ~/.dircolors ] && eval "$(dircolors ~/.dircolors)"
+# {{{ Path configuration.
 
-# {{{ PATH injection
+# A helper function to prepend a directory to the PATH if it exists.
+prepend_to_path() {
+  if [ -d "$1" ]; then
+    export PATH="$1:$PATH"
+  fi
+}
 
-# Add ~/.bin to the PATH stack if the directory exists
-[ -d ~/.bin ] && export PATH="${HOME}/.bin:${PATH}"
+# Prepend directories to PATH.
+prepend_to_path "${HOME}/.local/bin"
+prepend_to_path "{$HOME}/.bin"
+prepend_to_path "${KREW_ROOT:-$HOME/.krew}/bin"
+prepend_to_path "{$HOME}/.npm-packages/bin"
+prepend_to_path "{$HOME}/.node/bin"
+prepend_to_path "{$HOME}/.bun/bin"
+
+# Homebrew PATH setup.
+if type brew &>/dev/null; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
+
+# }}}
+# {{{ Aliases
+
+
+# }}}
 
 # Use fzf for selecting when typing `**<TAB>`.
 if [ -e /usr/share/fzf/completion.zsh ]; then
@@ -104,90 +138,78 @@ if [ -e /usr/share/fzf/key-bindings.zsh ]; then
   source /usr/share/fzf/key-bindings.zsh
 fi
 
-# {{{ Ruby tools.
-
-# Ruby aliases
-alias be='bundle exec'
-
-# }}}
-
-# Add executable dirs to PATH
-[ -e ~/.node/bin ] && export PATH="${HOME}/.node/bin:${PATH}"
-[ -d ~/.npm-packages ] && export PATH="${HOME}/.npm-packages/bin:${PATH}"
-
-# }}}
-
 ## Aliases
-
-# Unix aliases
 alias ls='ls --color=auto -F'
+alias grep='grep --color=auto'
+alias gdb='gdb -q'
+alias objdump='objdump -M intel'
+alias :e='vim' # Quick edit alias
 
+# Use `eza` if available for `ls` and `ll`.
 if command -v eza >/dev/null; then
-  alias ll='eza -l'
   alias ls='eza'
+  alias ll='eza -l'
 else
   alias ll='ls -l'
 fi
 
-alias grep='grep --color=auto'
-alias gdb='gdb -q'
-
+# Use nvim instead of vim if it's installed.
 if command -v nvim >/dev/null; then
-  alias vim=nvim
+  alias vim='nvim'
 fi
 
-# Git aliases
-alias g='git'
+# Git aliases.
 alias gush='git push'
 alias gushh='git push origin master'
 alias gash='git stash'
 alias gasha='git stash apply'
 alias gush='git push'
-alias gushh='git push origin master'
+alias gushh='git push origin main'
 alias gul='git pull'
-alias gull='git pull origin master'
+alias gull='git pull origin main'
 alias ga='git commit --amend'
 
-# Kubernetes aliases
+# Kubernetes command-line completion.
 if command -v kubectl >/dev/null; then
-  source <(kubectl completion zsh)
   alias k='kubectl'
+  source <(kubectl completion zsh)
 fi
 
-# Taskwarrior aliases
+## Taskwarrior
 alias t='task'
 
-alias :e='vim' # :e <file>
+## Other Tools
 
-## String manipulation aliases
+# Alias for Tailscale on macOS.
+if [ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]; then
+  alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+fi
 
-# Replace all newlines with a literal '\n'.
-alias escape-newlines="sed 's/$/\\\n/g' | tr -d '\n'"
-# Trim whitespace at the beginning of each line.
-alias trim-line-prefixes="sed 's/^\s*//g'"
-# Trim whitespace at the end of each line.
-alias trim-line-suffixes="sed 's/\s*$//g'"
-# Trim whitespace at the beginning and end of all lines.
-alias trim-lines="trim-line-prefixes | trim-line-suffixes"
 
-# Other program aliases
-alias objdump='objdump -M intel'
+# String manipulation.
+alias escape-newlines="sed 's/$/\\\n/g' | tr -d '\n'" # Replace newlines with literal '\n'
+alias trim-line-prefixes="sed 's/^\s*//g'"           # Trim leading whitespace
+alias trim-line-suffixes="sed 's/\s*$//g'"           # Trim trailing whitespace
+alias trim-lines="trim-line-prefixes | trim-line-suffixes" # Trim both ends
+
+## Keybindings
 
 typeset -A key
+key=(
+  Home      "$terminfo[khome]"
+  End       "$terminfo[kend]"
+  Insert    "$terminfo[kich1]"
+  Backspace "$terminfo[kbs]"
+  Delete    "$terminfo[kdch1]"
+  Up        "$terminfo[kcuu1]"
+  Down      "$terminfo[kcud1]"
+  Left      "$terminfo[kcub1]"
+  Right     "$terminfo[kcuf1]"
+  PageUp    "$terminfo[kpp]"
+  PageDown  "$terminfo[knp]"
+)
 
-key[Home]="$terminfo[khome]"
-key[End]="$terminfo[kend]"
-key[Insert]="$terminfo[kich1]"
-key[Backspace]="$terminfo[kbs]"
-key[Delete]="$terminfo[kdch1]"
-key[Up]="$terminfo[kcuu1]"
-key[Down]="$terminfo[kcud1]"
-key[Left]="$terminfo[kcub1]"
-key[Right]="$terminfo[kcuf1]"
-key[PageUp]="$terminfo[kpp]"
-key[PageDown]="$terminfo[knp]"
-
-# setup key accordingly
+# Standard keybindings.
 [[ -n "$key[Home]"      ]] && bindkey -- "$key[Home]"      beginning-of-line
 [[ -n "$key[End]"       ]] && bindkey -- "$key[End]"       end-of-line
 [[ -n "$key[Insert]"    ]] && bindkey -- "$key[Insert]"    overwrite-mode
@@ -198,17 +220,20 @@ key[PageDown]="$terminfo[knp]"
 [[ -n "$key[Left]"      ]] && bindkey -- "$key[Left]"      backward-char
 [[ -n "$key[Right]"     ]] && bindkey -- "$key[Right]"     forward-char
 
-# Finally, make sure the terminal is in application mode, when zle is
-# active. Only then are the values from $terminfo valid.
+
+# Custom keybindings.
+bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^B' backward-word
+bindkey '^E' forward-word
+bindkey '^F' fg # Restore job
+bindkey -r '^[[2~' # Unbind insert key from overwrite-mode
+
+# Ensure the terminal is in application mode for zle.
 if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
-    function zle-line-init () {
-        echoti smkx
-    }
-    function zle-line-finish () {
-        echoti rmkx
-    }
-    zle -N zle-line-init
-    zle -N zle-line-finish
+  zle-line-init () { echoti smkx; }
+  zle-line-finish () { echoti rmkx; }
+  zle -N zle-line-init
+  zle -N zle-line-finish
 fi
 
 restore-job() {
@@ -216,13 +241,6 @@ restore-job() {
 }
 
 zle -N restore-job
-
-bindkey '^R' history-incremental-pattern-search-backward
-bindkey '^B' backward-word
-bindkey '^E' forward-word
-bindkey '^F' restore-job
-# Unbind overwrite-mode on the insert key
-bindkey -r '^[[2~'
 
 ## Miscellaneous functions
 
@@ -253,109 +271,19 @@ if ! command -v open &>/dev/null 2>&1; then
   }
 fi
 
-[ -e ~/.zshrc.local ] && source ~/.zshrc.local
-[ -e ~/.local/bin ] && export PATH="${HOME}/.local/bin:${PATH}"
-
-if command -v direnv &>/dev/null; then
-  eval "$(direnv hook zsh)"
-fi
-
 if [ -e /usr/share/fzf/shell/key-bindings.zsh ]; then
   source /usr/share/fzf/shell/key-bindings.zsh
 fi
 
-if [ -e ~/.zsh/fzf-completion.zsh ]; then
-  source ~/.zsh/fzf-completion.zsh
+if [ -e "${HOME}/.zsh/fzf-completion.zsh" ]; then
+  source "${HOME}/.zsh/fzf-completion.zsh"
 fi
 
-function matrix-youtubedl {
-  youtube-dl -f 'bestvideo[height<=720]+bestaudio' --merge-output-format mp4 $*
-}
+## Functions
 
-alias send='croc --relay croc.maero.dk send'
-
-# Open the given file in binaryninja while disowning the process.
-function binja() {
-  binaryninja "$@" &!
-}
-
-ghopen() {
-  local branch=$(git symbolic-ref --short -q HEAD)
-  gh browse --branch="${branch}" .
-}
-
-# Prepare a shell environment with help from a 1Password vault
-#
-# Prepares a shell environment by reading the `script` field from an item with
-# the given NAME inside the `Environments` vault and then evaluating it in the
-# current shell after injecting 1Password references.
-#
-# Usage:
-#
-# op-env <NAME>
-#
-# Example:
-#
-# op-env npm
-#
-# The `script` field for the `hello-world` item in the `Environments` vault:
-#
-# export GITHUB_ACTOR="{{ op://${vault}/GitHub/username }}"
-# export GITHUB_TOKEN="{{ op://${vault}/GitHub/Personal Access Tokens/read_packages }}"
-op-env() {
-  local name="${1}"
-  local vault="Private"
-
-  # Read the template from the Environments vault
-  local tpl=
-  tpl="$(op read -n "op://Environments/${name}/script")"
-  [ $? -ne 0 ] && return
-
-  # Inject variables and evaluate 1Password references
-  local script=
-  script="$(echo -n "${tpl}" | vault="${vault}" env_name="${name}" op inject --cache)"
-  [ $? -ne 0 ] && return
-
-  # Print and evaluate the final script
-  echo "${script}"
-  eval "${script}"
-}
-
-case "$TERM" in
-  xterm*|rxvt*|alacritty)
-   precmd() {
-     builtin print -P -n -- "\e]0;$HOST: zsh - %8~\a"
-   }
-
-   preexec() {
-     builtin print -P -n -- "\e]0;$HOST: ${1[(w)1]} - %8~\a"
-   }
-   ;;
-esac
-
-# Fix for Java applications on i3 and sway
-export _JAVA_AWT_WM_NONREPARENTING=1
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
-export PY_COLORS=1
-
-send-to-phone() {
-  local device_name="Pixel 6A" input=
-
-  if [[ $# -gt 0 ]]; then
-    input="${1}"
-  else
-    input="$(cat -)"
-  fi
-
-  if [[ ("${input}" =~ "^\./" || "${input}" =~ "^/") && -e "${input}" ]] || [[ "${input}" =~ "^http" ]]; then
-    kdeconnect-cli \
-      --name "${device_name}" \
-      --share "${input}"
-  else
-    kdeconnect-cli \
-      --name "${device_name}" \
-      --share-text "${input}"
-  fi
+# Open a file in Binary Ninja and disown the process.
+binja() {
+  binaryninja "${@}" &!
 }
 
 # Generate a random e-mail address using `petname` which is available at
@@ -385,34 +313,47 @@ generate-password() {
   echo "${password}"
 }
 
-[ -d "$HOME/rp2040/pico-sdk" ] && export PICO_SDK_PATH=$HOME/rp2040/pico-sdk
+## Prompt & Terminal Title
 
-export MOZ_ENABLE_WAYLAND=1
+# Set terminal title to show current command.
+case "${TERM}" in
+  xterm*|rxvt*|alacritty|ghostty)
+   precmd() {
+     print -Pn "\e]0;${HOST}: zsh - %8~\a"
+   }
+   preexec() {
+     print -Pn "\e]0;${HOST}: ${1[(w)1]} - %8~\a"
+   }
+   ;;
+esac
 
-# Alias tailscale on macOS as it's not in a shell PATH.
-if [ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]; then
-  alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-fi
+## Plugin & Tool Integration
 
-# bun completions
+# Load Bun completions.
 if [ -d "${HOME}/.bun" ]; then
-  [ -s "/home/work/.bun/_bun" ] && source "/home/work/.bun/_bun"
-
-  # bun
-  export BUN_INSTALL="$HOME/.bun"
-  export PATH="$BUN_INSTALL/bin:$PATH"
+  [ -s "${HOME}/.bun/_bun" ] && source "${HOME}/.bun/_bun"
+  export BUN_INSTALL="${HOME}/.bun"
 fi
 
-if [ -d "${KREW_ROOT:-$HOME/.krew}/bin" ]; then
-  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-fi
-
-# Use rxt for managing runtime versions
+# Manage runtime versions.
 if command -v mise >/dev/null; then
   eval "$(mise activate zsh)"
 fi
 
-# Activate esp-idf using the alias `idf` if it's installed.
+# Create an alias to activate the ESP-IDF environment.
 if [ -f "${HOME}/Projects/esp/esp-idf/export.sh" ]; then
   alias idf="source ${HOME}/Projects/esp/esp-idf/export.sh"
 fi
+
+# Load direnv hook if available.
+if command -v direnv &>/dev/null; then
+  eval "$(direnv hook zsh)"
+fi
+
+## Finalization.
+
+# Load local customizations. This sould be the last thing sourced.
+[ -f "${HOME}/.zshrc.local" ] && source "${HOME}/.zshrc.local"
+
+# Load directory colors for `ls`.
+[ -f "${HOME}/.dircolors" ] && eval "$(dircolors -b "${HOME}/.dircolors")"
