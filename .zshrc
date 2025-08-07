@@ -65,6 +65,7 @@ unsetopt banghist
 
 # History file configuration.
 export HISTFILE="${HOME}/.history"
+export HIST_IGNORE_DUPS
 export HISTSIZE=200000000
 export SAVEHIST=200000000
 
@@ -89,7 +90,10 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 export PY_COLORS=1
 
 # Enable Wayland backend for Mozilla applications.
-export MOZ_ENABLE_WAYLAND=kich1
+export MOZ_ENABLE_WAYLAND=1
+
+# Enable ripgrep configuration file.
+export RIPGREP_CONFIG_PATH="${HOME}/.config/ripgrep/ripgrep.conf"
 
 # SDK Paths
 [ -d "$HOME/rp2040/pico-sdk" ] && export PICO_SDK_PATH="$HOME/rp2040/pico-sdk"
