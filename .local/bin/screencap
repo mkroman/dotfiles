@@ -60,7 +60,7 @@ upload() {
   if command -v cwebp > /dev/null; then
     oldname="${name}"
     name="${name/.png/.webp}"
-    cwebp -lossless "/tmp/${oldname}" -o "/tmp/${name}"
+    cwebp -lossless -mt "/tmp/${oldname}" -o "/tmp/${name}"
     rm "${oldname}"
   fi
 
